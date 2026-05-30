@@ -1,6 +1,0 @@
-			Welcome to javascript
-
-File Handling:-
-
-*File Upload
-*File Download
