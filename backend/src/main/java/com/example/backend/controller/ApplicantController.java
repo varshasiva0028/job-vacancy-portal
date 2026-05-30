@@ -1,0 +1,126 @@
+package com.example.backend.controller;
+
+import com.example.backend.entity.Applicant;
+import com.example.backend.service.ApplicantService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/applicants")
+@CrossOrigin(origins = "http://localhost:4200")
+public class ApplicantController {
+
+    @Autowired
+    private ApplicantService service;
+
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<String> createApplicant(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("qualification") String qualification,
+            @RequestParam("resume") MultipartFile resume,
+            @RequestParam("marksheet") MultipartFile marksheet) {
+
+        try {
+
+            if (name == null || email == null || phone == null || qualification == null ||
+                    name.trim().isEmpty() || email.trim().isEmpty() ||
+                    phone.trim().isEmpty() || qualification.trim().isEmpty()) {
+
+                return ResponseEntity.badRequest().body("All fields are required");
+            }
+
+            if (resume == null || resume.isEmpty()) {
+                return ResponseEntity.badRequest().body("Resume file is missing");
+            }
+
+            if (marksheet == null || marksheet.isEmpty()) {
+                return ResponseEntity.badRequest().body("Marksheet file is missing");
+            }
+
+            String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
+
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            String uniqueId = UUID.randomUUID().toString();
+
+            String resumeFileName = uniqueId + "_resume_" + resume.getOriginalFilename();
+            String marksheetFileName = uniqueId + "_marksheet_" + marksheet.getOriginalFilename();
+
+            Path resumePath = Paths.get(uploadDir, resumeFileName);
+            Path marksheetPath = Paths.get(uploadDir, marksheetFileName);
+
+            Files.copy(resume.getInputStream(), resumePath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(marksheet.getInputStream(), marksheetPath, StandardCopyOption.REPLACE_EXISTING);
+
+            Applicant applicant = new Applicant();
+            applicant.setName(name.trim());
+            applicant.setEmail(email.trim());
+            applicant.setPhone(phone.trim());
+            applicant.setQualification(qualification.trim());
+            applicant.setResumePath(resumeFileName);
+            applicant.setMarksheetPath(marksheetFileName);
+
+            service.save(applicant);
+
+            return ResponseEntity.ok("Application Submitted Successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError()
+                    .body("Error while uploading: " + e.getMessage());
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Applicant>> getAllApplicants() {
+        return ResponseEntity.ok(service.getAllApplicants());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Applicant> getApplicantById(@PathVariable Long id) {
+
+        Applicant applicant = service.getApplicantById(id);
+
+        if (applicant == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(applicant);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateApplicant(
+            @PathVariable Long id,
+            @RequestBody Applicant updatedApplicant) {
+
+        Applicant applicant = service.getApplicantById(id);
+
+        if (applicant == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        applicant.setName(updatedApplicant.getName());
+        applicant.setEmail(updatedApplicant.getEmail());
+        applicant.setPhone(updatedApplicant.getPhone());
+        applicant.setQualification(updatedApplicant.getQualification());
+
+        service.save(applicant);
+
+        return ResponseEntity.ok("Applicant Updated Successfully");
+    }
+}

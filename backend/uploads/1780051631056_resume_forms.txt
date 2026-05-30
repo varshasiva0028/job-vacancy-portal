@@ -1,0 +1,925 @@
+Job Vacancy Portal
+Tech stack:
+
+Frontend → Angular
+Backend → Spring Boot
+Database → MySQL
+API → REST API
+Perfect. We’ll build this like a real production project step by step.
+
+# Project We Are Building
+
+## Job Vacancy Portal
+
+Tech stack:
+
+* Frontend → Angular
+* Backend → Spring Boot
+* Database → MySQL
+* API → REST API
+* Authentication → JWT (later)
+* Deployment → Docker + AWS (later)
+
+---
+
+# STEP 0 — What You Will Learn
+
+By the end, you’ll know:
+
+* Full stack architecture
+* Angular Reactive Forms
+* REST API development
+* File upload handling
+* Database integration
+* Authentication
+* Admin dashboard
+* Deployment
+
+This will become a strong resume project.
+
+---
+
+# STEP 1 — Install Required Software
+
+Install these first.
+
+## 1. Install Java JDK 17
+
+Recommended:
+
+* [Oracle JDK Downloads](https://www.oracle.com/java/technologies/downloads/?utm_source=chatgpt.com)
+
+OR
+
+* [OpenJDK Temurin 17](https://adoptium.net/temurin/releases/?utm_source=chatgpt.com)
+
+After install:
+
+```bash
+java -version
+```
+
+You should see Java 17.
+
+---
+
+## 2. Install Node.js LTS
+
+Download:
+
+* [Node.js Official Site](https://nodejs.org/?utm_source=chatgpt.com)
+
+Verify:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 3. Install Angular CLI
+
+```bash
+npm install -g @angular/cli
+```
+
+Verify:
+
+```bash
+ng version
+```
+
+---
+
+## 4. Install MySQL
+
+Download:
+
+* [MySQL Community Server](https://dev.mysql.com/downloads/mysql/?utm_source=chatgpt.com)
+
+Install MySQL Workbench too.
+
+Remember your:
+
+* username
+* password
+
+---
+
+## 5. Install IntelliJ IDEA
+
+Download:
+
+* [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download/?utm_source=chatgpt.com)
+
+---
+
+## 6. Install VS Code
+
+Download:
+
+* [Visual Studio Code](https://code.visualstudio.com/?utm_source=chatgpt.com)
+
+Recommended Angular extensions:
+
+* Angular Language Service
+* Prettier
+* ESLint
+
+---
+
+# STEP 2 — Create Project Folder
+
+Create a main folder:
+
+```text
+job-vacancy-portal/
+```
+
+Inside:
+
+```text
+job-vacancy-portal/
+ ├── frontend/
+ └── backend/
+```
+
+---
+
+# STEP 3 — Create Spring Boot Backend
+
+Go to:
+
+* [Spring Initializr](https://start.spring.io/?utm_source=chatgpt.com)
+
+Use:
+
+| Field       | Value         |
+| ----------- | ------------- |
+| Project     | Maven         |
+| Language    | Java          |
+| Spring Boot | Latest stable |
+| Group       | com.jobportal |
+| Artifact    | backend       |
+| Name        | backend       |
+| Packaging   | Jar           |
+| Java        | 17            |
+
+---
+
+## Add Dependencies
+
+Select:
+
+* Spring Web
+* Spring Data JPA
+* MySQL Driver
+* Lombok
+* Validation
+
+Then click:
+
+```text
+GENERATE
+```
+
+Extract into:
+
+```text
+job-vacancy-portal/backend
+```
+
+Open in IntelliJ.
+
+---
+
+# STEP 4 — Configure Database
+
+Open:
+
+```text
+src/main/resources/application.properties
+```
+
+Add:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/job_portal
+spring.datasource.username=root
+spring.datasource.password=YOUR_PASSWORD
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+file.upload-dir=uploads
+```
+
+Replace:
+
+```text
+YOUR_PASSWORD
+```
+
+with your MySQL password.
+
+---
+
+# STEP 5 — Create Database
+
+Open MySQL Workbench.
+
+Run:
+
+```sql
+CREATE DATABASE job_portal;
+```
+
+---
+
+# STEP 6 — Run Backend
+
+In IntelliJ:
+
+Run:
+
+```text
+BackendApplication.java
+```
+
+If successful:
+
+```text
+Tomcat started on port(s): 8080
+```
+
+Backend is running.
+
+---
+
+# STEP 7 — Create Angular Frontend
+
+Open terminal.
+
+Go to frontend folder:
+
+```bash
+cd job-vacancy-portal
+```
+
+Run:
+
+```bash
+ng new frontend
+```
+
+Choose:
+
+| Question       | Answer |
+| -------------- | ------ |
+| Standalone API | Yes    |
+| Routing        | Yes    |
+| Style          | CSS    |
+
+Then:
+
+```bash
+cd frontend
+ng serve
+```
+
+Open:
+
+```text
+http://localhost:4200
+```
+
+Angular app is running.
+
+---
+
+# STEP 8 — Clean Angular Project
+
+Inside `src/app/`
+
+Delete unnecessary files.
+
+Create folders:
+
+```text
+src/app/
+ ├── components/
+ ├── pages/
+ ├── services/
+ ├── models/
+ ├── interfaces/
+ └── guards/
+```
+
+---
+
+# STEP 9 — Plan Our Modules
+
+We’ll build in this order:
+
+## PHASE 1
+
+### Candidate Features
+
+* Apply form
+* Upload resume
+* Upload marksheet
+* Save applicant data
+* Form validation
+
+### Backend Features
+
+* Create REST API
+* Save applicant
+* Store uploaded files
+* MySQL integration
+
+---
+
+## PHASE 2
+
+### Admin Features
+
+* Login
+* Dashboard
+* View applicants
+* Download files
+* Search/filter
+
+---
+
+## PHASE 3
+
+### Advanced Features
+
+* JWT auth
+* Email notifications
+* Docker
+* AWS deployment
+
+---
+
+# STEP 10 — Create First Backend Module
+
+Now we start actual coding.
+
+---
+
+# Backend Structure
+
+Create packages inside:
+
+```text
+src/main/java/com/jobportal/backend/
+```
+
+Create:
+
+```text
+controller
+service
+repository
+entity
+dto
+config
+```
+
+---
+
+# STEP 11 — Create Applicant Entity
+
+Create:
+
+```text
+entity/Applicant.java
+```
+
+Code:
+
+```java
+package com.jobportal.backend.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+public class Applicant {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    private String email;
+
+    private String phone;
+
+    private String qualification;
+
+    private String resumePath;
+
+    private String marksheetPath;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
+}
+```
+
+---
+
+# STEP 12 — Create Repository
+
+Create:
+
+```text
+repository/ApplicantRepository.java
+```
+
+Code:
+
+```java
+package com.jobportal.backend.repository;
+
+import com.jobportal.backend.entity.Applicant;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
+}
+```
+
+---
+
+# STEP 13 — Run Application Again
+
+Run backend again.
+
+Now Spring Boot automatically creates:
+
+```text
+applicant
+```
+
+table in MySQL.
+
+Check MySQL Workbench.
+
+---
+
+# Your Task Now
+
+Complete ONLY these steps first:
+
+## Install
+
+* Java 17
+* Node.js
+* Angular CLI
+* MySQL
+* IntelliJ
+* VS Code
+
+## Create
+
+* Backend project
+* Frontend project
+* MySQL database
+* Applicant entity
+* Repository
+
+## Run
+
+* Spring Boot backend
+* Angular frontend
+
+---
+
+# After You Finish
+
+Tell me:
+
+* what errors you got
+* screenshots/code if needed
+* whether backend runs
+* whether Angular runs
+
+Then we continue with:
+
+# NEXT STEP
+
+We will build:
+
+* Applicant REST API
+* File upload API
+* Angular application form
+* Multipart form-data integration
+* Resume upload handling         
+==========================================================================================================
+Great — now your backend setup is officially correct ✔
+
+You’ve successfully completed:
+
+* Spring Boot running on Spring Boot
+* First REST API working
+* Server reachable at `http://localhost:8081`
+
+---
+
+# 🚀 NEXT STEP — REAL PROJECT START (CORE FEATURE)
+
+Now we build the **Job Application System backend**.
+
+We’ll do this in 3 clean steps:
+
+---
+
+# 🧩 STEP 1 — Create Applicant Entity (Database Table)
+
+Create file:
+
+```text
+backend/src/main/java/com/example/backend/entity/Applicant.java
+```
+
+---
+
+## Paste this:
+
+```java
+package com.example.backend.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+public class Applicant {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String email;
+    private String phone;
+    private String qualification;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
+}
+```
+
+---
+
+# 🧩 STEP 2 — Create Repository
+
+Create file:
+
+```text
+repository/ApplicantRepository.java
+```
+
+---
+
+## Paste:
+
+```java
+package com.example.backend.repository;
+
+import com.example.backend.entity.Applicant;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
+}
+```
+
+---
+
+# 🧩 STEP 3 — Create Service Layer (Good Practice)
+
+Create:
+
+```text
+service/ApplicantService.java
+```
+
+---
+
+## Paste:
+
+```java
+package com.example.backend.service;
+
+import com.example.backend.entity.Applicant;
+import com.example.backend.repository.ApplicantRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ApplicantService {
+
+    @Autowired
+    private ApplicantRepository repository;
+
+    public Applicant save(Applicant applicant) {
+        return repository.save(applicant);
+    }
+}
+```
+
+---
+
+# 🧩 STEP 4 — Create POST API Controller
+
+Update your controller or create new:
+
+```text
+controller/ApplicantController.java
+```
+
+---
+
+## Paste:
+
+```java
+package com.example.backend.controller;
+
+import com.example.backend.entity.Applicant;
+import com.example.backend.service.ApplicantService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/applicants")
+public class ApplicantController {
+
+    @Autowired
+    private ApplicantService service;
+
+    @PostMapping
+    public Applicant create(@RequestBody Applicant applicant) {
+        return service.save(applicant);
+    }
+}
+```
+
+---
+
+# 🧪 STEP 5 — TEST API (IMPORTANT)
+
+Use Postman or browser tool.
+
+### URL:
+
+```text
+POST http://localhost:8081/api/applicants
+```
+
+### JSON Body:
+
+```json
+{
+  "name": "John",
+  "email": "john@gmail.com",
+  "phone": "9999999999",
+  "qualification": "B.Tech"
+}
+```
+
+---
+
+# 🎯 EXPECTED RESULT
+
+You should get response like:
+
+```json
+{
+  "id": 1,
+  "name": "John",
+  "email": "john@gmail.com",
+  "phone": "9999999999",
+  "qualification": "B.Tech"
+}
+```
+
+---
+
+# 💡 WHAT YOU BUILT NOW
+
+You now have:
+
+✔ REST API
+✔ Database model
+✔ Service layer
+✔ MySQL integration
+
+This is **real backend development**.
+
+---
+
+# 🚀 NEXT STEP (VERY IMPORTANT)
+
+Next we will build:
+
+## 🔥 FRONTEND (Angular)
+
+* Job application form
+* Submit to backend
+* Show success page
+
+---
+
+# 👉 DO THIS NOW
+
+1. Create entity + repository + service + controller
+2. Test POST API
+
+Then reply:
+
+```text
+POST WORKING
+```
+
+and we connect Angular next 🚀
+=================================================================
+You *can* skip Postman, but don’t skip the idea of testing.
+
+Postman is just a tool — the real requirement is: **your API must work before we move to frontend.**
+
+Since you already have Spring Boot running and endpoints created, we can move forward, but I’ll adjust the approach.
+
+---
+
+# 🚀 YES — WE CAN SKIP POSTMAN (for now)
+
+We will test using **Angular frontend instead**, which is better for your project.
+
+But first we must make sure backend is solid.
+
+---
+
+# ⚠️ QUICK CHECK (IMPORTANT)
+
+Before moving forward, confirm ONE thing:
+
+👉 Does this URL work in browser?
+
+```text
+http://localhost:8081/api/test
+```
+
+If yes → backend is fine ✔
+
+---
+
+# 🚀 NEXT STEP — FRONTEND START (Angular)
+
+Now we begin real project UI.
+
+We will build:
+
+## 🧾 Job Application Form
+
+Using:
+Angular
+
+---
+
+# 🧭 STEP 1 — Go to frontend folder
+
+```bash
+cd job-vacancy-portal
+ng new frontend
+```
+
+If already created:
+
+```bash
+cd frontend
+ng serve
+```
+
+Open:
+
+```text
+http://localhost:4200
+```
+
+---
+
+# 🧭 STEP 2 — Create form component
+
+Inside Angular:
+
+```bash
+ng generate component pages/apply
+```
+
+---
+
+# 🧭 STEP 3 — What we will build next
+
+A form with:
+
+* Name
+* Email
+* Phone
+* Qualification
+* Resume upload
+* Marksheet upload
+* Submit button
+*resume upload
+*marksheet upload
+
+
+
+---
+
+✅ FULL PROJECT STATUS (What you have COMPLETED)
+🟢 1. Angular Frontend (Apply Form)
+
+You have fully built:
+
+Job Application form UI
+Two-way binding (ngModel) for:
+name
+email
+phone
+qualification
+File inputs:
+resume upload
+marksheet upload
+Submit button with submitForm()
+Success message UI (submitted)
+Basic download JSON feature (frontend-only)
+Routing setup (form + dashboard page)
+
+👉 Status: 70–80% complete frontend
+
+🟢 2. Angular Dashboard
+
+You already built:
+
+Dashboard component
+
+API call using HttpClient:
+
+GET http://localhost:8081/api/applicants
+Table display:
+id
+name
+email
+phone
+qualification
+
+👉 Status: basic dashboard done
+
+🟢 3. Spring Boot Backend
+
+You completed:
+
+✔ Entity
+Applicant entity created
+Fields:
+name, email, phone, qualification
+resumePath, marksheetPath
+createdAt
+✔ Repository
+JpaRepository created
+✔ Service Layer
+Save applicant
+Fetch all applicants
+✔ Controller
+POST /api/applicants
+Multipart file upload (resume + marksheet)
+Saves files in /uploads
+Stores filenames in DB
+GET /api/applicants
+Returns list of applicants
+
+👉 Status: backend core completed (MVP level)
+
+🟡 4. Integration Status
+
+✔ Angular ↔ Spring Boot connection EXISTS
+❌ BUT not fully optimized yet:
+
+file download not exposed
+better response handling pending
+UI improvements pending
+📌 FINAL STATUS SUMMARY
+Layer	Status
+Angular Form	✅ Done
+Angular Dashboard	🟡 Basic done
+Backend API	✅ Done
+File Upload	✅ Done
+File Download API	❌ Next step
+UI polish	❌ Next step

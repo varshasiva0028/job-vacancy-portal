@@ -1,0 +1,50 @@
+<h2>Applicants Dashboard</h2>
+
+<p>Total Applicants: {{ applicants.length }}</p>
+
+<table border="1">
+
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Qualification</th>
+      <th>Resume</th>
+      <th>Marksheet</th>
+      <th>Applied At</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr *ngFor="let a of applicants">
+
+      <td>{{ a.id }}</td>
+      <td>{{ a.name }}</td>
+      <td>{{ a.email }}</td>
+      <td>{{ a.phone }}</td>
+      <td>{{ a.qualification }}</td>
+
+      <td>
+        <a [href]="'http://localhost:8081/uploads/' + a.resumePath"
+           target="_blank">
+          View Resume
+        </a>
+      </td>
+
+      <td>
+        <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath"
+           target="_blank">
+          View Marksheet
+        </a>
+      </td>
+
+      <td>{{ a.createdAt }}</td>
+
+    </tr>
+
+  </tbody>
+
+</table>

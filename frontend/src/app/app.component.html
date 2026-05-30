@@ -1,0 +1,103 @@
+<h2>Job Application Form</h2>
+
+<form #form="ngForm" (ngSubmit)="submitForm()">
+
+  <br><br>
+
+  <input
+    type="text"
+    placeholder="Name"
+    [(ngModel)]="applicant.name"
+    name="name"
+    required
+  >
+
+  <br><br>
+
+  <input
+    type="email"
+    placeholder="Email"
+    [(ngModel)]="applicant.email"
+    name="email"
+    required
+  >
+
+  <br><br>
+
+  <input
+    type="text"
+    placeholder="Phone"
+    [(ngModel)]="applicant.phone"
+    name="phone"
+    maxlength="10"
+    required
+  >
+
+  <br><br>
+
+  <input
+    type="text"
+    placeholder="Qualification"
+    [(ngModel)]="applicant.qualification"
+    name="qualification"
+    required
+  >
+
+  <br><br>
+
+  <label>Upload Resume:</label>
+  <br>
+
+  <input
+    type="file"
+    (change)="onResumeSelect($event)"
+    required
+  >
+
+  <br><br>
+
+  <label>Upload Marksheet:</label>
+  <br>
+
+  <input
+    type="file"
+    (change)="onMarksheetSelect($event)"
+    required
+  >
+
+  <br><br>
+
+  <button type="submit">
+    Submit Application
+  </button>
+
+</form>
+
+<div *ngIf="submitted">
+
+  <h3>
+    Application Submitted Successfully
+  </h3>
+
+  <button
+    type="button"
+    onclick="location.href='/dashboard'">
+    Open Dashboard
+  </button>
+
+  <br><br>
+
+  <button (click)="downloadForm()">
+    Download Form
+  </button>
+
+</div>
+
+<hr>
+<hr>
+
+<h1 style="color:green">
+DASHBOARD SHOULD COME BELOW
+</h1>
+
+<app-dashboard></app-dashboard>

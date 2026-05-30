@@ -1,0 +1,67 @@
+cinema TABLE
+
+s.no
+screen name
+no of seats
+collection
+incharge
+open timing
+close timing
+
+
+movie TABLE
+
+screen no
+movie name
+director name
+actor name
+actress name
+music name
+cameraman name
+collection
+rating
+ticket cost
+time slot
+
+
+show TABLE
+
+show time
+collection
+ticket sold
+snack collection
+
+
+insert 5 screen
+insert 8 movie
+insert 20 show
+
+highest and lowest collection movie
+highest and lowest collection screen
+highest and lowest collection show
+
+highest and lowest rating movie
+
+no of movie from the director
+no of movie from the actor
+no of movie from the actress
+no of movie from the music director
+
+delete lowest rating movie and insert 5 movie
+
+highest and lowest collection movie crew
+no of movie from Successive crew 
+
+movie list from director who made Highest collection
+movie list from actor who made Highest collection
+movie list from actress who made Highest collection
+movie list from music director who made Highest collection
+
+Successive combination movie of director and actor
+Successive combination movie of director and actress
+Successive combination movie of director and music director
+Successive combination movie of director and cameraman
+
+Successive combination movie of actor and actress
+Successive combination movie of actor and music director
+

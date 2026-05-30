@@ -1,0 +1,188 @@
+1.Declare an int variable, take input from the user, and print whether it is positive, negative, or zero.
+
+import java.util.Scanner;
+public class number{
+	public static void main(String args[]){
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter the number: ");
+		int n= s.nextInt();
+		if(n>0){
+			System.out.println("Positive");
+		}
+		else if(n<0){
+			System.out.println("Negative");
+		}
+		else{
+			System.out.println("Zero");
+		}
+		s.close();
+
+	}
+}
+------------------------------------------------------------------------------------------------------------------------------------------
+
+2. If Positive then find even or odd 
+
+import java.util.Scanner;
+public class number{
+	public static void main(String args[]){
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter the number: ");
+		int n= s.nextInt();
+		if(n>0){
+			if(n%2==0){
+				System.out.println("EVEN");
+			}
+			else{
+				System.out.println("odd");
+			}
+		}
+		else{
+			System.out.println("Negative Number");
+			return;
+		}
+		s.close();
+		}}
+------------------------------------------------------------------------------------------------------------------------------------------------
+3. check if a given number is prime or not.
+import java.util.Scanner;
+public class number{
+	public static void main(String args[]){
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter the number: ");
+		int n= s.nextInt();
+		boolean isprime = true;
+		for(int i=2;i<=n/2;i++){
+			if(n%i==0){
+				isprime=false;
+				break;
+			}
+		}
+		if(isPrime)
+		{
+			System.out.println("Prime Number");
+			return;
+		}	
+		else{
+			System.out.println("Not Prime Number");
+			return;
+		}
+}}
+--------------------------------------------------------------------------------------------------------------------------------------------------
+4.Demonstrate method overloading by creating a class with multiple add() methods for integers, doubles, and three integers.
+
+public class number{
+	public add(int a,int b){
+	int res = a+b;
+	System.out.println(res);
+	}
+	public add(int a ,int b,int c){
+	int res = a+b+c;
+	System.out.println(res);
+	}
+	public add(int a ,double b){
+	double res = a+b;
+	System.out.println(res);
+	}	
+	public add(double a ,double b){
+	double res = a+b;
+	System.out.println(res);
+	}
+		public static void main(String args[]){
+			new number(10,20);
+			new number(12.45,56);
+			new number(67,45.32);
+			new number(10.9,9.1);
+		}
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+5.Write a menu‑driven program (using switch) to perform basic operations (add, subtract, multiply, divide) using separate methods for each.
+import java.util.Scanner;
+public class number{
+	public static void main(String args[]){
+		do{
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter the number: ");
+		int a= s.nextInt();
+		System.out.println("Enter the number: ");
+		int b= s.nextInt();
+		System.out.println("1.Add");
+		System.out.println("2.Sub");
+		System.out.println("3.Mul");
+		System.out.println("4.Div");
+		System.out.println("Enter the number[From 1-4]: ");
+		int c= s.nextInt();
+		switch(c){
+			case 1:
+				int res =a+b;
+				System.out.println(res);
+				break;
+			case 2:
+				int res =a-b;
+				System.out.println(res);
+				break;
+			case 3:
+				int res =a*b;
+				System.out.println(res);
+				break;
+			case 4:
+				if(b!=0){
+				int res =a/b;
+				System.out.println(res);
+				break;
+				}
+				else{
+				System.out.println("Cannot Divide By Zero");
+				}
+			default:
+				System.out.println("Invalid Number...");
+		}
+		while(c>=5);
+		}
+	}
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+6.Create a BankAccount class with data members accountNumber, balance, and methods deposit(), withdraw(), and displayBalance().
+
+public class Bank{
+	private int balance = 50000;
+	private int acc_no = 1234;
+	public int getBalance(){
+	return balance;
+	}
+	public int getacc(){
+	return acc_no;
+	}
+	public void deposit(int amount){
+		if(amount>0){
+		amount+=balance;
+		System.out.println("Initial Amount: "+balance);
+		System.out.println("Updated Amount: "+amount);
+		}
+		else{
+		System.out.println("Invalid Amount");
+		}		
+	}
+	public void withdraw(int amount){
+		if(amount>0 && amount<=balance){
+		amount-=balance;
+		System.out.println("Initial Amount: "+balance);
+		System.out.println("Updated Amount: "+amount);
+		}
+		else{
+		System.out.println("No Sufficient balance");
+		}		
+	}
+	public void Display(){
+		System.out.println(balance);
+	}
+	public static void main(String args[]){
+		Bank b=new Bank();
+		System.out.println("Balance: "+b.getBalance);
+		System.out.println("Account number: "+b.getacc);
+		b.deposit(1200);
+		b.withdraw(5000);
+		System.out.println("BALANCE: "+b.display());
+	}
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	

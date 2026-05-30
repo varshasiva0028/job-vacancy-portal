@@ -1,0 +1,32 @@
+<h2>Job Application Form</h2>
+
+<form #form="ngForm" (ngSubmit)="submitForm(form)">
+
+  <input type="text" name="name" [(ngModel)]="applicant.name" required>
+  <br><br>
+
+  <input type="email" name="email" [(ngModel)]="applicant.email" required>
+  <br><br>
+
+  <input type="text" name="phone" [(ngModel)]="applicant.phone" required>
+  <br><br>
+
+  <input type="text" name="qualification" [(ngModel)]="applicant.qualification" required>
+  <br><br>
+
+  <input type="file" (change)="onResumeSelect($event)">
+  <br><br>
+
+  <input type="file" (change)="onMarksheetSelect($event)">
+  <br><br>
+
+  <button type="submit" [disabled]="loading">
+    Submit
+  </button>
+
+</form>
+
+<div *ngIf="submitted">
+  <h3>Application Submitted Successfully</h3>
+  <button (click)="downloadForm()">Download</button>
+</div>
