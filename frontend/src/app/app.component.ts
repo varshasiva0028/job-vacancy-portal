@@ -27,6 +27,7 @@ export class AppComponent {
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
   submitted = false;
+  showDashboard = false;
 
   constructor(private http: HttpClient) {}
 

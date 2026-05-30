@@ -1,31 +1,130 @@
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+.dashboard-container {
+  margin-top: 10px;
 }
 
-table {
+.summary-text {
+  font-size: 15px;
+  color: #555555;
+  margin-bottom: 15px;
+}
+
+.basic-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
 }
 
-th {
-  background-color: #1976d2;
-  color: white;
+.basic-table th,
+.basic-table td {
+  border: 1px solid #dddddd;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: middle;
 }
 
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 12px;
+.basic-table th {
+  background-color: #f1f3f5;
+  color: #333333;
+  font-weight: bold;
+}
+
+.basic-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.basic-table tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.basic-table a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.basic-table a:hover {
+  text-decoration: underline;
+}
+
+.no-data {
+  color: #777777;
+  font-style: italic;
+  padding: 20px 0;
   text-align: center;
 }
 
-tr:nth-child(even) {
-  background-color: #f5f5f5;
+/* Edit Form Elements inside Table */
+.edit-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  font-size: 13px;
+  box-sizing: border-box;
 }
 
-a {
-  text-decoration: none;
-  color: #1976d2;
+.edit-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.table-file-input {
+  font-size: 11px;
+  max-width: 150px;
+}
+
+.disabled-cell {
+  color: #888888;
+  font-style: italic;
+  font-size: 12px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.action-cell {
+  display: flex;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+/* Edit Action Buttons */
+.btn-edit,
+.btn-save,
+.btn-cancel {
+  border: none;
+  padding: 6px 12px;
+  font-size: 13px;
   font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.btn-edit {
+  background-color: #17a2b8;
+}
+
+.btn-edit:hover {
+  background-color: #138496;
+}
+
+.btn-save {
+  background-color: #28a745;
+}
+
+.btn-save:hover {
+  background-color: #218838;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
 }

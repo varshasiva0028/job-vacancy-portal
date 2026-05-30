@@ -103,24 +103,77 @@ public class ApplicantController {
         return ResponseEntity.ok(applicant);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<String> updateApplicant(
             @PathVariable Long id,
-            @RequestBody Applicant updatedApplicant) {
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("qualification") String qualification,
+            @RequestParam(value = "resume", required = false) MultipartFile resume,
+            @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
 
-        Applicant applicant = service.getApplicantById(id);
+        try {
+            Applicant applicant = service.getApplicantById(id);
 
-        if (applicant == null) {
-            return ResponseEntity.notFound().build();
+            if (applicant == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (name == null || email == null || phone == null || qualification == null ||
+                    name.trim().isEmpty() || email.trim().isEmpty() ||
+                    phone.trim().isEmpty() || qualification.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body("All text fields are required");
+            }
+
+            applicant.setName(name.trim());
+            applicant.setEmail(email.trim());
+            applicant.setPhone(phone.trim());
+            applicant.setQualification(qualification.trim());
+
+            String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            String uniqueId = UUID.randomUUID().toString();
+
+            if (resume != null && !resume.isEmpty()) {
+                try {
+                    if (applicant.getResumePath() != null) {
+                        Files.deleteIfExists(Paths.get(uploadDir, applicant.getResumePath()));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                String resumeFileName = uniqueId + "_resume_" + resume.getOriginalFilename();
+                Path resumePath = Paths.get(uploadDir, resumeFileName);
+                Files.copy(resume.getInputStream(), resumePath, StandardCopyOption.REPLACE_EXISTING);
+                applicant.setResumePath(resumeFileName);
+            }
+
+            if (marksheet != null && !marksheet.isEmpty()) {
+                try {
+                    if (applicant.getMarksheetPath() != null) {
+                        Files.deleteIfExists(Paths.get(uploadDir, applicant.getMarksheetPath()));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                String marksheetFileName = uniqueId + "_marksheet_" + marksheet.getOriginalFilename();
+                Path marksheetPath = Paths.get(uploadDir, marksheetFileName);
+                Files.copy(marksheet.getInputStream(), marksheetPath, StandardCopyOption.REPLACE_EXISTING);
+                applicant.setMarksheetPath(marksheetFileName);
+            }
+
+            service.save(applicant);
+            return ResponseEntity.ok("Applicant Updated Successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError()
+                    .body("Error while updating: " + e.getMessage());
         }
-
-        applicant.setName(updatedApplicant.getName());
-        applicant.setEmail(updatedApplicant.getEmail());
-        applicant.setPhone(updatedApplicant.getPhone());
-        applicant.setQualification(updatedApplicant.getQualification());
-
-        service.save(applicant);
-
-        return ResponseEntity.ok("Applicant Updated Successfully");
     }
 }

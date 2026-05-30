@@ -1,50 +1,71 @@
-<h2>Applicants Dashboard</h2>
+<div class="dashboard-container">
+  <p class="summary-text">Total Registered Applicants: <strong>{{ applicants.length }}</strong></p>
 
-<p>Total Applicants: {{ applicants.length }}</p>
+  <table class="basic-table" *ngIf="applicants.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Qualification</th>
+        <th>Resume</th>
+        <th>Marksheet</th>
+        <th>Applied At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of applicants">
+        <!-- Edit Mode -->
+        <ng-container *ngIf="editingId === a.id; else viewMode">
+          <td>{{ a.id }}</td>
+          <td>
+            <input type="text" [(ngModel)]="editData.name" name="editName" class="edit-input">
+          </td>
+          <td>
+            <input type="email" [(ngModel)]="editData.email" name="editEmail" class="edit-input">
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="editData.phone" name="editPhone" maxlength="10" class="edit-input">
+          </td>
+          <td>
+            <input type="text" [(ngModel)]="editData.qualification" name="editQualification" class="edit-input">
+          </td>
+          <td>
+            <input type="file" (change)="onEditResumeSelect($event)" class="table-file-input">
+          </td>
+          <td>
+            <input type="file" (change)="onEditMarksheetSelect($event)" class="table-file-input">
+          </td>
+          <td>{{ a.createdAt | date:'medium' }}</td>
+          <td class="action-cell">
+            <button (click)="saveEdit()" class="btn-save">Save</button>
+            <button (click)="cancelEdit()" class="btn-cancel">Cancel</button>
+          </td>
+        </ng-container>
 
-<table border="1">
+        <!-- View Mode -->
+        <ng-template #viewMode>
+          <td>{{ a.id }}</td>
+          <td class="bold-text">{{ a.name }}</td>
+          <td>{{ a.email }}</td>
+          <td>{{ a.phone }}</td>
+          <td>{{ a.qualification }}</td>
+          <td>
+            <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">View Resume</a>
+          </td>
+          <td>
+            <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">View Marksheet</a>
+          </td>
+          <td>{{ a.createdAt | date:'medium' }}</td>
+          <td class="action-cell">
+            <button (click)="startEdit(a)" class="btn-edit">Edit</button>
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
 
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Phone</th>
-      <th>Qualification</th>
-      <th>Resume</th>
-      <th>Marksheet</th>
-      <th>Applied At</th>
-    </tr>
-  </thead>
-
-  <tbody>
-
-    <tr *ngFor="let a of applicants">
-
-      <td>{{ a.id }}</td>
-      <td>{{ a.name }}</td>
-      <td>{{ a.email }}</td>
-      <td>{{ a.phone }}</td>
-      <td>{{ a.qualification }}</td>
-
-      <td>
-        <a [href]="'http://localhost:8081/uploads/' + a.resumePath"
-           target="_blank">
-          View Resume
-        </a>
-      </td>
-
-      <td>
-        <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath"
-           target="_blank">
-          View Marksheet
-        </a>
-      </td>
-
-      <td>{{ a.createdAt }}</td>
-
-    </tr>
-
-  </tbody>
-
-</table>
+  <p *ngIf="applicants.length === 0" class="no-data">No applicants registered yet.</p>
+</div>
