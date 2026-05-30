@@ -128,3 +128,57 @@
 .btn-cancel:hover {
   background-color: #5a6268;
 }
+
+/* Search Bar styling */
+.search-container {
+  position: relative;
+  max-width: 500px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  font-size: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #495057;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-bar:focus {
+  border-color: #007bff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.clear-search-btn:hover {
+  background-color: #f1f3f5;
+  color: #343a40;
+}
+
+.filtered-badge {
+  color: #007bff;
+  margin-left: 5px;
+}

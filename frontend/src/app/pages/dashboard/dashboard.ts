@@ -2,17 +2,19 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { FilterPipe } from '../../pipe';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FilterPipe],
   styleUrls: ['./dashboard.css'],
   templateUrl: './dashboard.html'
 })
 export class DashboardComponent implements OnInit {
 
   applicants: any[] = [];
+  searchText: string = '';
   editingId: number | null = null;
   editData: any = {};
   

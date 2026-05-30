@@ -1,7 +1,22 @@
 <div class="dashboard-container">
-  <p class="summary-text">Total Registered Applicants: <strong>{{ applicants.length }}</strong></p>
+  <div class="search-container">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Search anything (name, email, phone, qualification...)"
+      class="search-bar"
+    >
+    <button *ngIf="searchText" (click)="searchText = ''" class="clear-search-btn" title="Clear search">×</button>
+  </div>
 
-  <table class="basic-table" *ngIf="applicants.length > 0">
+  <p class="summary-text">
+    Total Registered Applicants: <strong>{{ applicants.length }}</strong>
+    <span *ngIf="searchText" class="filtered-badge">
+      | Matching: <strong>{{ (applicants | filter: searchText).length }}</strong>
+    </span>
+  </p>
+
+  <table class="basic-table" *ngIf="applicants.length > 0 && (applicants | filter: searchText).length > 0">
     <thead>
       <tr>
         <th>ID</th>
@@ -16,7 +31,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let a of applicants">
+      <tr *ngFor="let a of applicants | filter: searchText">
         <!-- Edit Mode -->
         <ng-container *ngIf="editingId === a.id; else viewMode">
           <td>{{ a.id }}</td>
@@ -66,6 +81,10 @@
       </tr>
     </tbody>
   </table>
+
+  <p *ngIf="applicants.length > 0 && (applicants | filter: searchText).length === 0" class="no-data">
+    No applicants found matching "{{ searchText }}".
+  </p>
 
   <p *ngIf="applicants.length === 0" class="no-data">No applicants registered yet.</p>
 </div>
