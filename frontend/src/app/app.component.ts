@@ -29,7 +29,113 @@ export class AppComponent {
   submitted = false;
   showDashboard = false;
 
+  // Auth & Registration variables
+  isLoggedIn = false;
+  isRegisterMode = false;
+  
+  loginInput = {
+    usernameOrEmail: '',
+    password: ''
+  };
+  loginError = '';
+
+  registerInput = {
+    usernameOrEmail: '',
+    password: '',
+    confirmPassword: ''
+  };
+
+  registeredUsers = [
+    { usernameOrEmail: 'admin@portal.com', password: 'password123' },
+    { usernameOrEmail: 'admin', password: 'password123' },
+    { usernameOrEmail: 'user@portal.com', password: 'password123' },
+    { usernameOrEmail: 'user', password: 'password123' }
+  ];
+
   constructor(private http: HttpClient) {}
+
+  login(): void {
+    const email = this.loginInput.usernameOrEmail.trim().toLowerCase();
+    const password = this.loginInput.password;
+
+    if (!email) {
+      alert('Please enter your Username or Email ID');
+      return;
+    }
+
+    if (!password) {
+      alert('Please enter your Password');
+      return;
+    }
+
+    // Dynamic credentials check
+    const matchedUser = this.registeredUsers.find(
+      u => u.usernameOrEmail.trim().toLowerCase() === email && u.password === password
+    );
+
+    if (matchedUser) {
+      this.isLoggedIn = true;
+      this.loginError = '';
+      alert('Login Successful!');
+    } else {
+      this.loginError = 'Invalid username/email or password';
+      alert('Invalid username/email or password!');
+    }
+  }
+
+  register(): void {
+    const email = this.registerInput.usernameOrEmail.trim().toLowerCase();
+    const password = this.registerInput.password;
+    const confirmPassword = this.registerInput.confirmPassword;
+
+    if (!email) {
+      alert('Please enter a Username or Email ID');
+      return;
+    }
+
+    if (!password) {
+      alert('Please enter a Password');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+
+    // Check if user already exists
+    const userExists = this.registeredUsers.some(
+      u => u.usernameOrEmail.trim().toLowerCase() === email
+    );
+
+    if (userExists) {
+      alert('This username/email is already registered!');
+      return;
+    }
+
+    // Register user
+    this.registeredUsers.push({ usernameOrEmail: email, password: password });
+    
+    alert('Registration Successful! Redirecting to login...');
+    
+    // Clear inputs and toggle back to login mode
+    this.registerInput = {
+      usernameOrEmail: '',
+      password: '',
+      confirmPassword: ''
+    };
+    this.isRegisterMode = false;
+  }
+
+  logout(): void {
+    this.isLoggedIn = false;
+    this.loginInput = {
+      usernameOrEmail: '',
+      password: ''
+    };
+    this.loginError = '';
+    alert('Logged out successfully');
+  }
 
   onResumeSelect(event: any): void {
     this.resumeFile = event.target.files[0];
