@@ -16,6 +16,14 @@ export class DashboardComponent implements OnInit {
 
   applicants: any[] = [];
   searchText: string = '';
+  viewMode: 'list' | 'grid' = 'list';
+
+toggleView(): void {
+  this.viewMode =
+    this.viewMode === 'list'
+      ? 'grid'
+      : 'list';
+}
   editingId: number | null = null;
   editData: any = {};
 
@@ -41,24 +49,22 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  loadApplicants(): void {
+ loadApplicants(): void {
 
-    this.http.get<any[]>('http://localhost:8081/api/applicants')
-      .subscribe({
-        next: (data) => {
+  this.http.get<any[]>('http://localhost:8081/api/applicants')
+    .subscribe({
+      next: (data) => {
 
-          this.applicants = data.filter(
-            applicant => applicant.id === this.applicantId
-          );
+        this.applicants = data;
 
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          console.error('Error loading applicants:', error);
-        }
-      });
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading applicants:', error);
+      }
+    });
 
-  }
+}
 
   startEdit(applicant: any): void {
     this.editingId = applicant.id;

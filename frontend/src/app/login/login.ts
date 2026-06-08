@@ -29,7 +29,6 @@ export class LoginComponent{
   submitted = false;
   showDashboard = false;
 
-  // Auth & Registration variables
   isLoggedIn = false;
   isRegisterMode = false;
   
@@ -68,12 +67,11 @@ export class LoginComponent{
       return;
     }
 
-    // Dynamic credentials check
     const matchedUser = this.registeredUsers.find(
       u => u.usernameOrEmail.trim().toLowerCase() === email && u.password === password
     );
 
-    if (matchedUser) {
+  if (matchedUser) {
   this.isLoggedIn = true;
   this.loginError = '';
 
@@ -106,7 +104,6 @@ export class LoginComponent{
       return;
     }
 
-    // Check if user already exists
     const userExists = this.registeredUsers.some(
       u => u.usernameOrEmail.trim().toLowerCase() === email
     );
@@ -116,12 +113,11 @@ export class LoginComponent{
       return;
     }
 
-    // Register user
+
     this.registeredUsers.push({ usernameOrEmail: email, password: password });
     
     alert('Registration Successful! Redirecting to login...');
     
-    // Clear inputs and toggle back to login mode
     this.registerInput = {
       usernameOrEmail: '',
       password: '',
@@ -152,73 +148,56 @@ export class LoginComponent{
 }
 
   submitForm(): void {
-
     if (!this.applicant.name.trim()) {
       alert('Please enter your name');
       return;
     }
-
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (!emailPattern.test(this.applicant.email)) {
       alert('Please enter a valid email address');
       return;
     }
-
     const phonePattern = /^[0-9]{10}$/;
-
     if (!phonePattern.test(this.applicant.phone)) {
       alert('Phone number must contain exactly 10 digits');
       return;
     }
-
     const qualificationPattern = /^[A-Za-z\s]+$/;
-
     if (!qualificationPattern.test(this.applicant.qualification)) {
       alert('Qualification should contain only letters');
       return;
     }
-
     if (!this.resumeFile || !this.marksheetFile || !this.photoFile) {
       alert('Please upload Resume and Marksheet and photo');
       return;
     }
-
     const formData = new FormData();
-
     formData.append('name', this.applicant.name);
     formData.append('email', this.applicant.email);
     formData.append('phone', this.applicant.phone);
     formData.append('qualification', this.applicant.qualification);
     formData.append('resume', this.resumeFile);
     formData.append('marksheet', this.marksheetFile);
-    formData.append('marksheet', this.marksheetFile);
-
+   formData.append('photo', this.photoFile);
     this.http.post(
       'http://localhost:8081/api/applicants',
       formData,
       { responseType: 'text' }
     ).subscribe({
       next: (response: string) => {
-
         console.log(response);
-
         this.submitted = true;
-
         alert('Application Submitted Successfully');
-
         this.applicant = {
           name: '',
           email: '',
           phone: '',
           qualification: ''
-        };
-
+        }; 
         this.resumeFile = null;
         this.marksheetFile = null;
         this.marksheetFile = null;
       },
-
       error: (error: any) => {
 
         console.error(error);
@@ -227,12 +206,9 @@ export class LoginComponent{
       }
     });
   }
-
   downloadForm(): void {
-
     const data = `
 Job Application Form
-
 Name: ${this.applicant.name}
 Email: ${this.applicant.email}
 Phone: ${this.applicant.phone}
