@@ -14,11 +14,18 @@ public class Applicant {
     private Long id;
 
     private String name;
+
     private String email;
+
     private String phone;
+
     private String qualification;
-    private String marksheetPath;
+
     private String resumePath;
+
+    private String photoPath;
+
+    private String marksheetPath;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 }

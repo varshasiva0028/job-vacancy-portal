@@ -25,6 +25,7 @@ export class LoginComponent{
 
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
+  photoFile: File | null = null;
   submitted = false;
   showDashboard = false;
 
@@ -78,7 +79,7 @@ export class LoginComponent{
 
   alert('Login Successful!');
 
-  this.router.navigate([1, 'dashboard']);
+  this.router.navigate([1, 'apply']);
 } else {
       this.loginError = 'Invalid username/email or password';
       alert('Invalid username/email or password!');
@@ -146,6 +147,9 @@ export class LoginComponent{
   onMarksheetSelect(event: any): void {
     this.marksheetFile = event.target.files[0];
   }
+  onPhotoSelect(event: any): void {
+  this.photoFile = event.target.files[0];
+}
 
   submitForm(): void {
 
@@ -175,8 +179,8 @@ export class LoginComponent{
       return;
     }
 
-    if (!this.resumeFile || !this.marksheetFile) {
-      alert('Please upload Resume and Marksheet');
+    if (!this.resumeFile || !this.marksheetFile || !this.photoFile) {
+      alert('Please upload Resume and Marksheet and photo');
       return;
     }
 
@@ -187,6 +191,7 @@ export class LoginComponent{
     formData.append('phone', this.applicant.phone);
     formData.append('qualification', this.applicant.qualification);
     formData.append('resume', this.resumeFile);
+    formData.append('marksheet', this.marksheetFile);
     formData.append('marksheet', this.marksheetFile);
 
     this.http.post(
@@ -210,6 +215,7 @@ export class LoginComponent{
         };
 
         this.resumeFile = null;
+        this.marksheetFile = null;
         this.marksheetFile = null;
       },
 

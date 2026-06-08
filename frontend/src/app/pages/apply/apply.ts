@@ -19,6 +19,7 @@ export class ApplyComponent {
   };
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
+  photoFile: File | null = null;
   submitted = false;
   loading = false;
   constructor(private http: HttpClient) {}
@@ -28,6 +29,9 @@ export class ApplyComponent {
   onMarksheetSelect(event: any) {
     this.marksheetFile = event.target.files[0];
   }
+  onPhotoSelect(event: any) {
+  this.photoFile = event.target.files[0];
+}
   submitForm(form: NgForm) {
     if (form.invalid) {
       alert("Please fill all fields");
@@ -48,10 +52,10 @@ export class ApplyComponent {
       alert("Qualification must contain only letters");
       return;
     }
-    if (!this.resumeFile || !this.marksheetFile) {
-      alert("Upload both files");
-      return;
-    }
+   if (!this.resumeFile || !this.marksheetFile || !this.photoFile) {
+  alert("Upload Resume, Photo and Marksheet");
+  return;
+}
     const formData = new FormData();
     formData.append('name', this.applicant.name);
     formData.append('email', this.applicant.email);
@@ -59,6 +63,7 @@ export class ApplyComponent {
     formData.append('qualification', this.applicant.qualification);
     formData.append('resume', this.resumeFile);
     formData.append('marksheet', this.marksheetFile);
+    formData.append('photo', this.photoFile!);
     this.loading = true;
     this.http.post(
       'http://localhost:8081/api/applicants',
@@ -81,6 +86,7 @@ export class ApplyComponent {
         };
         this.resumeFile = null;
         this.marksheetFile = null;
+        this.photoFile = null;
         form.resetForm();
       },
       error: (err) => {

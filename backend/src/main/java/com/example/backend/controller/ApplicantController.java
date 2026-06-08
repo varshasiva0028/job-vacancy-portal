@@ -30,6 +30,7 @@ public class ApplicantController {
             @RequestParam("phone") String phone,
             @RequestParam("qualification") String qualification,
             @RequestParam("resume") MultipartFile resume,
+            @RequestParam("photo") MultipartFile photo,
             @RequestParam("marksheet") MultipartFile marksheet) {
 
         try {
@@ -43,6 +44,10 @@ public class ApplicantController {
 
             if (resume == null || resume.isEmpty()) {
                 return ResponseEntity.badRequest().body("Resume file is missing");
+            }
+
+            if (photo == null || photo.isEmpty()) {
+                return ResponseEntity.badRequest().body("Photo file is missing");
             }
 
             if (marksheet == null || marksheet.isEmpty()) {
@@ -59,20 +64,26 @@ public class ApplicantController {
             String uniqueId = UUID.randomUUID().toString();
 
             String resumeFileName = uniqueId + "_resume_" + resume.getOriginalFilename();
+            String photoFileName = uniqueId + "_photo_" + photo.getOriginalFilename();
             String marksheetFileName = uniqueId + "_marksheet_" + marksheet.getOriginalFilename();
 
             Path resumePath = Paths.get(uploadDir, resumeFileName);
+            Path photoPath = Paths.get(uploadDir, photoFileName);
             Path marksheetPath = Paths.get(uploadDir, marksheetFileName);
 
             Files.copy(resume.getInputStream(), resumePath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(photo.getInputStream(), photoPath, StandardCopyOption.REPLACE_EXISTING);
             Files.copy(marksheet.getInputStream(), marksheetPath, StandardCopyOption.REPLACE_EXISTING);
 
             Applicant applicant = new Applicant();
+
             applicant.setName(name.trim());
             applicant.setEmail(email.trim());
             applicant.setPhone(phone.trim());
             applicant.setQualification(qualification.trim());
+
             applicant.setResumePath(resumeFileName);
+            applicant.setPhotoPath(photoFileName);
             applicant.setMarksheetPath(marksheetFileName);
 
             service.save(applicant);
@@ -111,9 +122,11 @@ public class ApplicantController {
             @RequestParam("phone") String phone,
             @RequestParam("qualification") String qualification,
             @RequestParam(value = "resume", required = false) MultipartFile resume,
+            @RequestParam(value = "photo", required = false) MultipartFile photo,
             @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
 
         try {
+
             Applicant applicant = service.getApplicantById(id);
 
             if (applicant == null) {
@@ -123,6 +136,7 @@ public class ApplicantController {
             if (name == null || email == null || phone == null || qualification == null ||
                     name.trim().isEmpty() || email.trim().isEmpty() ||
                     phone.trim().isEmpty() || qualification.trim().isEmpty()) {
+
                 return ResponseEntity.badRequest().body("All text fields are required");
             }
 
@@ -132,6 +146,7 @@ public class ApplicantController {
             applicant.setQualification(qualification.trim());
 
             String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
+
             File dir = new File(uploadDir);
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -140,6 +155,7 @@ public class ApplicantController {
             String uniqueId = UUID.randomUUID().toString();
 
             if (resume != null && !resume.isEmpty()) {
+
                 try {
                     if (applicant.getResumePath() != null) {
                         Files.deleteIfExists(Paths.get(uploadDir, applicant.getResumePath()));
@@ -147,13 +163,39 @@ public class ApplicantController {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+
                 String resumeFileName = uniqueId + "_resume_" + resume.getOriginalFilename();
                 Path resumePath = Paths.get(uploadDir, resumeFileName);
-                Files.copy(resume.getInputStream(), resumePath, StandardCopyOption.REPLACE_EXISTING);
+
+                Files.copy(resume.getInputStream(),
+                        resumePath,
+                        StandardCopyOption.REPLACE_EXISTING);
+
                 applicant.setResumePath(resumeFileName);
             }
 
+            if (photo != null && !photo.isEmpty()) {
+
+                try {
+                    if (applicant.getPhotoPath() != null) {
+                        Files.deleteIfExists(Paths.get(uploadDir, applicant.getPhotoPath()));
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                String photoFileName = uniqueId + "_photo_" + photo.getOriginalFilename();
+                Path photoPath = Paths.get(uploadDir, photoFileName);
+
+                Files.copy(photo.getInputStream(),
+                        photoPath,
+                        StandardCopyOption.REPLACE_EXISTING);
+
+                applicant.setPhotoPath(photoFileName);
+            }
+
             if (marksheet != null && !marksheet.isEmpty()) {
+
                 try {
                     if (applicant.getMarksheetPath() != null) {
                         Files.deleteIfExists(Paths.get(uploadDir, applicant.getMarksheetPath()));
@@ -161,13 +203,19 @@ public class ApplicantController {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+
                 String marksheetFileName = uniqueId + "_marksheet_" + marksheet.getOriginalFilename();
                 Path marksheetPath = Paths.get(uploadDir, marksheetFileName);
-                Files.copy(marksheet.getInputStream(), marksheetPath, StandardCopyOption.REPLACE_EXISTING);
+
+                Files.copy(marksheet.getInputStream(),
+                        marksheetPath,
+                        StandardCopyOption.REPLACE_EXISTING);
+
                 applicant.setMarksheetPath(marksheetFileName);
             }
 
             service.save(applicant);
+
             return ResponseEntity.ok("Applicant Updated Successfully");
 
         } catch (Exception e) {

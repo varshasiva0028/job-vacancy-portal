@@ -19,6 +19,9 @@
 
   <input type="file" (change)="onMarksheetSelect($event)">
   <br><br>
+  <label>Upload Photo:</label>
+<input type="file" accept="image/*" (change)="onPhotoSelect($event)">
+<br><br>
 
   <button type="submit" [disabled]="loading">
     Submit
