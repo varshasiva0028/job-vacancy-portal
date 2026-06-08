@@ -1,11 +1,15 @@
 <div class="dashboard-container">
  <div class="search-container">
 
-  <input
-    type="text"
-    [(ngModel)]="searchText"
-    placeholder="Search anything (name, email, phone, qualification...)"
-    class="search-bar">
+  <div class="search-box">
+    <i class="fas fa-search search-icon"></i>
+
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Search anything (name, email, phone, qualification...)"
+      class="search-bar">
+  </div>
 
   <button
     *ngIf="searchText"
@@ -14,28 +18,43 @@
     ×
   </button>
 
-  <button
-    class="view-toggle-btn"
-    (click)="toggleView()">
+  <div class="view-toggle-group">
+    <button
+      class="view-btn"
+      [class.active]="viewMode === 'list'"
+      (click)="viewMode='list'">
+      <i class="fas fa-list"></i>
+    </button>
 
-{{ viewMode === 'list' ? 'List View' : 'Grid View' }}
-  </button>
+    <button
+      class="view-btn"
+      [class.active]="viewMode === 'grid'"
+      (click)="viewMode='grid'">
+      <i class="fas fa-th-large"></i>
+    </button>
+  </div>
 
 </div>
 
   <p class="summary-text">
-    Total Registered Applicants: <strong>{{ applicants.length }}</strong>
+    Total Registered Applicants:
+    <strong>{{ applicants.length }}</strong>
     <span *ngIf="searchText" class="filtered-badge">
-      | Matching: <strong>{{ (applicants | filter: searchText).length }}</strong>
+      | Matching:
+      <strong>{{ (applicants | filter: searchText).length }}</strong>
     </span>
   </p>
+
+ 
+
   <table
-  class="basic-table"
-  *ngIf="
-    viewMode === 'list' &&
-    applicants.length > 0 &&
-    (applicants | filter: searchText).length > 0
-  ">
+    class="basic-table"
+    *ngIf="
+      viewMode === 'list' &&
+      applicants.length > 0 &&
+      (applicants | filter: searchText).length > 0
+    ">
+
     <thead>
       <tr>
         <th>ID</th>
@@ -49,115 +68,267 @@
         <th>Actions</th>
       </tr>
     </thead>
+
     <tbody>
       <tr *ngFor="let a of applicants | filter: searchText">
-
-        <ng-container *ngIf="editingId === a.id; else viewMode">
+        <ng-container *ngIf="editingId === a.id; else viewTemplate">
           <td>{{ a.id }}</td>
           <td>
-            <input type="text" [(ngModel)]="editData.name" name="editName" class="edit-input">
+            <input
+              type="text"
+              [(ngModel)]="editData.name"
+              class="edit-input">
           </td>
+
           <td>
-            <input type="email" [(ngModel)]="editData.email" name="editEmail" class="edit-input">
+            <input
+              type="email"
+              [(ngModel)]="editData.email"
+              class="edit-input">
           </td>
+
           <td>
-            <input type="text" [(ngModel)]="editData.phone" name="editPhone" maxlength="10" class="edit-input">
+            <input
+              type="text"
+              [(ngModel)]="editData.phone"
+              maxlength="10"
+              class="edit-input">
           </td>
+
           <td>
-            <input type="text" [(ngModel)]="editData.qualification" name="editQualification" class="edit-input">
+            <input
+              type="text"
+              [(ngModel)]="editData.qualification"
+              class="edit-input">
           </td>
+
           <td>
-            <input type="file" (change)="onEditResumeSelect($event)" class="table-file-input">
+            <input
+              type="file"
+              (change)="onEditResumeSelect($event)"
+              class="table-file-input">
           </td>
+
           <td>
-            <input type="file" (change)="onEditMarksheetSelect($event)" class="table-file-input">
+            <input
+              type="file"
+              (change)="onEditMarksheetSelect($event)"
+              class="table-file-input">
           </td>
-          <td>{{ a.createdAt | date:'medium' }}</td>
+
+          <td>
+            {{ a.createdAt | date:'medium' }}
+          </td>
+
           <td class="action-cell">
-            <button (click)="saveEdit()" class="btn-save">Save</button>
-            <button (click)="cancelEdit()" class="btn-cancel">Cancel</button>
+
+            <button
+              (click)="saveEdit()"
+              class="btn-save">
+              Save
+            </button>
+
+            <button
+              (click)="cancelEdit()"
+              class="btn-cancel">
+              Cancel
+            </button>
           </td>
         </ng-container>
 
-        <ng-template #viewMode>
+        <ng-template #viewTemplate>
+
           <td>{{ a.id }}</td>
-          <td class="bold-text">{{ a.name }}</td>
+
+          <td class="bold-text">
+            {{ a.name | titlecase }}
+          </td>
           <td>{{ a.email }}</td>
           <td>{{ a.phone }}</td>
           <td>{{ a.qualification }}</td>
           <td>
-            <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">View Resume</a>
+            <a
+              [href]="'http://localhost:8081/uploads/' + a.resumePath"
+              target="_blank">
+              View Resume
+            </a>
           </td>
+
           <td>
-            <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">View Marksheet</a>
+            <a
+              [href]="'http://localhost:8081/uploads/' + a.marksheetPath"
+              target="_blank">
+              View Marksheet
+            </a>
           </td>
-          <td>{{ a.createdAt | date:'medium' }}</td>
+
+          <td>
+            {{ a.createdAt | date:'medium' }}
+          </td>
+
           <td class="action-cell">
-            <button (click)="startEdit(a)" class="btn-edit">Edit</button>
+
+            <button
+              (click)="startEdit(a)"
+              class="btn-edit"
+              title="Edit">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
           </td>
         </ng-template>
       </tr>
     </tbody>
   </table>
-  <div
+
+<div
   class="grid-container"
-  *ngIf="
-    viewMode === 'grid' &&
-    applicants.length > 0
-  ">
+  *ngIf="viewMode === 'grid' && applicants.length > 0">
 
   <div
     class="applicant-card"
     *ngFor="let a of applicants | filter: searchText">
 
-    <img
-      *ngIf="a.photoPath"
-      [src]="'http://localhost:8081/uploads/' + a.photoPath"
-      class="profile-photo">
+    <!-- EDIT MODE -->
+    <ng-container *ngIf="editingId === a.id; else gridViewTemplate">
 
-    <h3>{{ a.name }}</h3>
+      <div class="profile-section">
 
-    <p><strong>ID:</strong> {{ a.id }}</p>
+        <img
+          *ngIf="a.photoPath"
+          [src]="'http://localhost:8081/uploads/' + a.photoPath"
+          class="profile-photo">
 
-    <p><strong>Email:</strong> {{ a.email }}</p>
+        <div
+          *ngIf="!a.photoPath"
+          class="profile-avatar">
 
-    <p><strong>Phone:</strong> {{ a.phone }}</p>
+          {{ a.name?.charAt(0)?.toUpperCase() }}
 
-    <p><strong>Qualification:</strong> {{ a.qualification }}</p>
+        </div>
 
-    <p>
-      <a
-        [href]="'http://localhost:8081/uploads/' + a.resumePath"
-        target="_blank">
-        Resume
-      </a>
-    </p>
+      </div>
 
-    <p>
-      <a
-        [href]="'http://localhost:8081/uploads/' + a.marksheetPath"
-        target="_blank">
-        Marksheet
-      </a>
-    </p>
+      <input
+        type="text"
+        [(ngModel)]="editData.name"
+        class="edit-input">
 
-    <p>
-      {{ a.createdAt | date:'medium' }}
-    </p>
+      <input
+        type="email"
+        [(ngModel)]="editData.email"
+        class="edit-input">
 
-    <button
-      (click)="startEdit(a)"
-      class="btn-edit">
-      Edit
-    </button>
+      <input
+        type="text"
+        [(ngModel)]="editData.phone"
+        maxlength="10"
+        class="edit-input">
+
+      <input
+        type="text"
+        [(ngModel)]="editData.qualification"
+        class="edit-input">
+
+      <input
+        type="file"
+        (change)="onEditResumeSelect($event)"
+        class="table-file-input">
+
+      <input
+        type="file"
+        (change)="onEditMarksheetSelect($event)"
+        class="table-file-input">
+
+      <div class="action-cell">
+
+        <button
+          (click)="saveEdit()"
+          class="btn-save">
+          Save
+        </button>
+
+        <button
+          (click)="cancelEdit()"
+          class="btn-cancel">
+          Cancel
+        </button>
+
+      </div>
+
+    </ng-container>
+
+    <ng-template #gridViewTemplate>
+
+      <div class="profile-section">
+
+        <img
+          *ngIf="a.photoPath"
+          [src]="'http://localhost:8081/uploads/' + a.photoPath"
+          class="profile-photo">
+
+        <div
+          *ngIf="!a.photoPath"
+          class="profile-avatar">
+
+          {{ a.name?.charAt(0)?.toUpperCase() }}
+
+        </div>
+
+        <button
+          class="profile-edit-btn"
+          (click)="startEdit(a)"
+          title="Edit">
+
+          <i class="fas fa-pencil-alt"></i>
+
+        </button>
+
+      </div>
+
+     <h3>{{ a.name | titlecase }}</h3>
+
+      <p>
+        <strong>ID:</strong>
+        {{ a.id }}
+      </p>
+
+      <p>
+        <strong>Email:</strong>
+        {{ a.email }}
+      </p>
+
+      <p>
+        <strong>Phone:</strong>
+        {{ a.phone }}
+      </p>
+
+      <p>
+        <strong>Qualification:</strong>
+        {{ a.qualification }}
+      </p>
+
+      <p>
+        <a
+          [href]="'http://localhost:8081/uploads/' + a.resumePath"
+          target="_blank">
+          Resume
+        </a>
+      </p>
+
+      <p>
+        <a
+          [href]="'http://localhost:8081/uploads/' + a.marksheetPath"
+          target="_blank">
+          Marksheet
+        </a>
+      </p>
+
+      <p>
+        {{ a.createdAt | date:'medium' }}
+      </p>
+
+    </ng-template>
 
   </div>
 
-</div>
-
-  <p *ngIf="applicants.length > 0 && (applicants | filter: searchText).length === 0" class="no-data">
-    No applicants found matching "{{ searchText }}".
-  </p>
-
-  <p *ngIf="applicants.length === 0" class="no-data">No applicants registered yet.</p>
 </div>
