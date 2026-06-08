@@ -62,6 +62,8 @@
         <th>Email</th>
         <th>Phone</th>
         <th>Qualification</th>
+        <th>Gender</th>
+        <th>Language Known</th>
         <th>Resume</th>
         <th>Marksheet</th>
         <th>Applied At</th>
@@ -100,8 +102,21 @@
               type="text"
               [(ngModel)]="editData.qualification"
               class="edit-input">
-          </td>
+              <td>
+          <select
+            [(ngModel)]="editData.gender"
+            class="edit-input">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </td>
 
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="editData.languages"
+            class="edit-input">
+        </td>
           <td>
             <input
               type="file"
@@ -146,6 +161,8 @@
           <td>{{ a.email }}</td>
           <td>{{ a.phone }}</td>
           <td>{{ a.qualification }}</td>
+          <td>{{ a.gender }}</td>
+          <td>{{ a.languages }}</td>
           <td>
             <a
               [href]="'http://localhost:8081/uploads/' + a.resumePath"
@@ -188,7 +205,7 @@
     class="applicant-card"
     *ngFor="let a of applicants | filter: searchText">
 
-    <!-- EDIT MODE -->
+
     <ng-container *ngIf="editingId === a.id; else gridViewTemplate">
 
       <div class="profile-section">
@@ -228,7 +245,20 @@
         type="text"
         [(ngModel)]="editData.qualification"
         class="edit-input">
+       <select
+  [(ngModel)]="editData.gender"
+  class="edit-input">
 
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
+
+</select>
+
+<input
+  type="text"
+  [(ngModel)]="editData.languages"
+  class="edit-input"
+  placeholder="Language Known">
       <input
         type="file"
         (change)="onEditResumeSelect($event)"
@@ -305,6 +335,16 @@
       <p>
         <strong>Qualification:</strong>
         {{ a.qualification }}
+      </p>
+
+      <p>
+        <strong>Gender:</strong>
+        {{ a.gender }}
+      </p>
+
+      <p>
+        <strong>Language Known:</strong>
+        {{ a.languages }}
       </p>
 
       <p>

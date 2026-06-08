@@ -17,11 +17,13 @@ styleUrls: ['./login.css']
 })
 export class LoginComponent{
   applicant = {
-    name: '',
-    email: '',
-    phone: '',
-    qualification: ''
-  };
+  name: '',
+  email: '',
+  phone: '',
+  qualification: '',
+  gender: '',
+  languages: [] as string[]
+};
 
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
@@ -146,6 +148,24 @@ export class LoginComponent{
   onPhotoSelect(event: any): void {
   this.photoFile = event.target.files[0];
 }
+onLanguageChange(event: any): void {
+
+  const value = event.target.value;
+
+  if (event.target.checked) {
+
+    this.applicant.languages.push(value);
+
+  } else {
+
+    this.applicant.languages =
+      this.applicant.languages.filter(
+        lang => lang !== value
+      );
+
+  }
+
+}
 
   submitForm(): void {
     if (!this.applicant.name.trim()) {
@@ -171,14 +191,29 @@ export class LoginComponent{
       alert('Please upload Resume and Marksheet and photo');
       return;
     }
+    if (!this.applicant.gender) {
+    alert('Please select Gender');
+    return;
+    }
+
+    if (this.applicant.languages.length === 0) {
+      alert('Please select Language Known');
+      return;
+    }
     const formData = new FormData();
+
     formData.append('name', this.applicant.name);
     formData.append('email', this.applicant.email);
     formData.append('phone', this.applicant.phone);
     formData.append('qualification', this.applicant.qualification);
     formData.append('resume', this.resumeFile);
     formData.append('marksheet', this.marksheetFile);
-   formData.append('photo', this.photoFile);
+    formData.append('photo', this.photoFile);
+    formData.append('gender', this.applicant.gender);
+    formData.append(
+      'languages',
+      this.applicant.languages.join(', ')
+    );
     this.http.post(
       'http://localhost:8081/api/applicants',
       formData,
@@ -188,15 +223,17 @@ export class LoginComponent{
         console.log(response);
         this.submitted = true;
         alert('Application Submitted Successfully');
-        this.applicant = {
-          name: '',
-          email: '',
-          phone: '',
-          qualification: ''
-        }; 
+       this.applicant = {
+  name: '',
+  email: '',
+  phone: '',
+  qualification: '',
+  gender: '',
+  languages: []
+};
         this.resumeFile = null;
         this.marksheetFile = null;
-        this.marksheetFile = null;
+        this.photoFile = null;
       },
       error: (error: any) => {
 

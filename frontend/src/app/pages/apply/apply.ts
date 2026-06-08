@@ -11,12 +11,14 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./apply.css']
 })
 export class ApplyComponent {
-  applicant = {
-    name: '',
-    email: '',
-    phone: '',
-    qualification: ''
-  };
+ applicant = {
+  name: '',
+  email: '',
+  phone: '',
+  qualification: '',
+  gender: '',
+  languages: [] as string[]
+};
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
   photoFile: File | null = null;
@@ -29,8 +31,22 @@ export class ApplyComponent {
   onMarksheetSelect(event: any) {
     this.marksheetFile = event.target.files[0];
   }
+  
   onPhotoSelect(event: any) {
   this.photoFile = event.target.files[0];
+}
+onLanguageChange(event: any) {
+
+  const value = event.target.value;
+
+  if (event.target.checked) {
+    this.applicant.languages.push(value);
+  } else {
+    this.applicant.languages =
+      this.applicant.languages.filter(
+        lang => lang !== value
+      );
+  }
 }
   submitForm(form: NgForm) {
     if (form.invalid) {
@@ -56,6 +72,15 @@ export class ApplyComponent {
   alert("Upload Resume, Photo and Marksheet");
   return;
 }
+if (!this.applicant.gender) {
+  alert("Please select Gender");
+  return;
+}
+
+if (this.applicant.languages.length === 0) {
+  alert("Please select Language Known");
+  return;
+}
     const formData = new FormData();
     formData.append('name', this.applicant.name);
     formData.append('email', this.applicant.email);
@@ -64,6 +89,15 @@ export class ApplyComponent {
     formData.append('resume', this.resumeFile);
     formData.append('marksheet', this.marksheetFile);
     formData.append('photo', this.photoFile!);
+    formData.append(
+  'gender',
+  this.applicant.gender
+);
+
+formData.append(
+  'languages',
+  this.applicant.languages.join(', ')
+);
     this.loading = true;
     this.http.post(
       'http://localhost:8081/api/applicants',
@@ -82,7 +116,9 @@ export class ApplyComponent {
           name: '',
           email: '',
           phone: '',
-          qualification: ''
+          qualification: '',
+          gender: '',
+          languages: []
         };
         this.resumeFile = null;
         this.marksheetFile = null;

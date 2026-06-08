@@ -25,8 +25,14 @@ toggleView(): void {
       : 'list';
 }
   editingId: number | null = null;
-  editData: any = {};
-
+  editData = {
+    name: '',
+    email: '',
+    phone: '',
+    qualification: '',
+    gender: '',
+    languages: ''
+  };
   editResumeFile: File | null = null;
   editMarksheetFile: File | null = null;
 
@@ -67,15 +73,32 @@ toggleView(): void {
 }
 
   startEdit(applicant: any): void {
-    this.editingId = applicant.id;
-    this.editData = { ...applicant };
-    this.editResumeFile = null;
-    this.editMarksheetFile = null;
-  }
+
+  this.editingId = applicant.id;
+
+  this.editData = {
+    name: applicant.name,
+    email: applicant.email,
+    phone: applicant.phone,
+    qualification: applicant.qualification,
+    gender: applicant.gender,
+    languages: applicant.languages
+  };
+
+  this.editResumeFile = null;
+  this.editMarksheetFile = null;
+}
 
   cancelEdit(): void {
     this.editingId = null;
-    this.editData = {};
+    this.editData = {
+      name: '',
+      email: '',
+      phone: '',
+      qualification: '',
+      gender: '',
+      languages: ''
+    };    
     this.editResumeFile = null;
     this.editMarksheetFile = null;
   }
@@ -112,10 +135,20 @@ toggleView(): void {
     }
 
     const qualificationPattern = /^[A-Za-z\s.]+$/;
-    if (!qualificationPattern.test(this.editData.qualification)) {
-      alert('Qualification should contain only letters');
+      if (!qualificationPattern.test(this.editData.qualification)) {
+        alert('Qualification should contain only letters');
+        return;
+      }
+
+        if (!this.editData.gender) {
+      alert('Please select Gender');
       return;
-    }
+      }
+
+      if (!this.editData.languages) {
+        alert('Please enter Language Known');
+        return;
+      }
 
     const formData = new FormData();
 
@@ -123,6 +156,8 @@ toggleView(): void {
     formData.append('email', this.editData.email.trim());
     formData.append('phone', this.editData.phone.trim());
     formData.append('qualification', this.editData.qualification.trim());
+    formData.append('gender', this.editData.gender);
+    formData.append('languages', this.editData.languages);
 
     if (this.editResumeFile) {
       formData.append('resume', this.editResumeFile);

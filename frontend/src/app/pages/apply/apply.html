@@ -14,6 +14,29 @@
   <input type="text" name="qualification" [(ngModel)]="applicant.qualification" required>
   <br><br>
 
+  <label>Gender:</label><br>
+
+<label>
+  <input
+    type="radio"
+    name="gender"
+    value="Male"
+    [(ngModel)]="applicant.gender"
+    required>
+  Male
+</label>
+
+<label style="margin-left:20px;">
+  <input
+    type="radio"
+    name="gender"
+    value="Female"
+    [(ngModel)]="applicant.gender">
+  Female
+</label>
+
+<br><br>
+
   <input type="file" (change)="onResumeSelect($event)">
   <br><br>
 

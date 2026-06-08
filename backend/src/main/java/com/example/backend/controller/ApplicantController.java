@@ -29,6 +29,8 @@ public class ApplicantController {
             @RequestParam("email") String email,
             @RequestParam("phone") String phone,
             @RequestParam("qualification") String qualification,
+            @RequestParam("gender") String gender,
+            @RequestParam("languages") String languages,
             @RequestParam("resume") MultipartFile resume,
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("marksheet") MultipartFile marksheet) {
@@ -81,7 +83,8 @@ public class ApplicantController {
             applicant.setEmail(email.trim());
             applicant.setPhone(phone.trim());
             applicant.setQualification(qualification.trim());
-
+            applicant.setGender(gender.trim());
+            applicant.setLanguages(languages.trim());
             applicant.setResumePath(resumeFileName);
             applicant.setPhotoPath(photoFileName);
             applicant.setMarksheetPath(marksheetFileName);
@@ -121,6 +124,8 @@ public class ApplicantController {
             @RequestParam("email") String email,
             @RequestParam("phone") String phone,
             @RequestParam("qualification") String qualification,
+            @RequestParam("gender") String gender,
+            @RequestParam("languages") String languages,
             @RequestParam(value = "resume", required = false) MultipartFile resume,
             @RequestParam(value = "photo", required = false) MultipartFile photo,
             @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
@@ -144,6 +149,8 @@ public class ApplicantController {
             applicant.setEmail(email.trim());
             applicant.setPhone(phone.trim());
             applicant.setQualification(qualification.trim());
+            applicant.setGender(gender.trim());
+            applicant.setLanguages(languages.trim());
 
             String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
 

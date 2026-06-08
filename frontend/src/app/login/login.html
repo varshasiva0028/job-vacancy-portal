@@ -190,19 +190,79 @@
             maxlength="10"
             required
           >
-        </div>
 
-        <div class="form-group">
-          <label for="qualification">Qualification:</label>
+      </div>
+
+      <div class="form-group">
+      <label for="qualification">Qualification:</label>
+      <input
+        type="text"
+        id="qualification"
+        placeholder="Enter your qualification"
+        [(ngModel)]="applicant.qualification"
+        name="qualification"
+        required>
+    </div>
+    <div class="form-group">
+      <label>Gender:</label>
+      <div class="radio-group">
+        <label class="radio-option">
           <input
-            type="text"
-            id="qualification"
-            placeholder="Enter your qualification"
-            [(ngModel)]="applicant.qualification"
-            name="qualification"
-            required
-          >
-        </div>
+            type="radio"
+            name="gender"
+            value="Male"
+            [(ngModel)]="applicant.gender"
+            required>
+          Male
+        </label>
+
+        <label class="radio-option">
+          <input
+            type="radio"
+            name="gender"
+            value="Female"
+            [(ngModel)]="applicant.gender">
+          Female
+        </label>
+
+      </div>
+
+    </div>
+
+    <!-- Language Known -->
+    <div class="form-group">
+
+      <label>Language Known:</label>
+
+      <div class="checkbox-group">
+
+        <label class="checkbox-option">
+          <input
+            type="checkbox"
+            value="Read & Write"
+            (change)="onLanguageChange($event)">
+          Read & Write
+        </label>
+
+        <label class="checkbox-option">
+          <input
+            type="checkbox"
+            value="Speak"
+            (change)="onLanguageChange($event)">
+          Speak
+        </label>
+
+        <label class="checkbox-option">
+          <input
+            type="checkbox"
+            value="Both"
+            (change)="onLanguageChange($event)">
+          Both
+        </label>
+
+      </div>
+
+    </div>
 
         <div class="form-group">
           <label>Upload Resume:</label>
