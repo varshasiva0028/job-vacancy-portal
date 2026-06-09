@@ -13,6 +13,10 @@ public class ApplicantService {
     @Autowired
     private ApplicantRepository repo;
 
+    public Applicant getApplicantByEmail(String email) {
+        return repo.findByEmail(email);
+    }
+
     public Applicant save(Applicant applicant) {
         return repo.save(applicant);
     }

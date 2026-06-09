@@ -60,9 +60,7 @@ toggleView(): void {
   this.http.get<any[]>('http://localhost:8081/api/applicants')
     .subscribe({
       next: (data) => {
-
         this.applicants = data;
-
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -108,13 +106,55 @@ toggleView(): void {
       this.editResumeFile = event.target.files[0];
     }
   }
-
   onEditMarksheetSelect(event: any): void {
-    if (event.target.files && event.target.files.length > 0) {
-      this.editMarksheetFile = event.target.files[0];
+  if (event.target.files && event.target.files.length > 0) {
+    this.editMarksheetFile = event.target.files[0];
+  }
+}
+onEditLanguageChange(event: any, language: string): void {
+
+  let languages = this.editData.languages
+    ? this.editData.languages.split(',')
+    : [];
+
+  if (event.target.checked) {
+
+    if (!languages.includes(language)) {
+      languages.push(language);
     }
+
+  } else {
+
+    languages = languages.filter(
+      (l: string) => l !== language
+    );
+
   }
 
+  this.editData.languages = languages.join(',');
+}
+openEditModal(applicant: any): void {
+
+  this.startEdit(applicant);
+
+  const dialog =
+    document.getElementById('editDialog') as HTMLDialogElement;
+
+  if (dialog) {
+    dialog.showModal();
+  }
+}
+closeEditModal(): void {
+
+  const dialog =
+    document.getElementById('editDialog') as HTMLDialogElement;
+
+  if (dialog) {
+    dialog.close();
+  }
+
+  this.cancelEdit();
+}
   saveEdit(): void {
 
     if (!this.editData.name || !this.editData.name.trim()) {
@@ -173,10 +213,10 @@ toggleView(): void {
       { responseType: 'text' }
     ).subscribe({
       next: (response) => {
-        alert(response);
-        this.loadApplicants();
-        this.cancelEdit();
-      },
+      alert(response);
+      this.loadApplicants();
+      this.closeEditModal();
+    },
       error: (error) => {
         console.error(error);
         alert('Failed to update applicant');

@@ -55,6 +55,13 @@ public class ApplicantController {
             if (marksheet == null || marksheet.isEmpty()) {
                 return ResponseEntity.badRequest().body("Marksheet file is missing");
             }
+            Applicant existingApplicant = service.getApplicantByEmail(email.trim());
+
+            if (existingApplicant != null) {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Email ID already exists. Application already submitted.");
+            }
 
             String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
 

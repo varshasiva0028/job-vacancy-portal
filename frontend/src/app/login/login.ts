@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DashboardComponent } from '../pages/dashboard/dashboard';
 import { Router } from '@angular/router';
+import { ViewChild, ElementRef } from '@angular/core';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -219,29 +220,28 @@ onLanguageChange(event: any): void {
       formData,
       { responseType: 'text' }
     ).subscribe({
-      next: (response: string) => {
-        console.log(response);
-        this.submitted = true;
-        alert('Application Submitted Successfully');
-       this.applicant = {
-  name: '',
-  email: '',
-  phone: '',
-  qualification: '',
-  gender: '',
-  languages: []
-};
-        this.resumeFile = null;
-        this.marksheetFile = null;
-        this.photoFile = null;
-      },
-      error: (error: any) => {
+  next: (response: string) => {
+    console.log(response);
+    this.submitted = true;
+    alert('Application Submitted Successfully');
+  },
 
-        console.error(error);
+  error: (error: any) => {
 
-        alert('Submission Failed');
-      }
-    });
+  console.error(error);
+
+  if (error.status === 409) {
+    alert('This email is already registered.');
+  }
+  else if (error.error) {
+    alert(error.error);
+  }
+  else {
+    alert('Submission Failed');
+  }
+
+}
+});
   }
   downloadForm(): void {
     const data = `
