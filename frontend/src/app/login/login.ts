@@ -14,18 +14,43 @@ import { ViewChild, ElementRef } from '@angular/core';
     DashboardComponent
   ],
   templateUrl: './login.html',
-styleUrls: ['./login.css']
+  styleUrls: ['./login.css']
 })
-export class LoginComponent{
+export class LoginComponent {
   applicant = {
-  name: '',
-  email: '',
-  phone: '',
-  qualification: '',
-  gender: '',
-  languages: [] as string[]
-};
+    name: '',
+    email: '',
+    phone: '',
+    qualification: '',
+    gender: '',
+    languages: [] as string[]
+  };
+  languageGroups = [
+    {
+      label: 'Indian Languages',
+      options: [
+        'Tamil', 'Telugu', 'Hindi', 'Malayalam', 'Kannada',
+        'Bengali', 'Marathi', 'Gujarati', 'Punjabi', 'Odia'
+      ]
+    },
+    {
+      label: 'Foreign Languages',
+      options: [
+        'English', 'Japanese', 'French', 'German', 'Spanish',
+        'Chinese', 'Korean', 'Russian', 'Italian', 'Arabic'
+      ]
+    }
+  ];
 
+  selectedLanguageNames: string[] = [];
+
+  selectedLanguages: Array<{
+    name: string;
+    read: boolean;
+    write: boolean;
+    speak: boolean;
+    all: boolean;
+  }> = [];
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
   photoFile: File | null = null;
@@ -34,7 +59,7 @@ export class LoginComponent{
 
   isLoggedIn = false;
   isRegisterMode = false;
-  
+
   loginInput = {
     usernameOrEmail: '',
     password: ''
@@ -54,7 +79,7 @@ export class LoginComponent{
     { usernameOrEmail: 'user', password: 'password123' }
   ];
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(): void {
     const email = this.loginInput.usernameOrEmail.trim().toLowerCase();
@@ -74,14 +99,14 @@ export class LoginComponent{
       u => u.usernameOrEmail.trim().toLowerCase() === email && u.password === password
     );
 
-  if (matchedUser) {
-  this.isLoggedIn = true;
-  this.loginError = '';
+    if (matchedUser) {
+      this.isLoggedIn = true;
+      this.loginError = '';
 
-  alert('Login Successful!');
+      alert('Login Successful!');
 
-  this.router.navigate([1, 'apply']);
-} else {
+      this.router.navigate([1, 'apply']);
+    } else {
       this.loginError = 'Invalid username/email or password';
       alert('Invalid username/email or password!');
     }
@@ -118,9 +143,9 @@ export class LoginComponent{
 
 
     this.registeredUsers.push({ usernameOrEmail: email, password: password });
-    
+
     alert('Registration Successful! Redirecting to login...');
-    
+
     this.registerInput = {
       usernameOrEmail: '',
       password: '',
@@ -147,27 +172,109 @@ export class LoginComponent{
     this.marksheetFile = event.target.files[0];
   }
   onPhotoSelect(event: any): void {
-  this.photoFile = event.target.files[0];
-}
-onLanguageChange(event: any): void {
+    this.photoFile = event.target.files[0];
+  }
+  createLanguageSkill(name: string) {
+    return {
+      name,
+      read: false,
+      write: false,
+      speak: false,
+      all: false
+    };
+  }
 
-  const value = event.target.value;
+  addLanguage(name: string): void {
 
-  if (event.target.checked) {
+    if (!this.selectedLanguages.some(x => x.name === name)) {
 
-    this.applicant.languages.push(value);
+      this.selectedLanguages.push(
+        this.createLanguageSkill(name)
+      );
 
-  } else {
+    }
 
-    this.applicant.languages =
-      this.applicant.languages.filter(
-        lang => lang !== value
+  }
+
+  removeLanguage(name: string): void {
+
+    this.selectedLanguages =
+      this.selectedLanguages.filter(
+        x => x.name !== name
+      );
+
+    this.selectedLanguageNames =
+      this.selectedLanguageNames.filter(
+        x => x !== name
       );
 
   }
 
-}
+  syncSelectedLanguages(names: string[]): void {
 
+    const removed =
+      this.selectedLanguages
+        .map(x => x.name)
+        .filter(x => !names.includes(x));
+
+    removed.forEach(x =>
+      this.removeLanguage(x)
+    );
+
+    names.forEach(x => {
+
+      if (!this.selectedLanguages.some(y => y.name === x)) {
+
+        this.addLanguage(x);
+
+      }
+
+    });
+
+  }
+
+  toggleAll(language: any): void {
+
+    if (language.all) {
+
+      language.read = true;
+      language.write = true;
+      language.speak = true;
+
+    } else {
+
+      language.read = false;
+      language.write = false;
+      language.speak = false;
+
+    }
+
+  }
+
+  updateLanguageAllState(language: any): void {
+
+    language.all =
+      language.read &&
+      language.write &&
+      language.speak;
+
+  }
+
+  getProgress(language: any): number {
+
+    if (language.all) {
+      return 100;
+    }
+
+    let progress = 0;
+
+    if (language.read) progress += 30;
+    if (language.write) progress += 30;
+    if (language.speak) progress += 40;
+
+    return progress;
+
+  }
   submitForm(): void {
     if (!this.applicant.name.trim()) {
       alert('Please enter your name');
@@ -193,11 +300,11 @@ onLanguageChange(event: any): void {
       return;
     }
     if (!this.applicant.gender) {
-    alert('Please select Gender');
-    return;
+      alert('Please select Gender');
+      return;
     }
 
-    if (this.applicant.languages.length === 0) {
+    if (this.selectedLanguages.length === 0) {
       alert('Please select Language Known');
       return;
     }
@@ -213,35 +320,35 @@ onLanguageChange(event: any): void {
     formData.append('gender', this.applicant.gender);
     formData.append(
       'languages',
-      this.applicant.languages.join(', ')
+      JSON.stringify(this.selectedLanguages)
     );
     this.http.post(
       'http://localhost:8081/api/applicants',
       formData,
       { responseType: 'text' }
     ).subscribe({
-  next: (response: string) => {
-    console.log(response);
-    this.submitted = true;
-    alert('Application Submitted Successfully');
-  },
+      next: (response: string) => {
+        console.log(response);
+        this.submitted = true;
+        alert('Application Submitted Successfully');
+      },
 
-  error: (error: any) => {
+      error: (error: any) => {
 
-  console.error(error);
+        console.error(error);
 
-  if (error.status === 409) {
-    alert('This email is already registered.');
-  }
-  else if (error.error) {
-    alert(error.error);
-  }
-  else {
-    alert('Submission Failed');
-  }
+        if (error.status === 409) {
+          alert('This email is already registered.');
+        }
+        else if (error.error) {
+          alert(error.error);
+        }
+        else {
+          alert('Submission Failed');
+        }
 
-}
-});
+      }
+    });
   }
   downloadForm(): void {
     const data = `

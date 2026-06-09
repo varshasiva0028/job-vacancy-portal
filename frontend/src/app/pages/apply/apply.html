@@ -39,12 +39,12 @@
 
   <label>Languages Known:</label><br>
 
-  <select
-    multiple
-    class="language-select"
-    [(ngModel)]="selectedLanguageNames"
-    (ngModelChange)="syncSelectedLanguages($event)"
-    [ngModelOptions]="{standalone: true}">
+<select
+  name="languagesKnown"
+  multiple
+  class="language-select"
+  [(ngModel)]="selectedLanguageNames"
+  (ngModelChange)="syncSelectedLanguages($event)">
 
     <optgroup
       *ngFor="let group of languageGroups"
