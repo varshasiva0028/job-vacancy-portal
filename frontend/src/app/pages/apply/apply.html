@@ -37,6 +37,95 @@
 
 <br><br>
 
+  <label>Languages Known:</label><br>
+
+  <select
+    multiple
+    class="language-select"
+    [(ngModel)]="selectedLanguageNames"
+    (ngModelChange)="syncSelectedLanguages($event)"
+    [ngModelOptions]="{standalone: true}">
+
+    <optgroup
+      *ngFor="let group of languageGroups"
+      [label]="group.label">
+      <option
+        *ngFor="let option of group.options"
+        [value]="option">
+        {{ option }}
+      </option>
+    </optgroup>
+  </select>
+
+  <div
+    class="language-card-list"
+    *ngIf="selectedLanguages.length > 0">
+
+    <div
+      class="language-card"
+      *ngFor="let language of selectedLanguages">
+
+      <div class="language-card-header">
+        <h4>{{ language.name }}</h4>
+        <button
+          type="button"
+          class="trash-btn"
+          (click)="removeLanguage(language.name)"
+          aria-label="Remove {{ language.name }}">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+
+      <div class="skill-options">
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="language.read"
+            [ngModelOptions]="{standalone: true}"
+            (change)="updateLanguageAllState(language)">
+          Read
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="language.write"
+            [ngModelOptions]="{standalone: true}"
+            (change)="updateLanguageAllState(language)">
+          Write
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="language.speak"
+            [ngModelOptions]="{standalone: true}"
+            (change)="updateLanguageAllState(language)">
+          Speak
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="language.all"
+            [ngModelOptions]="{standalone: true}"
+            (change)="toggleAll(language)">
+          All
+        </label>
+      </div>
+
+      <div class="progress-wrapper">
+        <progress
+          [value]="getProgress(language)"
+          max="100">
+        </progress>
+        <span>{{ getProgress(language) }}%</span>
+      </div>
+    </div>
+  </div>
+
+<br><br>
+
   <input type="file" (change)="onResumeSelect($event)">
   <br><br>
 

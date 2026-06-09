@@ -24,6 +24,7 @@ public class Applicant {
     private String phone;
     private String qualification;
     private String gender;
+    @Column(columnDefinition = "TEXT")
     private String languages;
     private String marksheetPath;
     private String resumePath;

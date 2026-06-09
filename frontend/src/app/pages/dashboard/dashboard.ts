@@ -13,109 +13,48 @@ import { FilterPipe } from '../../pipe';
   templateUrl: './dashboard.html'
 })
 export class DashboardComponent implements OnInit {
-  languages = {
-  english: {
-    read: false,
-    write: false,
-    speak: false,
-    all: false
-  },
-
-  french: {
-    read: false,
-    write: false,
-    speak: false,
-    all: false
-  },
-
-  japanese: {
-    read: false,
-    write: false,
-    speak: false,
-    all: false
-  }
-};
-toggleAll(language: any) {
-
-  if (language.all) {
-
-    language.read = true;
-    language.write = true;
-    language.speak = true;
-
-  } else {
-
-    language.read = false;
-    language.write = false;
-    language.speak = false;
-
-  }
-
-}
-getProgress(language: any): number {
-
-  if (language.all) {
-    return 100;
-  }
-
-  let progress = 0;
-
-  if (language.read) {
-    progress += 30;
-  }
-
-  if (language.write) {
-    progress += 30;
-  }
-
-  if (language.speak) {
-    progress += 40;
-  }
-
-  return progress;
-}
-buildLanguageString(): string {
-
-  const result: string[] = [];
-
-  const processLanguage = (
-    name: string,
-    lang: any
-  ) => {
-
-    const skills: string[] = [];
-
-    if (lang.read) skills.push('Read');
-    if (lang.write) skills.push('Write');
-    if (lang.speak) skills.push('Speak');
-
-    if (skills.length > 0) {
-
-      result.push(
-        `${name} (${skills.join('/')})`
-      );
-
+//available languages
+  languageGroups = [
+    {
+      label: 'Indian Languages',
+      options: [
+        'Tamil',
+        'Telugu',
+        'Hindi',
+        'Malayalam',
+        'Kannada',
+        'Bengali',
+        'Marathi',
+        'Gujarati',
+        'Punjabi',
+        'Odia'
+      ]
+    },
+    {
+      label: 'Foreign Languages',
+      options: [
+        'English',
+        'Japanese',
+        'French',
+        'German',
+        'Spanish',
+        'Chinese',
+        'Korean',
+        'Russian',
+        'Italian',
+        'Arabic'
+      ]
     }
-
-  };
-
-  processLanguage(
-    'English',
-    this.languages.english
-  );
-
-  processLanguage(
-    'French',
-    this.languages.french
-  );
-
-  processLanguage(
-    'Japanese',
-    this.languages.japanese
-  );
-
-  return result.join(', ');
-}
+  ];
+//selected languages for edit form
+  selectedLanguageNames: string[] = [];
+  selectedLanguages: Array<{
+    name: string;
+    read: boolean;
+    write: boolean;
+    speak: boolean;
+    all: boolean;
+  }> = [];
 
   applicants: any[] = [];
   searchText: string = '';
@@ -174,7 +113,6 @@ buildLanguageString(): string {
   }
 
   startEdit(applicant: any): void {
-
     this.editingId = applicant.id;
 
     this.editData = {
@@ -186,31 +124,12 @@ buildLanguageString(): string {
       languages: applicant.languages
     };
 
-   this.editResumeFile = null;
-this.editMarksheetFile = null;
-
-this.languages = {
-  english: {
-    read: false,
-    write: false,
-    speak: false,
-    all: false
-  },
-
-  french: {
-    read: false,
-    write: false,
-    speak: false,
-    all: false
-  },
-
-  japanese: {
-    read: false,
-    write: false,
-    speak: false,
-    all: false
-  }
-};
+    this.editResumeFile = null;
+    this.editMarksheetFile = null;
+    this.selectedLanguages = this.parseStoredLanguages(applicant.languages);
+    this.selectedLanguageNames = this.selectedLanguages.map(
+      lang => lang.name
+    );
   }
 
   cancelEdit(): void {
@@ -225,6 +144,8 @@ this.languages = {
     };
     this.editResumeFile = null;
     this.editMarksheetFile = null;
+    this.selectedLanguages = [];
+    this.selectedLanguageNames = [];
   }
 
   onEditResumeSelect(event: any): void {
@@ -237,28 +158,149 @@ this.languages = {
       this.editMarksheetFile = event.target.files[0];
     }
   }
-  onEditLanguageChange(event: any, language: string): void {
-
-    let languages = this.editData.languages
-      ? this.editData.languages.split(',')
-      : [];
-
-    if (event.target.checked) {
-
-      if (!languages.includes(language)) {
-        languages.push(language);
-      }
-
-    } else {
-
-      languages = languages.filter(
-        (l: string) => l !== language
+//Creating a Language
+  createLanguageSkill(name: string) {
+    return {
+      name,
+      read: false,
+      write: false,
+      speak: false,
+      all: false
+    };
+  }
+//Adding a Language
+  addLanguage(name: string): void {
+    if (!this.selectedLanguages.some(lang => lang.name === name)) {
+      this.selectedLanguages.push(
+        this.createLanguageSkill(name)
       );
-
     }
 
-    this.editData.languages = languages.join(',');
+    if (!this.selectedLanguageNames.includes(name)) {
+      this.selectedLanguageNames.push(name);
+    }
   }
+//removing a Language
+  removeLanguage(name: string): void {
+    this.selectedLanguages = this.selectedLanguages.filter(
+      lang => lang.name !== name
+    );
+    this.selectedLanguageNames = this.selectedLanguageNames.filter(
+      existing => existing !== name
+    );
+  }
+//Synchronizing Dropdown
+  syncSelectedLanguages(names: string[]): void {
+    const removed = this.selectedLanguages
+      .map(lang => lang.name)
+      .filter(name => !names.includes(name));
+
+    removed.forEach(name => this.removeLanguage(name));
+
+    names.forEach(name => {
+      if (!this.selectedLanguages.some(lang => lang.name === name)) {
+        this.addLanguage(name);
+      }
+    });
+  }
+//All Checkbox
+  toggleAll(language: any): void {
+    if (language.all) {
+      language.read = true;
+      language.write = true;
+      language.speak = true;
+    } else {
+      language.read = false;
+      language.write = false;
+      language.speak = false;
+    }
+  }
+//Updating All Automatically
+  updateLanguageAllState(language: any): void {
+    language.all = language.read && language.write && language.speak;
+  }
+//Progress Calculation
+  getProgress(language: any): number {
+    if (language.all) {
+      return 100;
+    }
+
+    let progress = 0;
+
+    if (language.read) {
+      progress += 30;
+    }
+    if (language.write) {
+      progress += 30;
+    }
+    if (language.speak) {
+      progress += 40;
+    }
+
+    return progress;
+  }
+
+  private parseLanguageToken(token: string) {
+    const trimmed = token.trim();
+    const match = trimmed.match(/^(.+?)\s*\((.+)\)$/);
+    const name = match ? match[1].trim() : trimmed;
+    const skillText = match ? match[2] : '';
+    const read = /read/i.test(skillText);
+    const write = /write/i.test(skillText);
+    const speak = /speak/i.test(skillText);
+    const all = /all/i.test(skillText) || (read && write && speak);
+
+    return {
+      name,
+      read,
+      write,
+      speak,
+      all
+    };
+  }
+
+  private parseStoredLanguages(value: string | null | undefined) {
+    if (!value) {
+      return [];
+    }
+
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return [];
+    }
+
+    let parsed: any = null;
+    if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+      try {
+        parsed = JSON.parse(trimmed);
+      } catch {
+        parsed = null;
+      }
+    }
+
+    if (Array.isArray(parsed)) {
+      return parsed
+        .map((item: any) => ({
+          name: item?.name || '',
+          read: !!item?.read,
+          write: !!item?.write,
+          speak: !!item?.speak,
+          all: !!item?.all || (!!item?.read && !!item?.write && !!item?.speak)
+        }))
+        .filter((lang: any) => lang.name);
+    }
+
+    return trimmed
+      .split(',')
+      .map(token => this.parseLanguageToken(token))
+      .filter(lang => lang.name);
+  }
+
+  getLanguageSummary(value: string): string {
+    const parsed = this.parseStoredLanguages(value);
+    return parsed.map(lang => lang.name).join(', ');
+  }
+
   openEditModal(applicant: any): void {
 
     this.startEdit(applicant);
@@ -311,12 +353,8 @@ this.languages = {
       return;
     }
 
-    if (
-      this.buildLanguageString() === ''
-    ) {
-      alert(
-        'Please select at least one language'
-      );
+    if (this.selectedLanguages.length === 0) {
+      alert('Please select at least one language');
       return;
     }
 
@@ -327,13 +365,10 @@ this.languages = {
     formData.append('phone', this.editData.phone.trim());
     formData.append('qualification', this.editData.qualification.trim());
     formData.append('gender', this.editData.gender);
-    this.editData.languages =
-  this.buildLanguageString();
-
-formData.append(
-  'languages',
-  this.editData.languages
-);
+    formData.append(
+      'languages',
+      JSON.stringify(this.selectedLanguages)
+    );
     if (this.editResumeFile) {
       formData.append('resume', this.editResumeFile);
     }

@@ -11,14 +11,57 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./apply.css']
 })
 export class ApplyComponent {
- applicant = {
-  name: '',
-  email: '',
-  phone: '',
-  qualification: '',
-  gender: '',
-  languages: [] as string[]
-};
+  applicant = {
+    name: '',
+    email: '',
+    phone: '',
+    qualification: '',
+    gender: '',
+    languages: [] as string[]
+  };
+
+  languageGroups = [
+    {
+      label: 'Indian Languages',
+      options: [
+        'Tamil',
+        'Telugu',
+        'Hindi',
+        'Malayalam',
+        'Kannada',
+        'Bengali',
+        'Marathi',
+        'Gujarati',
+        'Punjabi',
+        'Odia'
+      ]
+    },
+    {
+      label: 'Foreign Languages',
+      options: [
+        'English',
+        'Japanese',
+        'French',
+        'German',
+        'Spanish',
+        'Chinese',
+        'Korean',
+        'Russian',
+        'Italian',
+        'Arabic'
+      ]
+    }
+  ];
+
+  selectedLanguageNames: string[] = [];
+  selectedLanguages: Array<{
+    name: string;
+    read: boolean;
+    write: boolean;
+    speak: boolean;
+    all: boolean;
+  }> = [];
+
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
   photoFile: File | null = null;
@@ -35,19 +78,85 @@ export class ApplyComponent {
   onPhotoSelect(event: any) {
   this.photoFile = event.target.files[0];
 }
-onLanguageChange(event: any) {
-
-  const value = event.target.value;
-
-  if (event.target.checked) {
-    this.applicant.languages.push(value);
-  } else {
-    this.applicant.languages =
-      this.applicant.languages.filter(
-        lang => lang !== value
-      );
+  createLanguageSkill(name: string) {
+    return {
+      name,
+      read: false,
+      write: false,
+      speak: false,
+      all: false
+    };
   }
-}
+
+  addLanguage(name: string): void {
+    if (!this.selectedLanguages.some(lang => lang.name === name)) {
+      this.selectedLanguages.push(
+        this.createLanguageSkill(name)
+      );
+    }
+
+    if (!this.selectedLanguageNames.includes(name)) {
+      this.selectedLanguageNames.push(name);
+    }
+  }
+
+  removeLanguage(name: string): void {
+    this.selectedLanguages = this.selectedLanguages.filter(
+      lang => lang.name !== name
+    );
+    this.selectedLanguageNames = this.selectedLanguageNames.filter(
+      item => item !== name
+    );
+  }
+
+  syncSelectedLanguages(names: string[]): void {
+    const removed = this.selectedLanguages
+      .map(lang => lang.name)
+      .filter(name => !names.includes(name));
+
+    removed.forEach(name => this.removeLanguage(name));
+
+    names.forEach(name => {
+      if (!this.selectedLanguages.some(lang => lang.name === name)) {
+        this.addLanguage(name);
+      }
+    });
+  }
+
+  toggleAll(language: any): void {
+    if (language.all) {
+      language.read = true;
+      language.write = true;
+      language.speak = true;
+    } else {
+      language.read = false;
+      language.write = false;
+      language.speak = false;
+    }
+  }
+
+  updateLanguageAllState(language: any): void {
+    language.all = language.read && language.write && language.speak;
+  }
+
+  getProgress(language: any): number {
+    if (language.all) {
+      return 100;
+    }
+
+    let progress = 0;
+    if (language.read) {
+      progress += 30;
+    }
+    if (language.write) {
+      progress += 30;
+    }
+    if (language.speak) {
+      progress += 40;
+    }
+    return progress;
+  }
+
   submitForm(form: NgForm) {
     if (form.invalid) {
       alert("Please fill all fields");
@@ -77,7 +186,7 @@ if (!this.applicant.gender) {
   return;
 }
 
-if (this.applicant.languages.length === 0) {
+if (this.selectedLanguages.length === 0) {
   alert("Please select Language Known");
   return;
 }
@@ -96,7 +205,7 @@ if (this.applicant.languages.length === 0) {
 
 formData.append(
   'languages',
-  this.applicant.languages.join(', ')
+  JSON.stringify(this.selectedLanguages)
 );
     this.loading = true;
     this.http.post(
@@ -120,6 +229,8 @@ formData.append(
           gender: '',
           languages: []
         };
+        this.selectedLanguageNames = [];
+        this.selectedLanguages = [];
         this.resumeFile = null;
         this.marksheetFile = null;
         this.photoFile = null;

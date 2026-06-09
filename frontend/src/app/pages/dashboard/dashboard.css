@@ -452,19 +452,59 @@
 .file-placeholder input[type="file"] {
   display: none;
 }
+.language-select {
+  width: 100%;
+  min-height: 110px;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  background: white;
+  font-size: 14px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.language-card-list {
+  display: grid;
+  gap: 12px;
+}
+
 .language-card {
   margin-bottom: 14px;
-  padding: 8px;
+  padding: 12px;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 12px;
   background: #fafafa;
 }
 
+.language-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
 .language-card h4 {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #1f2937;
+}
+
+.trash-btn {
+  border: none;
+  background: transparent;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trash-btn:hover {
+  color: #a71d2a;
 }
 
 .skill-options {
