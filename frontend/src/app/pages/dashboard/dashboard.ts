@@ -13,17 +13,120 @@ import { FilterPipe } from '../../pipe';
   templateUrl: './dashboard.html'
 })
 export class DashboardComponent implements OnInit {
+  languages = {
+  english: {
+    read: false,
+    write: false,
+    speak: false,
+    all: false
+  },
+
+  french: {
+    read: false,
+    write: false,
+    speak: false,
+    all: false
+  },
+
+  japanese: {
+    read: false,
+    write: false,
+    speak: false,
+    all: false
+  }
+};
+toggleAll(language: any) {
+
+  if (language.all) {
+
+    language.read = true;
+    language.write = true;
+    language.speak = true;
+
+  } else {
+
+    language.read = false;
+    language.write = false;
+    language.speak = false;
+
+  }
+
+}
+getProgress(language: any): number {
+
+  if (language.all) {
+    return 100;
+  }
+
+  let progress = 0;
+
+  if (language.read) {
+    progress += 30;
+  }
+
+  if (language.write) {
+    progress += 30;
+  }
+
+  if (language.speak) {
+    progress += 40;
+  }
+
+  return progress;
+}
+buildLanguageString(): string {
+
+  const result: string[] = [];
+
+  const processLanguage = (
+    name: string,
+    lang: any
+  ) => {
+
+    const skills: string[] = [];
+
+    if (lang.read) skills.push('Read');
+    if (lang.write) skills.push('Write');
+    if (lang.speak) skills.push('Speak');
+
+    if (skills.length > 0) {
+
+      result.push(
+        `${name} (${skills.join('/')})`
+      );
+
+    }
+
+  };
+
+  processLanguage(
+    'English',
+    this.languages.english
+  );
+
+  processLanguage(
+    'French',
+    this.languages.french
+  );
+
+  processLanguage(
+    'Japanese',
+    this.languages.japanese
+  );
+
+  return result.join(', ');
+}
 
   applicants: any[] = [];
   searchText: string = '';
   viewMode: 'list' | 'grid' = 'list';
 
-toggleView(): void {
-  this.viewMode =
-    this.viewMode === 'list'
-      ? 'grid'
-      : 'list';
-}
+  toggleView(): void {
+    this.viewMode =
+      this.viewMode === 'list'
+        ? 'grid'
+        : 'list';
+  }
   editingId: number | null = null;
   editData = {
     name: '',
@@ -42,7 +145,7 @@ toggleView(): void {
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -55,37 +158,60 @@ toggleView(): void {
 
   }
 
- loadApplicants(): void {
+  loadApplicants(): void {
 
-  this.http.get<any[]>('http://localhost:8081/api/applicants')
-    .subscribe({
-      next: (data) => {
-        this.applicants = data;
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.error('Error loading applicants:', error);
-      }
-    });
+    this.http.get<any[]>('http://localhost:8081/api/applicants')
+      .subscribe({
+        next: (data) => {
+          this.applicants = data;
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          console.error('Error loading applicants:', error);
+        }
+      });
 
-}
+  }
 
   startEdit(applicant: any): void {
 
-  this.editingId = applicant.id;
+    this.editingId = applicant.id;
 
-  this.editData = {
-    name: applicant.name,
-    email: applicant.email,
-    phone: applicant.phone,
-    qualification: applicant.qualification,
-    gender: applicant.gender,
-    languages: applicant.languages
-  };
+    this.editData = {
+      name: applicant.name,
+      email: applicant.email,
+      phone: applicant.phone,
+      qualification: applicant.qualification,
+      gender: applicant.gender,
+      languages: applicant.languages
+    };
 
-  this.editResumeFile = null;
-  this.editMarksheetFile = null;
-}
+   this.editResumeFile = null;
+this.editMarksheetFile = null;
+
+this.languages = {
+  english: {
+    read: false,
+    write: false,
+    speak: false,
+    all: false
+  },
+
+  french: {
+    read: false,
+    write: false,
+    speak: false,
+    all: false
+  },
+
+  japanese: {
+    read: false,
+    write: false,
+    speak: false,
+    all: false
+  }
+};
+  }
 
   cancelEdit(): void {
     this.editingId = null;
@@ -96,7 +222,7 @@ toggleView(): void {
       qualification: '',
       gender: '',
       languages: ''
-    };    
+    };
     this.editResumeFile = null;
     this.editMarksheetFile = null;
   }
@@ -107,54 +233,54 @@ toggleView(): void {
     }
   }
   onEditMarksheetSelect(event: any): void {
-  if (event.target.files && event.target.files.length > 0) {
-    this.editMarksheetFile = event.target.files[0];
+    if (event.target.files && event.target.files.length > 0) {
+      this.editMarksheetFile = event.target.files[0];
+    }
   }
-}
-onEditLanguageChange(event: any, language: string): void {
+  onEditLanguageChange(event: any, language: string): void {
 
-  let languages = this.editData.languages
-    ? this.editData.languages.split(',')
-    : [];
+    let languages = this.editData.languages
+      ? this.editData.languages.split(',')
+      : [];
 
-  if (event.target.checked) {
+    if (event.target.checked) {
 
-    if (!languages.includes(language)) {
-      languages.push(language);
+      if (!languages.includes(language)) {
+        languages.push(language);
+      }
+
+    } else {
+
+      languages = languages.filter(
+        (l: string) => l !== language
+      );
+
     }
 
-  } else {
-
-    languages = languages.filter(
-      (l: string) => l !== language
-    );
-
+    this.editData.languages = languages.join(',');
   }
+  openEditModal(applicant: any): void {
 
-  this.editData.languages = languages.join(',');
-}
-openEditModal(applicant: any): void {
+    this.startEdit(applicant);
 
-  this.startEdit(applicant);
+    const dialog =
+      document.getElementById('editDialog') as HTMLDialogElement;
 
-  const dialog =
-    document.getElementById('editDialog') as HTMLDialogElement;
-
-  if (dialog) {
-    dialog.showModal();
+    if (dialog) {
+      dialog.showModal();
+    }
   }
-}
-closeEditModal(): void {
+  closeEditModal(): void {
 
-  const dialog =
-    document.getElementById('editDialog') as HTMLDialogElement;
+    const dialog =
+      document.getElementById('editDialog') as HTMLDialogElement;
 
-  if (dialog) {
-    dialog.close();
+    if (dialog) {
+      dialog.close();
+    }
+
+    this.cancelEdit();
   }
-
-  this.cancelEdit();
-}
   saveEdit(): void {
 
     if (!this.editData.name || !this.editData.name.trim()) {
@@ -175,20 +301,24 @@ closeEditModal(): void {
     }
 
     const qualificationPattern = /^[A-Za-z\s.]+$/;
-      if (!qualificationPattern.test(this.editData.qualification)) {
-        alert('Qualification should contain only letters');
-        return;
-      }
+    if (!qualificationPattern.test(this.editData.qualification)) {
+      alert('Qualification should contain only letters');
+      return;
+    }
 
-        if (!this.editData.gender) {
+    if (!this.editData.gender) {
       alert('Please select Gender');
       return;
-      }
+    }
 
-      if (!this.editData.languages) {
-        alert('Please enter Language Known');
-        return;
-      }
+    if (
+      this.buildLanguageString() === ''
+    ) {
+      alert(
+        'Please select at least one language'
+      );
+      return;
+    }
 
     const formData = new FormData();
 
@@ -197,8 +327,13 @@ closeEditModal(): void {
     formData.append('phone', this.editData.phone.trim());
     formData.append('qualification', this.editData.qualification.trim());
     formData.append('gender', this.editData.gender);
-    formData.append('languages', this.editData.languages);
+    this.editData.languages =
+  this.buildLanguageString();
 
+formData.append(
+  'languages',
+  this.editData.languages
+);
     if (this.editResumeFile) {
       formData.append('resume', this.editResumeFile);
     }
@@ -213,10 +348,10 @@ closeEditModal(): void {
       { responseType: 'text' }
     ).subscribe({
       next: (response) => {
-      alert(response);
-      this.loadApplicants();
-      this.closeEditModal();
-    },
+        alert(response);
+        this.loadApplicants();
+        this.closeEditModal();
+      },
       error: (error) => {
         console.error(error);
         alert('Failed to update applicant');

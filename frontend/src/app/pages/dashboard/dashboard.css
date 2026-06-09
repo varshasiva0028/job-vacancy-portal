@@ -1,6 +1,4 @@
-/* =========================
-   DASHBOARD
-========================= */
+
 
 .dashboard-container {
   width: 100%;
@@ -18,10 +16,6 @@
   color: #007bff;
   margin-left: 5px;
 }
-
-/* =========================
-   SEARCH BAR
-========================= */
 
 .search-container {
   display: flex;
@@ -77,9 +71,7 @@
   color: #343a40;
 }
 
-/* =========================
-   VIEW TOGGLE
-========================= */
+
 
 .view-toggle-group {
   position: absolute;
@@ -109,9 +101,6 @@
   color: white;
 }
 
-/* =========================
-   TABLE
-========================= */
 
 .table-wrapper {
   width: 100%;
@@ -160,9 +149,6 @@
   text-decoration: underline;
 }
 
-/* =========================
-   FORMS
-========================= */
 
 .edit-input {
   width: 100%;
@@ -178,9 +164,6 @@
   margin-bottom: 10px;
 }
 
-/* =========================
-   BUTTONS
-========================= */
 
 .btn-edit,
 .btn-save,
@@ -313,6 +296,7 @@
   border-radius: 50%;
   border: 4px solid #0d6efd;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .profile-edit-btn {
@@ -424,9 +408,6 @@
 .edit-section {
   margin-bottom: 12px;
 }
-/* =========================
-   EDIT DIALOG
-========================= */
 
 .edit-dialog {
   width: 500px;
@@ -470,4 +451,75 @@
 
 .file-placeholder input[type="file"] {
   display: none;
+}
+.language-card {
+  margin-bottom: 14px;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.language-card h4 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.skill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.skill-options label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.skill-options input[type="checkbox"] {
+  margin: 0;
+}
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-wrapper progress {
+  flex: 1;
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-wrapper span {
+  min-width: 40px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 600;
+  color: #007bff;
+}
+
+@media (max-width: 768px) {
+
+  .skill-options {
+    gap: 8px;
+  }
+
+  .skill-options label {
+    font-size: 12px;
+  }
+
+  .language-card h4 {
+    font-size: 13px;
+  }
+
 }

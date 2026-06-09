@@ -182,35 +182,136 @@
 
   <div class="edit-section">
     <label><strong>Language Known:</strong></label>
+  <div class="language-card">
 
-    <div class="checkbox-group">
+    <h4>English</h4>
+
+    <div class="skill-options">
 
       <label>
-        <input
-          type="checkbox"
-          [checked]="editData.languages?.includes('Read & Write')"
-          (change)="onEditLanguageChange($event,'Read & Write')">
-        Read & Write
+        <input type="checkbox"
+               [(ngModel)]="languages.english.read">
+        Read
       </label>
 
       <label>
-        <input
-          type="checkbox"
-          [checked]="editData.languages?.includes('Speak')"
-          (change)="onEditLanguageChange($event,'Speak')">
+        <input type="checkbox"
+               [(ngModel)]="languages.english.write">
+        Write
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.english.speak">
         Speak
       </label>
 
       <label>
-        <input
-          type="checkbox"
-          [checked]="editData.languages?.includes('Both')"
-          (change)="onEditLanguageChange($event,'Both')">
-        Both
+        <input type="checkbox"
+               [(ngModel)]="languages.english.all"
+               (change)="toggleAll(languages.english)">
+        All
       </label>
 
     </div>
+
+    <progress
+      [value]="getProgress(languages.english)"
+      max="100">
+    </progress>
+
+    <span>{{ getProgress(languages.english) }}%</span>
+
   </div>
+
+  <!-- French -->
+  <div class="language-card">
+
+    <h4>French</h4>
+
+    <div class="skill-options">
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.french.read">
+        Read
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.french.write">
+        Write
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.french.speak">
+        Speak
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.french.all"
+               (change)="toggleAll(languages.french)">
+        All
+      </label>
+
+    </div>
+
+    <progress
+      [value]="getProgress(languages.french)"
+      max="100">
+    </progress>
+
+    <span>{{ getProgress(languages.french) }}%</span>
+
+  </div>
+
+  <!-- Japanese -->
+  <div class="language-card">
+
+    <h4>Japanese</h4>
+
+    <div class="skill-options">
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.japanese.read">
+        Read
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.japanese.write">
+        Write
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.japanese.speak">
+        Speak
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="languages.japanese.all"
+               (change)="toggleAll(languages.japanese)">
+        All
+      </label>
+
+    </div>
+
+    <progress
+      [value]="getProgress(languages.japanese)"
+      max="100">
+    </progress>
+
+    <span>{{ getProgress(languages.japanese) }}%</span>
+
+  </div>
+
+</div>
+ 
 <div class="file-upload-row">
 
   <label class="file-placeholder">
@@ -382,35 +483,146 @@
 
     <strong>Language Known</strong>
 
-    <div class="checkbox-group">
+  <div class="language-card">
 
-      <label>
-        <input
-          type="checkbox"
-          [checked]="editData.languages?.includes('Read & Write')"
-          (change)="onEditLanguageChange($event,'Read & Write')">
-        Read & Write
-      </label>
+  <h4>English</h4>
 
-      <label>
-        <input
-          type="checkbox"
-          [checked]="editData.languages?.includes('Speak')"
-          (change)="onEditLanguageChange($event,'Speak')">
-        Speak
-      </label>
+  <div class="skill-options">
 
-      <label>
-        <input
-          type="checkbox"
-          [checked]="editData.languages?.includes('Both')"
-          (change)="onEditLanguageChange($event,'Both')">
-        Both
-      </label>
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.english.read">
+      Read
+    </label>
 
-    </div>
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.english.write">
+      Write
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.english.speak">
+      Speak
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.english.all"
+        (change)="toggleAll(languages.english)">
+      All
+    </label>
 
   </div>
+
+  <progress
+    [value]="getProgress(languages.english)"
+    max="100">
+  </progress>
+
+  <span>{{ getProgress(languages.english) }}%</span>
+
+</div>
+
+
+<div class="language-card">
+
+  <h4>French</h4>
+
+  <div class="skill-options">
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.french.read">
+      Read
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.french.write">
+      Write
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.french.speak">
+      Speak
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.french.all"
+        (change)="toggleAll(languages.french)">
+      All
+    </label>
+
+  </div>
+
+  <progress
+    [value]="getProgress(languages.french)"
+    max="100">
+  </progress>
+
+  <span>{{ getProgress(languages.french) }}%</span>
+
+</div>
+
+
+<div class="language-card">
+
+  <h4>Japanese</h4>
+
+  <div class="skill-options">
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.japanese.read">
+      Read
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.japanese.write">
+      Write
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.japanese.speak">
+      Speak
+    </label>
+
+    <label>
+      <input
+        type="checkbox"
+        [(ngModel)]="languages.japanese.all"
+        (change)="toggleAll(languages.japanese)">
+      All
+    </label>
+
+  </div>
+
+  <progress
+    [value]="getProgress(languages.japanese)"
+    max="100">
+  </progress>
+
+  <span>{{ getProgress(languages.japanese) }}%</span>
+
+</div>
+</div>
 
   <label class="file-placeholder">
   <input
