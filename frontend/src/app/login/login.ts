@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DashboardComponent } from '../pages/dashboard/dashboard';
 import { Router } from '@angular/router';
-import { ViewChild, ElementRef } from '@angular/core';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -16,7 +15,7 @@ import { ViewChild, ElementRef } from '@angular/core';
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent  {
   applicant = {
     name: '',
     email: '',
@@ -71,104 +70,114 @@ export class LoginComponent implements OnInit {
     password: '',
     confirmPassword: ''
   };
-
-  registeredUsers = [
-    { usernameOrEmail: 'admin@portal.com', password: 'password123' },
-    { usernameOrEmail: 'admin', password: 'password123' },
-    { usernameOrEmail: 'user@portal.com', password: 'password123' },
-    { usernameOrEmail: 'user', password: 'password123' }
-  ];
-
   constructor(private http: HttpClient, private router: Router) { }
-  ngOnInit(): void {
 
-  const users = localStorage.getItem('registeredUsers');
-
-  if (users) {
-
-    this.registeredUsers = JSON.parse(users);
-
-  }
-
-}
 
   login(): void {
-    const email = this.loginInput.usernameOrEmail.trim().toLowerCase();
-    const password = this.loginInput.password;
 
-    if (!email) {
-      alert('Please enter your Username or Email ID');
-      return;
-    }
+  const email = this.loginInput.usernameOrEmail.trim().toLowerCase();
+  const password = this.loginInput.password;
 
-    if (!password) {
-      alert('Please enter your Password');
-      return;
-    }
+  if (!email) {
+    alert('Please enter your Username or Email ID');
+    return;
+  }
 
-    const matchedUser = this.registeredUsers.find(
-      u => u.usernameOrEmail.trim().toLowerCase() === email && u.password === password
-    );
+  if (!password) {
+    alert('Please enter your Password');
+    return;
+  }
 
-    if (matchedUser) {
+  const formData = new FormData();
+//creates the request
+  formData.append('username', email);
+  formData.append('password', password);
+//Calls Backend
+  this.http.post(
+    'http://localhost:8081/api/users/login',
+    formData,
+    { responseType: 'text' }
+  ).subscribe({
+//User enters application page
+    next: (response) => {
+
+      alert(response);
+
       this.isLoggedIn = true;
       this.loginError = '';
 
-      alert('Login Successful!');
-
       this.router.navigate([1, 'apply']);
-    } else {
-      this.loginError = 'Invalid username/email or password';
-      alert('Invalid username/email or password!');
+    },
+
+    error: (error) => {
+
+      this.loginError =
+        error.error || 'Invalid username or password';
+
+      alert(this.loginError);
+
     }
+
+  });
+
+}
+
+ register(): void {
+
+  const email = this.registerInput.usernameOrEmail.trim().toLowerCase();
+  const password = this.registerInput.password;
+  const confirmPassword = this.registerInput.confirmPassword;
+//validation
+  if (!email) {
+    alert('Please enter a Username or Email ID');
+    return;
   }
 
-  register(): void {
-    const email = this.registerInput.usernameOrEmail.trim().toLowerCase();
-    const password = this.registerInput.password;
-    const confirmPassword = this.registerInput.confirmPassword;
-
-    if (!email) {
-      alert('Please enter a Username or Email ID');
-      return;
-    }
-
-    if (!password) {
-      alert('Please enter a Password');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!');
-      return;
-    }
-
-    const userExists = this.registeredUsers.some(
-      u => u.usernameOrEmail.trim().toLowerCase() === email
-    );
-
-    if (userExists) {
-      alert('This username/email is already registered!');
-      return;
-    }
-
-
-    this.registeredUsers.push({ usernameOrEmail: email, password: password });
-    localStorage.setItem(
-      'registeredUsers',
-      JSON.stringify(this.registeredUsers)
-    );
-
-    alert('Registration Successful! Redirecting to login...');
-
-    this.registerInput = {
-      usernameOrEmail: '',
-      password: '',
-      confirmPassword: ''
-    };
-    this.isRegisterMode = false;
+  if (!password) {
+    alert('Please enter a Password');
+    return;
   }
 
+  if (password !== confirmPassword) {
+    alert('Passwords do not match!');
+    return;
+  }
+
+  const formData = new FormData();
+//creates the request
+  formData.append('username', email);
+  formData.append('password', password);
+//Calls Backend
+  this.http.post(
+    'http://localhost:8081/api/users/register',
+    formData,
+    { responseType: 'text' }
+  ).subscribe({
+    next: (response) => {
+
+      alert(response);
+
+      this.registerInput = {
+        usernameOrEmail: '',
+        password: '',
+        confirmPassword: ''
+      };
+
+      this.isRegisterMode = false;
+    },
+
+    error: (error) => {
+
+      if (error.error) {
+        alert(error.error);
+      } else {
+        alert('Registration Failed');
+      }
+
+    }
+  });
+
+}
   logout(): void {
     this.isLoggedIn = false;
     this.loginInput = {
@@ -341,7 +350,7 @@ export class LoginComponent implements OnInit {
       'http://localhost:8081/api/applicants',
       formData,
       { responseType: 'text' }
-    ).subscribe({
+    ).subscribe({ 
       next: (response: string) => {
         console.log(response);
         this.submitted = true;
