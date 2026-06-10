@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +16,7 @@ import { ViewChild, ElementRef } from '@angular/core';
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   applicant = {
     name: '',
     email: '',
@@ -80,6 +80,17 @@ export class LoginComponent {
   ];
 
   constructor(private http: HttpClient, private router: Router) { }
+  ngOnInit(): void {
+
+  const users = localStorage.getItem('registeredUsers');
+
+  if (users) {
+
+    this.registeredUsers = JSON.parse(users);
+
+  }
+
+}
 
   login(): void {
     const email = this.loginInput.usernameOrEmail.trim().toLowerCase();
@@ -143,6 +154,10 @@ export class LoginComponent {
 
 
     this.registeredUsers.push({ usernameOrEmail: email, password: password });
+    localStorage.setItem(
+      'registeredUsers',
+      JSON.stringify(this.registeredUsers)
+    );
 
     alert('Registration Successful! Redirecting to login...');
 

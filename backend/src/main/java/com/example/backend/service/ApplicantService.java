@@ -18,6 +18,7 @@ public class ApplicantService {
     }
 
     public Applicant save(Applicant applicant) {
+
         return repo.save(applicant);
     }
 
