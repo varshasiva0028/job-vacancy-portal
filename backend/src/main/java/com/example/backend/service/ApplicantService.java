@@ -30,6 +30,10 @@ public class ApplicantService {
         return repo.findById(id).orElse(null);
     }
 
+    public void deleteApplicant(Long id) {
+        repo.deleteById(id);
+    }
+
     public Applicant updateApplicant(Long id, Applicant updatedApplicant) {
 
         Applicant existingApplicant = repo.findById(id).orElse(null);
@@ -45,4 +49,5 @@ public class ApplicantService {
 
         return repo.save(existingApplicant);
     }
+
 }

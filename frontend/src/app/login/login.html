@@ -233,28 +233,54 @@
 
   <label>Languages Known:</label>
 
-  <select
-    multiple
-    class="language-select"
-    [(ngModel)]="selectedLanguageNames"
-    (ngModelChange)="syncSelectedLanguages($event)"
-    name="languagesKnown">
+  <div class="custom-dropdown">
+<button
+  type="button"
+  class="dropdown-btn"
+  (click)="showLanguages = !showLanguages">
 
-    <optgroup
-      *ngFor="let group of languageGroups"
-      [label]="group.label">
+  {{
+    selectedLanguageNames.length > 0
+      ? selectedLanguageNames.join(', ')
+      : 'Select Languages'
+  }}
+  ▼
 
-      <option
-        *ngFor="let option of group.options"
-        [value]="option">
+</button>
 
-        {{ option }}
+  <div *ngIf="showLanguages" class="dropdown-content">
 
-      </option>
+    <div *ngFor="let group of languageGroups">
 
-    </optgroup>
+      <strong>{{ group.label }}</strong>
 
-  </select>
+      <div *ngFor="let option of group.options">
+
+        <label>
+
+          <input
+            type="checkbox"
+            [checked]="selectedLanguageNames.includes(option)"
+            (change)="toggleLanguage(option, $event)">
+
+          {{ option }}
+
+        </label>
+
+      </div>
+        <button
+    type="button"
+    (click)="showLanguages = false">
+
+    Done
+
+  </button>
+
+    </div>
+
+  </div>
+
+</div>
 
   <div
     class="language-card-list"
@@ -273,7 +299,7 @@
           class="trash-btn"
           (click)="removeLanguage(language.name)">
 
-          🗑
+          <i class="fas fa-trash"></i>
 
         </button>
 

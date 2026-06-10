@@ -38,24 +38,47 @@
 <br><br>
 
   <label>Languages Known:</label><br>
+<div class="custom-dropdown">
 
-<select
-  name="languagesKnown"
-  multiple
-  class="language-select"
-  [(ngModel)]="selectedLanguageNames"
-  (ngModelChange)="syncSelectedLanguages($event)">
+  <button
+    type="button"
+    class="dropdown-btn"
+    (click)="showLanguages = !showLanguages">
 
-    <optgroup
-      *ngFor="let group of languageGroups"
-      [label]="group.label">
-      <option
-        *ngFor="let option of group.options"
-        [value]="option">
-        {{ option }}
-      </option>
-    </optgroup>
-  </select>
+    Select Languages ▼
+
+  </button>
+
+  <div
+    *ngIf="showLanguages"
+    class="dropdown-content">
+
+    <div *ngFor="let group of languageGroups">
+
+      <strong>{{ group.label }}</strong>
+
+      <div *ngFor="let option of group.options">
+
+        <label>
+
+          <input
+            type="checkbox"
+            [checked]="selectedLanguageNames.includes(option)"
+            (change)="toggleLanguage(option, $event)">
+
+          {{ option }}
+
+        </label>
+
+      </div>
+
+      <hr>
+
+    </div>
+
+  </div>
+
+</div>
 
   <div
     class="language-card-list"
@@ -103,7 +126,7 @@
             (change)="updateLanguageAllState(language)">
           Speak
         </label>
-
+     
         <label>
           <input
             type="checkbox"

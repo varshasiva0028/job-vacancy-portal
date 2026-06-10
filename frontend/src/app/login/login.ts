@@ -208,31 +208,52 @@ export class LoginComponent  {
     };
   }
 
-  addLanguage(name: string): void {
+addLanguage(name: string): void {
 
-    if (!this.selectedLanguages.some(x => x.name === name)) {
+  if (!this.selectedLanguages.some(x => x.name === name)) {
 
-      this.selectedLanguages.push(
-        this.createLanguageSkill(name)
-      );
+    this.selectedLanguages.push(
+      this.createLanguageSkill(name)
+    );
+
+  }
+
+}
+
+showLanguages = false;
+
+toggleLanguage(language: string, event: any): void {
+
+  if (event.target.checked) {
+
+    if (!this.selectedLanguageNames.includes(language)) {
+
+      this.selectedLanguageNames.push(language);
 
     }
 
-  }
+    this.addLanguage(language);
 
-  removeLanguage(name: string): void {
+  } else {
 
-    this.selectedLanguages =
-      this.selectedLanguages.filter(
-        x => x.name !== name
-      );
-
-    this.selectedLanguageNames =
-      this.selectedLanguageNames.filter(
-        x => x !== name
-      );
+    this.removeLanguage(language);
 
   }
+
+}
+removeLanguage(name: string): void {
+
+  this.selectedLanguages =
+    this.selectedLanguages.filter(
+      x => x.name !== name
+    );
+
+  this.selectedLanguageNames =
+    this.selectedLanguageNames.filter(
+      x => x !== name
+    );
+
+}
 
   syncSelectedLanguages(names: string[]): void {
 

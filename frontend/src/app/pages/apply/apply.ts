@@ -99,6 +99,24 @@ export class ApplyComponent {
       this.selectedLanguageNames.push(name);
     }
   }
+  showLanguages = false;
+  toggleLanguage(language: string, event: any): void {
+
+  if (event.target.checked) {
+
+    this.addLanguage(language);
+
+    if (!this.selectedLanguageNames.includes(language)) {
+      this.selectedLanguageNames.push(language);
+    }
+
+  } else {
+
+    this.removeLanguage(language);
+
+  }
+
+}
 
   removeLanguage(name: string): void {
     this.selectedLanguages = this.selectedLanguages.filter(

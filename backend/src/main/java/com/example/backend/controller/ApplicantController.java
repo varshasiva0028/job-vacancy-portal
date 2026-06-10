@@ -238,4 +238,22 @@ public class ApplicantController {
                     .body("Error while updating: " + e.getMessage());
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteApplicant(
+            @PathVariable Long id) {
+
+        Applicant applicant = service.getApplicantById(id);
+
+        if (applicant == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Applicant not found");
+        }
+
+        service.deleteApplicant(id);
+
+        return ResponseEntity.ok(
+                "Applicant deleted successfully");
+    }
 }

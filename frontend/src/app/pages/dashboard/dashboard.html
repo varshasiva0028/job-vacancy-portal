@@ -1,40 +1,28 @@
 <div class="dashboard-container">
- <div class="search-container">
+  <div class="search-container">
 
-  <div class="search-box">
-    <i class="fas fa-search search-icon"></i>
+    <div class="search-box">
+      <i class="fas fa-search search-icon"></i>
 
-    <input
-      type="text"
-      [(ngModel)]="searchText"
-      placeholder="Search anything (name, email, phone, qualification...)"
-      class="search-bar">
-  </div>
+      <input type="text" [(ngModel)]="searchText" placeholder="Search anything (name, email, phone, qualification...)"
+        class="search-bar">
+    </div>
 
-  <button
-    *ngIf="searchText"
-    (click)="searchText = ''"
-    class="clear-search-btn">
-    ×
-  </button>
-
-  <div class="view-toggle-group">
-    <button
-      class="view-btn"
-      [class.active]="viewMode === 'list'"
-      (click)="viewMode='list'">
-      <i class="fas fa-list"></i>
+    <button *ngIf="searchText" (click)="searchText = ''" class="clear-search-btn">
+      ×
     </button>
 
-    <button
-      class="view-btn"
-      [class.active]="viewMode === 'grid'"
-      (click)="viewMode='grid'">
-      <i class="fas fa-th-large"></i>
-    </button>
-  </div>
+    <div class="view-toggle-group">
+      <button class="view-btn" [class.active]="viewMode === 'list'" (click)="viewMode='list'">
+        <i class="fas fa-list"></i>
+      </button>
 
-</div>
+      <button class="view-btn" [class.active]="viewMode === 'grid'" (click)="viewMode='grid'">
+        <i class="fas fa-th-large"></i>
+      </button>
+    </div>
+
+  </div>
 
   <p class="summary-text">
     Total Registered Applicants:
@@ -49,38 +37,56 @@
     <div class="edit-section">
       <label><strong>Languages Known</strong></label>
 
-      <select
-        multiple
-        class="language-select"
-        [(ngModel)]="selectedLanguageNames"
-        (ngModelChange)="syncSelectedLanguages($event)"
-        [ngModelOptions]="{standalone: true}">
+      <div class="custom-dropdown">
 
-        <optgroup
-          *ngFor="let group of languageGroups"
-          [label]="group.label">
-          <option
-            *ngFor="let option of group.options"
-            [value]="option">
-            {{ option }}
-          </option>
-        </optgroup>
-      </select>
+        <button type="button" class="dropdown-btn" (click)="showLanguages = !showLanguages">
 
-      <div
-        class="language-card-list"
-        *ngIf="selectedLanguages.length > 0">
+          {{
+          selectedLanguageNames.length
+          ? selectedLanguageNames.join(', ')
+          : 'Select Languages'
+          }}
+          ▼
 
-        <div
-          class="language-card"
-          *ngFor="let language of selectedLanguages">
+        </button>
+
+        <div *ngIf="showLanguages" class="dropdown-content">
+
+          <div *ngFor="let group of languageGroups">
+
+            <strong>{{ group.label }}</strong>
+
+            <div *ngFor="let option of group.options">
+
+              <label>
+
+                <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
+                  (change)="toggleLanguage(option, $event)">
+
+                {{ option }}
+
+              </label>
+
+            </div>
+
+          </div>
+
+          <button type="button" class="done-btn" (click)="showLanguages = false">
+
+            Done
+
+          </button>
+
+        </div>
+
+      </div>
+      <div class="language-card-list" *ngIf="selectedLanguages.length > 0">
+
+        <div class="language-card" *ngFor="let language of selectedLanguages">
 
           <div class="language-card-header">
             <h4>{{ language.name }}</h4>
-            <button
-              type="button"
-              class="trash-btn"
-              (click)="removeLanguage(language.name)"
+            <button type="button" class="trash-btn" (click)="removeLanguage(language.name)"
               aria-label="Remove {{ language.name }}">
               <i class="fas fa-trash"></i>
             </button>
@@ -88,46 +94,32 @@
 
           <div class="skill-options">
             <label>
-              <input
-                type="checkbox"
-                [(ngModel)]="language.read"
-                [ngModelOptions]="{standalone: true}"
+              <input type="checkbox" [(ngModel)]="language.read" [ngModelOptions]="{standalone: true}"
                 (change)="updateLanguageAllState(language)">
               Read
             </label>
 
             <label>
-              <input
-                type="checkbox"
-                [(ngModel)]="language.write"
-                [ngModelOptions]="{standalone: true}"
+              <input type="checkbox" [(ngModel)]="language.write" [ngModelOptions]="{standalone: true}"
                 (change)="updateLanguageAllState(language)">
               Write
             </label>
 
             <label>
-              <input
-                type="checkbox"
-                [(ngModel)]="language.speak"
-                [ngModelOptions]="{standalone: true}"
+              <input type="checkbox" [(ngModel)]="language.speak" [ngModelOptions]="{standalone: true}"
                 (change)="updateLanguageAllState(language)">
               Speak
             </label>
 
             <label>
-              <input
-                type="checkbox"
-                [(ngModel)]="language.all"
-                [ngModelOptions]="{standalone: true}"
+              <input type="checkbox" [(ngModel)]="language.all" [ngModelOptions]="{standalone: true}"
                 (change)="toggleAll(language)">
               All
             </label>
           </div>
 
           <div class="progress-wrapper">
-            <progress
-              [value]="getProgress(language)"
-              max="100">
+            <progress [value]="getProgress(language)" max="100">
             </progress>
             <span>{{ getProgress(language) }}%</span>
           </div>
@@ -136,9 +128,7 @@
     </div>
   </ng-template>
 
-  <table
-    class="basic-table"
-    *ngIf="
+  <table class="basic-table" *ngIf="
       viewMode === 'list' &&
       applicants.length > 0 &&
       (applicants | filter: searchText).length > 0
@@ -160,317 +150,254 @@
       </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let a of applicants | filter: searchText">
-      <td>{{ a.id }}</td>
-      <td class="bold-text">{{ a.name | titlecase }}</td>
-      <td>{{ a.email }}</td>
-      <td>{{ a.phone }}</td>
-      <td>{{ a.qualification }}</td>
-      <td>{{ a.gender }}</td>
-      <td>{{ getLanguageSummary(a.languages) || a.languages }}</td>
-      <td>
-        <a
-          [href]="'http://localhost:8081/uploads/' + a.resumePath"
-          target="_blank">
-          View Resume
-        </a>
-      </td>
-      <td>
-        <a
-          [href]="'http://localhost:8081/uploads/' + a.marksheetPath"
-          target="_blank">
-          View Marksheet
-        </a>
-      </td>
-      <td>
-        {{ a.createdAt | date:'medium' }}
-      </td>
-      <td>
-        <button
-          (click)="openEditModal(a)"
-          class="btn-edit">
-          <i class="fas fa-pencil-alt"></i>
-        </button>
-      </td>
-    </tr>
+      <tr *ngFor="let a of applicants | filter: searchText">
+        <td>{{ a.id }}</td>
+        <td class="bold-text">{{ a.name | titlecase }}</td>
+        <td>{{ a.email }}</td>
+        <td>{{ a.phone }}</td>
+        <td>{{ a.qualification }}</td>
+        <td>{{ a.gender }}</td>
+        <td>{{ getLanguageSummary(a.languages) || a.languages }}</td>
+        <td>
+          <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">
+            View Resume
+          </a>
+        </td>
+        <td>
+          <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">
+            View Marksheet
+          </a>
+        </td>
+        <td>
+          {{ a.createdAt | date:'medium' }}
+        </td>
+       <td>
+
+  <div class="action-buttons">
+
+    <button
+      (click)="openEditModal(a)"
+      class="btn-edit">
+
+      <i class="fas fa-pencil-alt"></i>
+
+    </button>
+
+    <button
+      (click)="deleteApplicant(a.id)"
+      class="btn-delete">
+
+      <i class="fas fa-trash"></i>
+
+    </button>
+
+  </div>
+
+</td>
+      </tr>
     </tbody>
   </table>
 
-<div
-  class="grid-container"
-  *ngIf="viewMode === 'grid' && applicants.length > 0">
+  <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0">
 
-  <div
-    class="applicant-card"
-    *ngFor="let a of applicants | filter: searchText">
+    <div class="applicant-card" *ngFor="let a of applicants | filter: searchText">
 
 
-    <ng-container *ngIf="editingId === a.id; else gridViewTemplate">
+      <ng-container *ngIf="editingId === a.id; else gridViewTemplate">
 
-      <div class="profile-section">
+        <div class="profile-section">
 
-        <img
-          *ngIf="a.photoPath"
-          [src]="'http://localhost:8081/uploads/' + a.photoPath"
-          class="profile-photo">
+          <img *ngIf="a.photoPath" [src]="'http://localhost:8081/uploads/' + a.photoPath" class="profile-photo">
 
-        <div
-          *ngIf="!a.photoPath"
-          class="profile-avatar">
+          <div *ngIf="!a.photoPath" class="profile-avatar">
 
-          {{ a.name?.charAt(0)?.toUpperCase() }}
+            {{ a.name?.charAt(0)?.toUpperCase() }}
+
+          </div>
 
         </div>
 
+        <input type="text" [(ngModel)]="editData.name" class="edit-input">
+
+        <input type="email" [(ngModel)]="editData.email" class="edit-input">
+
+        <input type="text" [(ngModel)]="editData.phone" maxlength="10" class="edit-input">
+
+        <input type="text" [(ngModel)]="editData.qualification" class="edit-input">
+
+        <div class="edit-section">
+          <label><strong>Gender:</strong></label>
+
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="editGender{{a.id}}" value="Male" [(ngModel)]="editData.gender">
+              Male
+            </label>
+
+            <label>
+              <input type="radio" name="editGender{{a.id}}" value="Female" [(ngModel)]="editData.gender">
+              Female
+            </label>
+          </div>
+        </div>
+
+        <div class="edit-section">
+          <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
+        </div>
+
+        <div class="file-upload-row">
+
+          <label class="file-placeholder">
+            <input type="file" (change)="onEditResumeSelect($event)">
+            📄 Upload Resume
+          </label>
+
+          <label class="file-placeholder">
+            <input type="file" (change)="onEditMarksheetSelect($event)">
+            🎓 Upload Marksheet
+          </label>
+
+        </div>
+
+        <div class="action-cell">
+
+          <button (click)="saveEdit()" class="btn-save">
+            Save
+          </button>
+
+          <button (click)="cancelEdit()" class="btn-cancel">
+            Cancel
+          </button>
+
+        </div>
+
+      </ng-container>
+
+      <ng-template #gridViewTemplate>
+
+        <div class="profile-section">
+          <img *ngIf="a.photoPath" [src]="'http://localhost:8081/uploads/' + a.photoPath" class="profile-photo">
+
+          <div *ngIf="!a.photoPath" class="profile-avatar">
+
+            {{ a.name?.charAt(0)?.toUpperCase() }}
+
+          </div>
+          <button (click)="startEdit(a)" class="profile-edit-btn" title="Edit">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button (click)="deleteApplicant(a.id)" class="profile-delete-btn" title="Delete">
+
+            <i class="fas fa-trash"></i>
+
+          </button>
+        </div>
+        <h3>{{ a.name | titlecase }}</h3>
+
+        <p>
+          <strong>ID:</strong>
+          {{ a.id }}
+        </p>
+
+        <p>
+          <strong>Email:</strong>
+          {{ a.email }}
+        </p>
+
+        <p>
+          <strong>Phone:</strong>
+          {{ a.phone }}
+        </p>
+
+        <p>
+          <strong>Qualification:</strong>
+          {{ a.qualification }}
+        </p>
+
+        <p>
+          <strong>Gender:</strong>
+          {{ a.gender }}
+        </p>
+
+        <p>
+          <strong>Language Known:</strong>
+          {{ getLanguageSummary(a.languages) || a.languages }}
+        </p>
+
+        <p>
+          <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">
+            Resume
+          </a>
+        </p>
+
+        <p>
+          <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">
+            Marksheet
+          </a>
+        </p>
+
+        <p>
+          {{ a.createdAt | date:'medium' }}
+        </p>
+
+      </ng-template>
+
+    </div>
+
+  </div>
+  <dialog id="editDialog" class="edit-dialog">
+
+    <h2>Edit Applicant</h2>
+
+    <input type="text" [(ngModel)]="editData.name" placeholder="Name" class="edit-input">
+
+    <input type="email" [(ngModel)]="editData.email" placeholder="Email" class="edit-input">
+
+    <input type="text" [(ngModel)]="editData.phone" placeholder="Phone" class="edit-input">
+
+    <input type="text" [(ngModel)]="editData.qualification" placeholder="Qualification" class="edit-input">
+
+    <div class="edit-section">
+      <strong>Gender</strong>
+
+      <div class="radio-group">
+
+        <label>
+          <input type="radio" value="Male" [(ngModel)]="editData.gender">
+          Male
+        </label>
+
+        <label>
+          <input type="radio" value="Female" [(ngModel)]="editData.gender">
+          Female
+        </label>
+
       </div>
+    </div>
 
-      <input
-        type="text"
-        [(ngModel)]="editData.name"
-        class="edit-input">
+    <div class="edit-section">
+      <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
+    </div>
 
-      <input
-        type="email"
-        [(ngModel)]="editData.email"
-        class="edit-input">
-
-      <input
-        type="text"
-        [(ngModel)]="editData.phone"
-        maxlength="10"
-        class="edit-input">
-
-      <input
-        type="text"
-        [(ngModel)]="editData.qualification"
-        class="edit-input">
-  
-<div class="edit-section">
-  <label><strong>Gender:</strong></label>
-
-  <div class="radio-group">
-    <label>
-      <input
-        type="radio"
-        name="editGender{{a.id}}"
-        value="Male"
-        [(ngModel)]="editData.gender">
-      Male
+    <label class="file-placeholder">
+      <input type="file" (change)="onEditResumeSelect($event)">
+      {{ editResumeFile?.name || '📄 Upload Resume' }}
     </label>
 
-      <label>
-        <input
-          type="radio"
-          name="editGender{{a.id}}"
-          value="Female"
-          [(ngModel)]="editData.gender">
-        Female
-      </label>
-    </div>
-  </div>
+    <label class="file-placeholder">
+      <input type="file" (change)="onEditMarksheetSelect($event)">
+      {{ editMarksheetFile?.name || '🎓 Upload Marksheet' }}
+    </label>
+    <div class="action-cell">
 
-  <div class="edit-section">
-    <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
-  </div>
- 
-<div class="file-upload-row">
+      <button (click)="saveEdit()" class="btn-save">
+        Save
+      </button>
 
-  <label class="file-placeholder">
-    <input
-      type="file"
-      (change)="onEditResumeSelect($event)">
-    📄 Upload Resume
-  </label>
-
-  <label class="file-placeholder">
-    <input
-      type="file"
-      (change)="onEditMarksheetSelect($event)">
-    🎓 Upload Marksheet
-  </label>
-
-</div>
-
-      <div class="action-cell">
-
-        <button
-          (click)="saveEdit()"
-          class="btn-save">
-          Save
-        </button>
-
-        <button
-          (click)="cancelEdit()"
-          class="btn-cancel">
-          Cancel
-        </button>
-
-      </div>
-
-    </ng-container>
-
-    <ng-template #gridViewTemplate>
-
-      <div class="profile-section">
-        <img
-          *ngIf="a.photoPath"
-          [src]="'http://localhost:8081/uploads/' + a.photoPath"
-          class="profile-photo">
-
-        <div
-          *ngIf="!a.photoPath"
-          class="profile-avatar">
-
-          {{ a.name?.charAt(0)?.toUpperCase() }}
-
-        </div>
-      <button
-  (click)="startEdit(a)"
-  class="profile-edit-btn"
-  title="Edit">
-  <i class="fas fa-pencil-alt"></i>
-</button>
-      </div>
-     <h3>{{ a.name | titlecase }}</h3>
-
-      <p>
-        <strong>ID:</strong>
-        {{ a.id }}
-      </p>
-
-      <p>
-        <strong>Email:</strong>
-        {{ a.email }}
-      </p>
-
-      <p>
-        <strong>Phone:</strong>
-        {{ a.phone }}
-      </p>
-
-      <p>
-        <strong>Qualification:</strong>
-        {{ a.qualification }}
-      </p>
-
-      <p>
-        <strong>Gender:</strong>
-        {{ a.gender }}
-      </p>
-
-      <p>
-        <strong>Language Known:</strong>
-        {{ getLanguageSummary(a.languages) || a.languages }}
-      </p>
-
-      <p>
-        <a
-          [href]="'http://localhost:8081/uploads/' + a.resumePath"
-          target="_blank">
-          Resume
-        </a>
-      </p>
-
-      <p>
-        <a
-          [href]="'http://localhost:8081/uploads/' + a.marksheetPath"
-          target="_blank">
-          Marksheet
-        </a>
-      </p>
- 
-      <p>
-        {{ a.createdAt | date:'medium' }}
-      </p>
-
-    </ng-template>
-
-  </div>
-
-</div>
-<dialog id="editDialog" class="edit-dialog">
-
-  <h2>Edit Applicant</h2>
-
-  <input
-    type="text"
-    [(ngModel)]="editData.name"
-    placeholder="Name"
-    class="edit-input">
-
-  <input
-    type="email"
-    [(ngModel)]="editData.email"
-    placeholder="Email"
-    class="edit-input">
-
-  <input
-    type="text"
-    [(ngModel)]="editData.phone"
-    placeholder="Phone"
-    class="edit-input">
-
-  <input
-    type="text"
-    [(ngModel)]="editData.qualification"
-    placeholder="Qualification"
-    class="edit-input">
-
-  <div class="edit-section">
-    <strong>Gender</strong>
-
-    <div class="radio-group">
-
-      <label>
-        <input
-          type="radio"
-          value="Male"
-          [(ngModel)]="editData.gender">
-        Male
-      </label>
-
-      <label>
-        <input
-          type="radio"
-          value="Female"
-          [(ngModel)]="editData.gender">
-        Female
-      </label>
+      <button (click)="closeEditModal()" class="btn-cancel">
+        Cancel
+      </button>
 
     </div>
-  </div>
 
-  <div class="edit-section">
-    <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
-  </div>
-
-  <label class="file-placeholder">
-  <input
-    type="file"
-    (change)="onEditResumeSelect($event)">
-  {{ editResumeFile?.name || '📄 Upload Resume' }}
-</label>
-
-<label class="file-placeholder">
-  <input
-    type="file"
-    (change)="onEditMarksheetSelect($event)">
-  {{ editMarksheetFile?.name || '🎓 Upload Marksheet' }}
-</label>
-  <div class="action-cell">
-
-    <button
-      (click)="saveEdit()"
-      class="btn-save">
-      Save
-    </button>
-
-    <button
-      (click)="closeEditModal()"
-      class="btn-cancel">
-      Cancel
-    </button>
-
-  </div>
-
-</dialog>
+  </dialog>

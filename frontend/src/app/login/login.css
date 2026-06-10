@@ -314,3 +314,66 @@
   gap: 6px;
   cursor: pointer;
 }
+.language-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 15px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.language-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skill-options {
+  margin-top: 10px;
+}
+
+.skill-options label {
+  margin-right: 15px;
+}
+
+.progress-wrapper {
+  margin-top: 10px;
+}
+
+.custom-dropdown {
+  position: relative;
+  width: 300px;
+}
+
+.dropdown-btn {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  position: relative;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 5px;
+}
+.language-card-list {
+  margin-top: 15px;
+}
+.trash-btn {
+  border: none;
+  background: transparent;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 16px;
+}

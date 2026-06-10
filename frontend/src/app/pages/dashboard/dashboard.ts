@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
   ];
 //selected languages for edit form
   selectedLanguageNames: string[] = [];
+  showLanguages = false;
   selectedLanguages: Array<{
     name: string;
     read: boolean;
@@ -189,6 +190,15 @@ export class DashboardComponent implements OnInit {
       existing => existing !== name
     );
   }
+  toggleLanguage(language: string, event: any): void {
+
+  if (event.target.checked) {
+    this.addLanguage(language);
+  } else {
+    this.removeLanguage(language);
+  }
+
+}
 //Synchronizing Dropdown
   syncSelectedLanguages(names: string[]): void {
     const removed = this.selectedLanguages
@@ -394,4 +404,39 @@ export class DashboardComponent implements OnInit {
     });
 
   }
+  deleteApplicant(id: number): void {
+
+  const confirmed = confirm(
+    'Are you sure you want to delete this applicant?'
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  this.http.delete(
+    `http://localhost:8081/api/applicants/${id}`,
+    { responseType: 'text' }
+  )
+  .subscribe({
+
+    next: (response) => {
+
+      alert(response);
+
+      this.loadApplicants();
+
+    },
+
+    error: (error) => {
+
+      console.error(error);
+
+      alert('Failed to delete applicant');
+
+    }
+
+  });
+
+}
 }
