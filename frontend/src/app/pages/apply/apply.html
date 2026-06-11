@@ -38,7 +38,8 @@
 <br><br>
 
   <label>Languages Known:</label><br>
-<div class="custom-dropdown">
+
+<div class="dropdown-header">
 
   <button
     type="button"
@@ -49,32 +50,42 @@
 
   </button>
 
-  <div
-    *ngIf="showLanguages"
-    class="dropdown-content">
+<button
+  *ngIf="showLanguages"
+  type="button"
+  class="done-btn"
+  (click)="showLanguages = false">
 
-    <div *ngFor="let group of languageGroups">
+  Done
 
-      <strong>{{ group.label }}</strong>
+</button>
 
-      <div *ngFor="let option of group.options">
+</div>
 
-        <label>
+<div
+  *ngIf="showLanguages"
+  class="dropdown-content">
 
-          <input
-            type="checkbox"
-            [checked]="selectedLanguageNames.includes(option)"
-            (change)="toggleLanguage(option, $event)">
+  <div *ngFor="let group of languageGroups">
 
-          {{ option }}
+    <strong>{{ group.label }}</strong>
 
-        </label>
+    <div *ngFor="let option of group.options">
 
-      </div>
+      <label>
 
-      <hr>
+        <input
+          type="checkbox"
+          [checked]="selectedLanguageNames.includes(option)"
+          (change)="toggleLanguage(option, $event)">
+
+        {{ option }}
+
+      </label>
 
     </div>
+
+    <hr>
 
   </div>
 

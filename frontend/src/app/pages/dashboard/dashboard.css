@@ -241,9 +241,9 @@
 .applicant-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0,0,0,.15);
-}
+} 
 
-.applicant-card h3 {
+.applicant-card h3 {     
   text-align: center;
   margin-bottom: 15px;
   color: #1f2937;
@@ -301,17 +301,22 @@
 
 .profile-edit-btn {
   position: absolute;
-  right: 5px;
-  bottom: 5px;
-  width: 36px;
-  height: 36px;
+  top: 10px;
+  right: 10px;
+
+  width: 35px;
+  height: 35px;
+
   border: none;
   border-radius: 50%;
+
   background: #17a2b8;
   color: white;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
   z-index: 100;
 }
@@ -596,10 +601,11 @@
 .btn-delete:hover {
   background: #c82333;
 }
+
+
 .profile-delete-btn {
   position: absolute;
-
-  top: 10px;
+  top: 55px;   /* below the edit button */
   right: 10px;
 
   width: 35px;

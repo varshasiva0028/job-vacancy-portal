@@ -57,19 +57,17 @@ button {
 }
 .custom-dropdown {
   position: relative;
-  width: 300px;
+  width: fit-content;
 }
-
 .dropdown-btn {
-  width: 100%;
-  padding: 10px;
+  min-width: 180px;
+  padding: 10px 16px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   background: white;
   cursor: pointer;
-  text-align: left;
+  font-size: 14px;
 }
-
 .dropdown-content {
   position: relative;
   width: 100%;
@@ -96,4 +94,23 @@ button {
 button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
+}
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: fit-content;
+}
+.done-btn {
+  padding: 10px 16px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.done-btn:hover {
+  background: #218838;
 }

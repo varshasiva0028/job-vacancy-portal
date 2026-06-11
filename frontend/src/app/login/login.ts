@@ -70,8 +70,11 @@ export class LoginComponent  {
     password: '',
     confirmPassword: ''
   };
-  constructor(private http: HttpClient, private router: Router) { }
+constructor(
+  private http: HttpClient,
+  private router: Router,
 
+) { }
 
   login(): void {
 
