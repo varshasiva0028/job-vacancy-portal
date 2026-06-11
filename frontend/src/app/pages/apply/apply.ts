@@ -20,7 +20,22 @@ export class ApplyComponent {
     gender: '',
     languages: [] as string[]
   };
+  companyNames = [
+    'Google',
+    'Microsoft',
+    'Amazon',
+    'Apple',
+    'Meta',
+    'Netflix',
+    'IBM',
+    'Infosys',
+    'TCS',
+    'Wipro'
+  ];
 
+  selectedCompanies: string[] = [];
+
+  showCompanies = false;
   languageGroups = [
     {
       label: 'Indian Languages',
@@ -68,17 +83,17 @@ export class ApplyComponent {
   photoFile: File | null = null;
   submitted = false;
   loading = false;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   onResumeSelect(event: any) {
     this.resumeFile = event.target.files[0];
   }
   onMarksheetSelect(event: any) {
     this.marksheetFile = event.target.files[0];
   }
-  
+
   onPhotoSelect(event: any) {
-  this.photoFile = event.target.files[0];
-}
+    this.photoFile = event.target.files[0];
+  }
   createLanguageSkill(name: string) {
     return {
       name,
@@ -103,21 +118,21 @@ export class ApplyComponent {
   showLanguages = false;
   toggleLanguage(language: string, event: any): void {
 
-  if (event.target.checked) {
+    if (event.target.checked) {
 
-    this.addLanguage(language);
+      this.addLanguage(language);
 
-    if (!this.selectedLanguageNames.includes(language)) {
-      this.selectedLanguageNames.push(language);
+      if (!this.selectedLanguageNames.includes(language)) {
+        this.selectedLanguageNames.push(language);
+      }
+
+    } else {
+
+      this.removeLanguage(language);
+
     }
 
-  } else {
-
-    this.removeLanguage(language);
-
   }
-
-}
 
   removeLanguage(name: string): void {
     this.selectedLanguages = this.selectedLanguages.filter(
@@ -175,6 +190,22 @@ export class ApplyComponent {
     }
     return progress;
   }
+  toggleCompany(company: string, event: any): void {
+
+    if (event.target.checked) {
+
+      if (!this.selectedCompanies.includes(company)) {
+        this.selectedCompanies.push(company);
+      }
+
+    } else {
+
+      this.selectedCompanies =
+        this.selectedCompanies.filter(x => x !== company);
+
+    }
+
+  }
 
   submitForm(form: NgForm) {
     if (form.invalid) {
@@ -196,19 +227,19 @@ export class ApplyComponent {
       alert("Qualification must contain only letters");
       return;
     }
-   if (!this.resumeFile || !this.marksheetFile || !this.photoFile) {
-  alert("Upload Resume, Photo and Marksheet");
-  return;
-}
-if (!this.applicant.gender) {
-  alert("Please select Gender");
-  return;
-}
+    if (!this.resumeFile || !this.marksheetFile || !this.photoFile) {
+      alert("Upload Resume, Photo and Marksheet");
+      return;
+    }
+    if (!this.applicant.gender) {
+      alert("Please select Gender");
+      return;
+    }
 
-if (this.selectedLanguages.length === 0) {
-  alert("Please select Language Known");
-  return;
-}
+    if (this.selectedLanguages.length === 0) {
+      alert("Please select Language Known");
+      return;
+    }
     const formData = new FormData();
     formData.append('name', this.applicant.name);
     formData.append('email', this.applicant.email);
@@ -218,14 +249,14 @@ if (this.selectedLanguages.length === 0) {
     formData.append('marksheet', this.marksheetFile);
     formData.append('photo', this.photoFile!);
     formData.append(
-  'gender',
-  this.applicant.gender
-);
+      'gender',
+      this.applicant.gender
+    );
 
-formData.append(
-  'languages',
-  JSON.stringify(this.selectedLanguages)
-);
+    formData.append(
+      'languages',
+      JSON.stringify(this.selectedLanguages)
+    );
     this.loading = true;
     this.http.post(
       'http://localhost:8081/api/applicants',

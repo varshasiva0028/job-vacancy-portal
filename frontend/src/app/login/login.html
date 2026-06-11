@@ -365,6 +365,60 @@
   </div>
 
 </div>
+<label>Company Name:</label>
+
+<div class="custom-dropdown">
+
+  <div class="dropdown-header">
+
+    <button
+      type="button"
+      class="dropdown-btn"
+      (click)="showCompanies = !showCompanies">
+
+      {{
+      selectedCompanies.length > 0
+      ? selectedCompanies.join(', ')
+      : 'Select Company'
+      }}
+
+      ▼
+
+    </button>
+
+    <button
+      *ngIf="showCompanies"
+      type="button"
+      class="done-btn"
+      (click)="showCompanies = false">
+
+      Done
+
+    </button>
+
+  </div>
+<div
+  *ngIf="showCompanies"
+  class="company-content">
+
+  <div class="company-list">
+
+    <label *ngFor="let company of companyNames">
+
+      <input
+        type="checkbox"
+        [checked]="selectedCompanies.includes(company)"
+        (change)="toggleCompany(company, $event)">
+
+      {{ company }}
+
+    </label>
+
+  </div>
+
+</div>
+
+</div>
         <div class="form-group">
           <label>Upload Resume:</label>
           <input

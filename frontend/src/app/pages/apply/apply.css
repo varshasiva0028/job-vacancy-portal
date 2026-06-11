@@ -114,3 +114,61 @@ button:disabled {
 .done-btn:hover {
   background: #218838;
 }
+.company-dropdown {
+  position: relative;
+  width: fit-content;
+}
+
+.company-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.company-btn {
+  min-width: 180px;
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+}
+
+.company-content {
+  margin-top: 8px;
+  padding: 12px;
+  width: 300px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.company-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 20px;
+}
+
+.company-list label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+.company-done-btn {
+  padding: 10px 18px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: auto;
+  font-weight: 600;
+}
+
+.company-done-btn:hover {
+  background: #218838;
+}

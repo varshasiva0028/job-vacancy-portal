@@ -24,6 +24,22 @@ export class LoginComponent  {
     gender: '',
     languages: [] as string[]
   };
+  companyNames = [
+  'Google',
+  'Microsoft',
+  'Amazon',
+  'Apple',
+  'Meta',
+  'Netflix',
+  'IBM',
+  'Infosys',
+  'TCS',
+  'Wipro'
+];
+
+selectedCompanies: string[] = [];
+
+showCompanies = false;
   languageGroups = [
     {
       label: 'Indian Languages',
@@ -323,6 +339,22 @@ removeLanguage(name: string): void {
     return progress;
 
   }
+  toggleCompany(company: string, event: any): void {
+
+  if (event.target.checked) {
+
+    if (!this.selectedCompanies.includes(company)) {
+      this.selectedCompanies.push(company);
+    }
+
+  } else {
+
+    this.selectedCompanies =
+      this.selectedCompanies.filter(x => x !== company);
+
+  }
+
+}
   submitForm(): void {
     if (!this.applicant.name.trim()) {
       alert('Please enter your name');
