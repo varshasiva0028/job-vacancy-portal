@@ -624,3 +624,52 @@
 .profile-delete-btn:hover {
   background: #c82333;
 }
+.company-dropdown {
+  position: relative;
+}
+
+.company-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.company-btn {
+  min-width: 220px;
+  padding: 10px 14px;
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  text-align: left;
+}
+
+.company-done-btn {
+  width: auto;
+  padding: 10px 16px;
+  background: #28a745;
+  color: white;
+  border-radius: 8px;
+}
+
+.company-content {
+  margin-top: 8px;
+  width: 330px;
+  padding: 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.company-list {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px 20px;
+}
+
+.company-list label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}

@@ -125,6 +125,65 @@
           </div>
         </div>
       </div>
+      <div class="edit-section">
+
+  <label><strong>Company Name:</strong></label>
+
+  <div class="company-dropdown">
+
+    <div class="company-header">
+
+      <button
+        type="button"
+        class="company-btn"
+        (click)="showCompanies = !showCompanies">
+
+        {{
+          selectedCompanies.length > 0
+            ? selectedCompanies.join(', ')
+            : 'Select Company'
+        }}
+
+        ▼
+
+      </button>
+
+      <button
+        *ngIf="showCompanies"
+        type="button"
+        class="company-done-btn"
+        (click)="showCompanies = false">
+
+        Done
+
+      </button>
+
+    </div>
+
+    <div
+      *ngIf="showCompanies"
+      class="company-content">
+
+      <div class="company-list">
+
+        <label *ngFor="let company of companyNames">
+
+          <input
+            type="checkbox"
+            [checked]="selectedCompanies.includes(company)"
+            (change)="toggleCompany(company,$event)">
+
+          {{ company }}
+
+        </label>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
     </div>
   </ng-template>
 
@@ -143,6 +202,7 @@
         <th>Qualification</th>
         <th>Gender</th>
         <th>Language Known</th>
+        <th>Company Name</th>
         <th>Resume</th>
         <th>Marksheet</th>
         <th>Applied At</th>
@@ -159,6 +219,9 @@
         <td>{{ a.gender }}</td>
         <td>{{ getLanguageSummary(a.languages) || a.languages }}</td>
         <td>
+          {{ a.companies }}
+        </td>
+        <td>
           <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">
             View Resume
           </a>
@@ -171,29 +234,25 @@
         <td>
           {{ a.createdAt | date:'medium' }}
         </td>
-       <td>
+        <td>
 
-  <div class="action-buttons">
+          <div class="action-buttons">
 
-    <button
-      (click)="openEditModal(a)"
-      class="btn-edit">
+            <button (click)="openEditModal(a)" class="btn-edit">
 
-      <i class="fas fa-pencil-alt"></i>
+              <i class="fas fa-pencil-alt"></i>
 
-    </button>
+            </button>
 
-    <button
-      (click)="deleteApplicant(a.id)"
-      class="btn-delete">
+            <button (click)="deleteApplicant(a.id)" class="btn-delete">
 
-      <i class="fas fa-trash"></i>
+              <i class="fas fa-trash"></i>
 
-    </button>
+            </button>
 
-  </div>
+          </div>
 
-</td>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -322,6 +381,11 @@
         <p>
           <strong>Language Known:</strong>
           {{ getLanguageSummary(a.languages) || a.languages }}
+        </p>
+
+        <p>
+          <strong>Company Name:</strong>
+          {{ a.companies }}
         </p>
 
         <p>

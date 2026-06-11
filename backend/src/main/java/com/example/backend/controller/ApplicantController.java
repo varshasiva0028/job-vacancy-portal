@@ -127,15 +127,15 @@ public class ApplicantController {
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<String> updateApplicant(
             @PathVariable Long id,
-            @RequestParam("name") String name,
-            @RequestParam("email") String email,
-            @RequestParam("phone") String phone,
-            @RequestParam("qualification") String qualification,
-            @RequestParam("gender") String gender,
-            @RequestParam("languages") String languages,
-            @RequestParam(value = "resume", required = false) MultipartFile resume,
-            @RequestParam(value = "photo", required = false) MultipartFile photo,
-            @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
+          @RequestParam("name") String name,
+@RequestParam("email") String email, 
+@RequestParam("phone") String phone, 
+@RequestParam("qualification") String qualification,
+@RequestParam("gender") String gender,
+@RequestParam("languages") String languages, 
+@RequestParam("resume") MultipartFile resume, 
+@RequestParam("photo") MultipartFile photo, 
+@RequestParam("marksheet") MultipartFile marksheet) {
 
         try {
 

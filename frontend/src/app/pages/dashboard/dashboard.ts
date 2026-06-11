@@ -46,6 +46,22 @@ export class DashboardComponent implements OnInit {
       ]
     }
   ];
+  companyNames = [
+  'Google',
+  'Microsoft',
+  'Amazon',
+  'Apple',
+  'Meta',
+  'Netflix',
+  'IBM',
+  'Infosys',
+  'TCS',
+  'Wipro'
+];
+
+selectedCompanies: string[] = [];
+
+showCompanies = false;
 //selected languages for edit form
   selectedLanguageNames: string[] = [];
   showLanguages = false;
@@ -68,14 +84,15 @@ export class DashboardComponent implements OnInit {
         : 'list';
   }
   editingId: number | null = null;
-  editData = {
-    name: '',
-    email: '',
-    phone: '',
-    qualification: '',
-    gender: '',
-    languages: ''
-  };
+ editData = {
+  name: '',
+  email: '',
+  phone: '',
+  qualification: '',
+  gender: '',
+  languages: '',
+  companies: ''
+};
   editResumeFile: File | null = null;
   editMarksheetFile: File | null = null;
 
@@ -116,14 +133,15 @@ export class DashboardComponent implements OnInit {
   startEdit(applicant: any): void {
     this.editingId = applicant.id;
 
-    this.editData = {
-      name: applicant.name,
-      email: applicant.email,
-      phone: applicant.phone,
-      qualification: applicant.qualification,
-      gender: applicant.gender,
-      languages: applicant.languages
-    };
+   this.editData = {
+  name: applicant.name,
+  email: applicant.email,
+  phone: applicant.phone,
+  qualification: applicant.qualification,
+  gender: applicant.gender,
+  languages: applicant.languages,
+  companies: applicant.companies
+};
 
     this.editResumeFile = null;
     this.editMarksheetFile = null;
@@ -131,23 +149,32 @@ export class DashboardComponent implements OnInit {
     this.selectedLanguageNames = this.selectedLanguages.map(
       lang => lang.name
     );
+    this.selectedCompanies =
+  this.parseStoredCompanies(applicant.companies);
   }
+cancelEdit(): void {
 
-  cancelEdit(): void {
-    this.editingId = null;
-    this.editData = {
-      name: '',
-      email: '',
-      phone: '',
-      qualification: '',
-      gender: '',
-      languages: ''
-    };
-    this.editResumeFile = null;
-    this.editMarksheetFile = null;
-    this.selectedLanguages = [];
-    this.selectedLanguageNames = [];
-  }
+  this.editingId = null;
+
+  this.editData = {
+    name: '',
+    email: '',
+    phone: '',
+    qualification: '',
+    gender: '',
+    languages: '',
+    companies: ''
+  };
+
+  this.editResumeFile = null;
+  this.editMarksheetFile = null;
+
+  this.selectedLanguages = [];
+  this.selectedLanguageNames = [];
+
+  this.selectedCompanies = [];
+
+}
 
   onEditResumeSelect(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
@@ -310,6 +337,55 @@ export class DashboardComponent implements OnInit {
     const parsed = this.parseStoredLanguages(value);
     return parsed.map(lang => lang.name).join(', ');
   }
+  getCompanySummary(value: string): string {
+
+  if (!value) {
+    return '';
+  }
+
+  try {
+    return JSON.parse(value).join(', ');
+  }
+  catch {
+    return value;
+  }
+
+}
+parseStoredCompanies(value: string): string[] {
+
+  if (!value) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(value);
+  }
+  catch {
+    return value
+      .split(',')
+      .map(x => x.trim())
+      .filter(x => x);
+  }
+
+}
+toggleCompany(company: string, event: any): void {
+
+  if (event.target.checked) {
+
+    if (!this.selectedCompanies.includes(company)) {
+      this.selectedCompanies.push(company);
+    }
+
+  } else {
+
+    this.selectedCompanies =
+      this.selectedCompanies.filter(
+        x => x !== company
+      );
+
+  }
+
+}
 
   openEditModal(applicant: any): void {
 
@@ -379,6 +455,10 @@ export class DashboardComponent implements OnInit {
       'languages',
       JSON.stringify(this.selectedLanguages)
     );
+    formData.append(
+  'companies',
+  JSON.stringify(this.selectedCompanies)
+);
     if (this.editResumeFile) {
       formData.append('resume', this.editResumeFile);
     }
