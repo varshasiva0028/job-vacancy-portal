@@ -402,6 +402,10 @@ removeLanguage(name: string): void {
       'languages',
       JSON.stringify(this.selectedLanguages)
     );
+    formData.append(
+  'companies',
+  JSON.stringify(this.selectedCompanies)
+);
     this.http.post(
       'http://localhost:8081/api/applicants',
       formData,
