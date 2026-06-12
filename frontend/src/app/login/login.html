@@ -9,20 +9,14 @@
         <p class="subtitle">Please log in to access the job application system</p>
       </div>
 
-      <form #loginForm="ngForm" (ngSubmit)="login()" class="login-form-element">
+      <form #loginForm="ngForm" (ngSubmit)="login()" class="login-form-element" autocomplete="off">
         <div class="form-group">
           <label for="loginUsername">Username / Email ID:</label>
           <div class="input-wrapper">
             <span class="input-icon">👤</span>
-            <input
-              type="text"
-              id="loginUsername"
-              placeholder="Enter username or email"
-              [(ngModel)]="loginInput.usernameOrEmail"
-              name="usernameOrEmail"
-              required
-              class="login-input"
-            >
+            <input type="text" id="loginUsername" placeholder="Enter username or email"
+              [(ngModel)]="loginInput.usernameOrEmail" name="usernameOrEmail" autocomplete="off" required
+              class="login-input">
           </div>
         </div>
 
@@ -30,15 +24,8 @@
           <label for="loginPassword">Password:</label>
           <div class="input-wrapper">
             <span class="input-icon">🔒</span>
-            <input
-              type="password"
-              id="loginPassword"
-              placeholder="Enter password"
-              [(ngModel)]="loginInput.password"
-              name="password"
-              required
-              class="login-input"
-            >
+            <input type="password" id="loginPassword" placeholder="Enter password" [(ngModel)]="loginInput.password"
+              name="password" required class="login-input">
           </div>
         </div>
 
@@ -50,7 +37,8 @@
       </form>
 
       <div class="auth-toggle-link">
-        Don't have an account? <a href="javascript:void(0)" (click)="isRegisterMode = true; loginError = ''">Register Now</a>
+        Don't have an account? <a href="javascript:void(0)" (click)="isRegisterMode = true; loginError = ''">Register
+          Now</a>
       </div>
     </div>
 
@@ -67,15 +55,8 @@
           <label for="regUsername">Username / Email ID:</label>
           <div class="input-wrapper">
             <span class="input-icon">👤</span>
-            <input
-              type="text"
-              id="regUsername"
-              placeholder="Create username or email"
-              [(ngModel)]="registerInput.usernameOrEmail"
-              name="usernameOrEmail"
-              required
-              class="login-input"
-            >
+            <input type="text" id="regUsername" placeholder="Create username or email"
+              [(ngModel)]="registerInput.usernameOrEmail" name="usernameOrEmail" required class="login-input">
           </div>
         </div>
 
@@ -83,15 +64,8 @@
           <label for="regPassword">Password:</label>
           <div class="input-wrapper">
             <span class="input-icon">🔒</span>
-            <input
-              type="password"
-              id="regPassword"
-              placeholder="Create password"
-              [(ngModel)]="registerInput.password"
-              name="password"
-              required
-              class="login-input"
-            >
+            <input type="password" id="regPassword" placeholder="Create password" [(ngModel)]="registerInput.password"
+              name="password" required class="login-input">
           </div>
         </div>
 
@@ -99,15 +73,8 @@
           <label for="regConfirmPassword">Confirm Password:</label>
           <div class="input-wrapper">
             <span class="input-icon">🛡️</span>
-            <input
-              type="password"
-              id="regConfirmPassword"
-              placeholder="Re-enter password"
-              [(ngModel)]="registerInput.confirmPassword"
-              name="confirmPassword"
-              required
-              class="login-input"
-            >
+            <input type="password" id="regConfirmPassword" placeholder="Re-enter password"
+              [(ngModel)]="registerInput.confirmPassword" name="confirmPassword" required class="login-input">
           </div>
         </div>
 
@@ -120,354 +87,4 @@
     </div>
   </div>
 
-  <!-- Authenticated Job Application & Dashboard Area -->
-  <div *ngIf="isLoggedIn" class="authenticated-container">
-    <!-- Authenticated Header with Logout -->
-    <div class="auth-header">
-      <span class="welcome-text">Logged in as: <strong>{{ loginInput.usernameOrEmail }}</strong></span>
-      <button (click)="logout()" class="btn-logout">
-        <span class="logout-icon">↩</span> Log Out
-      </button>
-    </div>
-
-    <!-- View Toggle Header (Centered) -->
-    <div class="toggle-container">
-      <button
-        type="button"
-        [class.active]="!showDashboard"
-        (click)="showDashboard = false"
-        class="toggle-btn"
-      >
-        Apply Now
-      </button>
-      <button
-        type="button"
-        [class.active]="showDashboard"
-        (click)="showDashboard = true"
-        class="toggle-btn"
-      >
-        Dashboard
-      </button>
-    </div>
-
-    <!-- Apply Now Section (Centered Card) -->
-    <div *ngIf="!showDashboard" class="form-container">
-      <h2>Job Application Form</h2>
-
-      <form #form="ngForm" (ngSubmit)="submitForm()" *ngIf="!submitted" class="basic-form">
-        <div class="form-group">
-          <label for="name">Full Name:</label>
-          <input
-            type="text"
-            id="name"
-            placeholder="Enter your name"
-            [(ngModel)]="applicant.name"
-            name="name"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email Address:</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Enter your email"
-            [(ngModel)]="applicant.email"
-            name="email"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Phone Number:</label>
-          <input
-            type="text"
-            id="phone"
-            placeholder="Enter 10-digit phone number"
-            [(ngModel)]="applicant.phone"
-            name="phone"
-            maxlength="10"
-            required
-          >
-
-      </div>
-
-      <div class="form-group">
-      <label for="qualification">Qualification:</label>
-      <input
-        type="text"
-        id="qualification"
-        placeholder="Enter your qualification"
-        [(ngModel)]="applicant.qualification"
-        name="qualification"
-        required>
-    </div>
-    <div class="form-group">
-      <label>Gender:</label>
-      <div class="radio-group">
-        <label class="radio-option">
-          <input
-            type="radio"
-            name="gender"
-            value="Male"
-            [(ngModel)]="applicant.gender"
-            required>
-          Male
-        </label>
-
-        <label class="radio-option">
-          <input
-            type="radio"
-            name="gender"
-            value="Female"
-            [(ngModel)]="applicant.gender">
-          Female
-        </label>
-
-      </div>
-
-    </div>
-
-    <div class="form-group">
-<label>Languages Known:</label><br>
-
-<div class="dropdown-header">
-
-  <button
-    type="button"
-    class="dropdown-btn"
-    (click)="showLanguages = !showLanguages">
-
-    Select Languages ▼
-
-  </button>
-
- <button
-  *ngIf="showLanguages"
-  type="button"
-  class="done-btn"
-  (click)="showLanguages = false">
-
-  Done
-
-</button>
-
-</div>
-
-<div
-  *ngIf="showLanguages"
-  class="dropdown-content">
-
-  <div *ngFor="let group of languageGroups">
-
-    <strong>{{ group.label }}</strong>
-
-    <div *ngFor="let option of group.options">
-
-      <label>
-
-        <input
-          type="checkbox"
-          [checked]="selectedLanguageNames.includes(option)"
-          (change)="toggleLanguage(option, $event)">
-
-        {{ option }}
-
-      </label>
-
-    </div>
-
-    <hr>
-
-  </div>
-
-</div>
-
-  <div
-    class="language-card-list"
-    *ngIf="selectedLanguages.length > 0">
-
-    <div
-      class="language-card"
-      *ngFor="let language of selectedLanguages">
-
-      <div class="language-card-header">
-
-        <h4>{{ language.name }}</h4>
-
-        <button
-          type="button"
-          class="trash-btn"
-          (click)="removeLanguage(language.name)">
-
-          <i class="fas fa-trash"></i>
-
-        </button>
-
-      </div>
-
-      <div class="skill-options">
-
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="language.read"
-            [ngModelOptions]="{standalone:true}"
-            (change)="updateLanguageAllState(language)">
-          Read
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="language.write"
-            [ngModelOptions]="{standalone:true}"
-            (change)="updateLanguageAllState(language)">
-          Write
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="language.speak"
-            [ngModelOptions]="{standalone:true}"
-            (change)="updateLanguageAllState(language)">
-          Speak
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="language.all"
-            [ngModelOptions]="{standalone:true}"
-            (change)="toggleAll(language)">
-          All
-        </label>
-
-      </div>
-
-      <div class="progress-wrapper">
-
-        <progress
-          [value]="getProgress(language)"
-          max="100">
-        </progress>
-
-        <span>
-          {{ getProgress(language) }}%
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-<label>Company Name:</label>
-
-<div class="custom-dropdown">
-
-  <div class="dropdown-header">
-
-    <button
-      type="button"
-      class="dropdown-btn"
-      (click)="showCompanies = !showCompanies">
-
-      {{
-      selectedCompanies.length > 0
-      ? selectedCompanies.join(', ')
-      : 'Select Company'
-      }}
-
-      ▼
-
-    </button>
-
-    <button
-      *ngIf="showCompanies"
-      type="button"
-      class="done-btn"
-      (click)="showCompanies = false">
-
-      Done
-
-    </button>
-
-  </div>
-<div
-  *ngIf="showCompanies"
-  class="company-content">
-
-  <div class="company-list">
-
-    <label *ngFor="let company of companyNames">
-
-      <input
-        type="checkbox"
-        [checked]="selectedCompanies.includes(company)"
-        (change)="toggleCompany(company, $event)">
-
-      {{ company }}
-
-    </label>
-
-  </div>
-
-</div>
-
-</div>
-        <div class="form-group">
-          <label>Upload Resume:</label>
-          <input
-            type="file"
-            (change)="onResumeSelect($event)"
-            required
-            class="file-input"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Upload Marksheet:</label>
-          <input
-            type="file"
-            (change)="onMarksheetSelect($event)"
-            required
-            class="file-input"
-          >
-        </div>
-        <div class="form-group">
-  <label>Upload Photo:</label>
-  <input
-    type="file"
-    accept="image/*"
-    (change)="onPhotoSelect($event)"
-    required
-    class="file-input"
-  >
-</div>
-
-        <button type="submit" class="btn-primary">Submit Application</button>
-      </form>
-
-      <!-- Success State -->
-      <div *ngIf="submitted" class="success-box">
-        <h3>Application Submitted Successfully!</h3>
-        <p>Your details have been saved in our registry.</p>
-        <div class="actions">
-          <button (click)="downloadForm()" class="btn-secondary">Download Details</button>
-          <button (click)="submitted = false" class="btn-primary">New Application</button>
-          <button (click)="showDashboard = true; submitted = false" class="btn-primary">Open Dashboard</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dashboard Section (Full Width Layout) -->
-    <div *ngIf="showDashboard" class="dashboard-full-width">
-      <h2>Applicants Dashboard</h2>
-      <app-dashboard></app-dashboard>
-    </div>
-  </div>
-</div>
+ 

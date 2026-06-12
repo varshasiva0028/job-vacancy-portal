@@ -1,140 +1,3 @@
-.basic-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.form-group label {
-  font-weight: bold;
-  font-size: 14px;
-  color: #333333;
-}
-
-.form-group input[type="text"],
-.form-group input[type="email"] {
-  padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  font-size: 14px;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.form-group input[type="text"]:focus,
-.form-group input[type="email"]:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-.file-input {
-  padding: 5px 0;
-}
-
-/* Buttons */
-.btn-primary {
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  padding: 12px 20px;
-  font-size: 15px;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.btn-secondary {
-  background-color: #f8f9fa;
-  color: #333333;
-  border: 1px solid #cccccc;
-  padding: 12px 20px;
-  font-size: 15px;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-secondary:hover {
-  background-color: #e2e6ea;
-}
-
-/* Success Box */
-.success-box {
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
-  padding: 20px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.success-box h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.success-box p {
-  margin-bottom: 15px;
-}
-
-.success-box .actions {
-  display: flex;
-  gap: 10px;
-}
-
-.success-box .actions button {
-  width: auto;
-  flex: 1;
-}
-
-/* View Toggle Styles */
-.toggle-container {
-  display: flex;
-  background-color: #e9ecef;
-  padding: 4px;
-  border-radius: 6px;
-  margin-bottom: 25px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.toggle-btn {
-  flex: 1;
-  border: none;
-  background: none;
-  padding: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  color: #495057;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s ease-in-out;
-  text-align: center;
-}
-
-.toggle-btn:hover {
-  color: #212529;
-}
-
-.toggle-btn.active {
-  background-color: #ffffff;
-  color: #007bff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-/* Login Screen Styles */
 .login-wrapper {
   display: flex;
   justify-content: center;
@@ -169,8 +32,6 @@
   font-size: 24px;
   color: #2c3e50;
   margin: 0 0 8px 0;
-  border-bottom: none;
-  padding: 0;
 }
 
 .login-header .subtitle {
@@ -185,7 +46,6 @@
   gap: 20px;
 }
 
-/* Input Styles with Icons */
 .input-wrapper {
   position: relative;
   display: flex;
@@ -202,7 +62,7 @@
 
 .login-input {
   width: 100%;
-  padding: 12px 12px 12px 40px !important;
+  padding: 12px 12px 12px 40px;
   border: 1.5px solid #dcdde1;
   border-radius: 6px;
   font-size: 15px;
@@ -217,15 +77,24 @@
   outline: none;
 }
 
-.btn-login {
+.btn-primary {
   margin-top: 10px;
   padding: 14px;
-  font-size: 16px;
+  width: 100%;
+  border: none;
   border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-/* Error Message Styling */
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
 .login-error-msg {
   background-color: #fce8e6;
   border: 1px solid #f5c2c2;
@@ -237,7 +106,6 @@
   text-align: center;
 }
 
-/* Authenticated Header & Logout button */
 .auth-header {
   display: flex;
   justify-content: space-between;
@@ -272,7 +140,7 @@
 
 .btn-logout:hover {
   background-color: #ea2027;
-  color: #ffffff;
+  color: white;
   border-color: #ea2027;
 }
 
@@ -280,7 +148,6 @@
   font-size: 14px;
 }
 
-/* Auth toggle link styling */
 .auth-toggle-link {
   text-align: center;
   margin-top: 20px;
@@ -298,161 +165,4 @@
 .auth-toggle-link a:hover {
   color: #0056b3;
   text-decoration: underline;
-}
-.radio-group,
-.checkbox-group {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.radio-group label,
-.checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-}
-.language-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px;
-  margin-top: 15px;
-  background: #f9f9f9;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.language-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.skill-options {
-  margin-top: 10px;
-}
-
-.skill-options label {
-  margin-right: 15px;
-}
-
-.progress-wrapper {
-  margin-top: 10px;
-}
-
-.custom-dropdown {
-  position: relative;
-  width: 300px;
-}
-
-.dropdown-btn {
-  min-width: 180px;
-  padding: 10px 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.dropdown-content {
-  position: relative;
-  width: 100%;
-  max-height: 250px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 10px;
-  margin-top: 5px;
-  
-}
-.language-card-list {
-  margin-top: 15px;
-}
-.trash-btn {
-  border: none;
-  background: transparent;
-  color: #dc3545;
-  cursor: pointer;
-  font-size: 16px;
-}
-.dropdown-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: fit-content;
-}
-
-.done-btn {
-  padding: 10px 16px;
-  background: #28a745;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.done-btn:hover {
-  background: #218838;
-}
-.company-dropdown {
-  position: relative;
-  width: fit-content;
-}
-
-.company-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.company-btn {
-  min-width: 180px;
-  padding: 10px 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: white;
-  cursor: pointer;
-  font-size: 14px;
-  text-align: left;
-}
-
-.company-content {
-  margin-top: 8px;
-  padding: 12px;
-  width: 300px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
-}
-.company-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px 20px;
-}
-
-.company-list label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  font-size: 15px;
-}
-.company-done-btn {
-  padding: 10px 18px;
-  background: #28a745;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: auto;
-  font-weight: 600;
-}
-
-.company-done-btn:hover {
-  background: #218838;
 }

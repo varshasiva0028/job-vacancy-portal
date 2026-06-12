@@ -5,6 +5,7 @@ import com.example.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.backend.security.JwtUtil;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,7 +32,9 @@ public class UserController {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
-        // save User
+        user.setRole("USER");
+
+// save User
         service.save(user);
         // Backend sends response to frontend
         return ResponseEntity.ok("Registration Successful");
@@ -39,24 +42,38 @@ public class UserController {
 
     // Receives Request
     @PostMapping("/login")
-    public ResponseEntity<String> login(
+    public ResponseEntity<?> login(
             @RequestParam String username,
             @RequestParam String password) {
-        // Controller calls
-        User user = service.findByUsername(username);
-        // return if user not found
-        if (user == null) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("User not found");
-        }
-        // checks
-        if (!user.getPassword().equals(password)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Invalid Password");
-        }
 
-        return ResponseEntity.ok("Login Successful");
+        try {
+
+            User user = service.findByUsername(username);
+
+            if (user == null) {
+                return ResponseEntity.badRequest().body("User not found");
+            }
+
+            if (!user.getPassword().equals(password)) {
+                return ResponseEntity.badRequest().body("Invalid Password");
+            }
+
+            String token = JwtUtil.generateToken(
+                    user.getUsername(),
+                    user.getRole());
+
+            return ResponseEntity.ok(
+                    java.util.Map.of(
+                            "token", token,
+                            "role", user.getRole()));
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.internalServerError()
+                    .body(e.getMessage());
+        }
     }
+
 }

@@ -112,32 +112,42 @@ constructor(
   formData.append('username', email);
   formData.append('password', password);
 //Calls Backend
-  this.http.post(
-    'http://localhost:8081/api/users/login',
-    formData,
-    { responseType: 'text' }
-  ).subscribe({
-//User enters application page
-    next: (response) => {
+this.http.post<any>(
+  'http://localhost:8081/api/users/login',
+  formData
+)
+.subscribe({
 
-      alert(response);
+  next: (response) => {
 
-      this.isLoggedIn = true;
-      this.loginError = '';
+    localStorage.setItem(
+      'token',
+      response.token
+    );
 
-      this.router.navigate([1, 'apply']);
-    },
+    localStorage.setItem(
+      'role',
+      response.role
+    );
 
-    error: (error) => {
+    this.isLoggedIn = true;
+    this.loginError = '';
 
-      this.loginError =
-        error.error || 'Invalid username or password';
+    alert('Login Successful');
 
-      alert(this.loginError);
+    this.router.navigate(['apply']);
+  },
 
-    }
+  error: (error) => {
 
-  });
+    this.loginError =
+      error.error || 'Invalid username or password';
+
+    alert(this.loginError);
+
+  }
+
+});
 
 }
 

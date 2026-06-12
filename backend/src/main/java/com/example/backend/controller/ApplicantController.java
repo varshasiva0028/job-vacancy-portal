@@ -1,19 +1,33 @@
 package com.example.backend.controller;
 
-import com.example.backend.entity.Applicant;
-import com.example.backend.service.ApplicantService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.backend.entity.Applicant;
+import com.example.backend.security.JwtUtil;
+import com.example.backend.service.ApplicantService;
+
+import io.jsonwebtoken.Claims;
 
 @RestController
 @RequestMapping("/api/applicants")
@@ -110,8 +124,37 @@ public class ApplicantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Applicant>> getAllApplicants() {
-        return ResponseEntity.ok(service.getAllApplicants());
+    public ResponseEntity<List<Applicant>> getAllApplicants(
+            @RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.replace("Bearer ", "");
+
+        Claims claims = JwtUtil.extractClaims(token);
+
+        String username = claims.getSubject();
+
+        String role = claims.get("role", String.class);
+
+        if ("ADMIN".equals(role)) {
+
+            return ResponseEntity.ok(
+                    service.getAllApplicants()
+            );
+
+        }
+        Applicant applicant
+                = service.getApplicantByEmail(username);
+
+        if (applicant == null) {
+
+            return ResponseEntity.ok(
+                    Collections.emptyList()
+            );
+
+        }
+        return ResponseEntity.ok(
+                Collections.singletonList(applicant)
+        );
     }
 
     @GetMapping("/{id}")

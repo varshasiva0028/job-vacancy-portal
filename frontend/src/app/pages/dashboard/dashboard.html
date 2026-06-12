@@ -133,24 +133,38 @@
 
           <div class="company-header">
 
-            <button type="button" class="company-btn" (click)="showCompanies = !showCompanies">
+          <div class="company-header">
 
-              {{
-              selectedCompanies.length > 0
-              ? selectedCompanies.join(', ')
-              : 'Select Company'
-              }}
+  <button
+    type="button"
+    class="company-btn"
+    (click)="showCompanies = !showCompanies">
 
-              ▼
+    <span class="company-text">
+      {{
+        selectedCompanies.length > 0
+          ? selectedCompanies.join(', ')
+          : 'Select Company'
+      }}
+    </span>
 
-            </button>
+    <span class="company-arrow">
+      ▼
+    </span>
 
-            <button *ngIf="showCompanies" type="button" class="company-done-btn" (click)="showCompanies = false">
+  </button>
 
-              Done
+  <button
+    *ngIf="showCompanies"
+    type="button"
+    class="company-done-btn"
+    (click)="showCompanies = false">
 
-            </button>
+    Done
 
+  </button>
+
+</div>
           </div>
 
           <div *ngIf="showCompanies" class="company-content">

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { FilterPipe } from '../../pipe';
 
@@ -13,7 +13,7 @@ import { FilterPipe } from '../../pipe';
   templateUrl: './dashboard.html'
 })
 export class DashboardComponent implements OnInit {
-//available languages
+  //available languages
   languageGroups = [
     {
       label: 'Indian Languages',
@@ -47,22 +47,22 @@ export class DashboardComponent implements OnInit {
     }
   ];
   companyNames = [
-  'Google',
-  'Microsoft',
-  'Amazon',
-  'Apple',
-  'Meta',
-  'Netflix',
-  'IBM',
-  'Infosys',
-  'TCS',
-  'Wipro'
-];
+    'Google',
+    'Microsoft',
+    'Amazon',
+    'Apple',
+    'Meta',
+    'Netflix',
+    'IBM',
+    'Infosys',
+    'TCS',
+    'Wipro'
+  ];
 
-selectedCompanies: string[] = [];
+  selectedCompanies: string[] = [];
 
-showCompanies = false;
-//selected languages for edit form
+  showCompanies = false;
+  //selected languages for edit form
   selectedLanguageNames: string[] = [];
   showLanguages = false;
   selectedLanguages: Array<{
@@ -84,15 +84,15 @@ showCompanies = false;
         : 'list';
   }
   editingId: number | null = null;
- editData = {
-  name: '',
-  email: '',
-  phone: '',
-  qualification: '',
-  gender: '',
-  languages: '',
-  companies: ''
-};
+  editData = {
+    name: '',
+    email: '',
+    phone: '',
+    qualification: '',
+    gender: '',
+    languages: '',
+    companies: ''
+  };
   editResumeFile: File | null = null;
   editMarksheetFile: File | null = null;
 
@@ -117,15 +117,35 @@ showCompanies = false;
 
   loadApplicants(): void {
 
-    this.http.get<any[]>('http://localhost:8081/api/applicants')
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    this.http.get<any[]>(
+      'http://localhost:8081/api/applicants',
+      { headers }
+    )
       .subscribe({
+
         next: (data) => {
+
           this.applicants = data;
+
           this.cdr.detectChanges();
+
         },
+
         error: (error) => {
-          console.error('Error loading applicants:', error);
+
+          console.error(
+            'Error loading applicants:',
+            error
+          );
+
         }
+
       });
 
   }
@@ -133,15 +153,15 @@ showCompanies = false;
   startEdit(applicant: any): void {
     this.editingId = applicant.id;
 
-   this.editData = {
-  name: applicant.name,
-  email: applicant.email,
-  phone: applicant.phone,
-  qualification: applicant.qualification,
-  gender: applicant.gender,
-  languages: applicant.languages,
-  companies: applicant.companies
-};
+    this.editData = {
+      name: applicant.name,
+      email: applicant.email,
+      phone: applicant.phone,
+      qualification: applicant.qualification,
+      gender: applicant.gender,
+      languages: applicant.languages,
+      companies: applicant.companies
+    };
 
     this.editResumeFile = null;
     this.editMarksheetFile = null;
@@ -150,31 +170,31 @@ showCompanies = false;
       lang => lang.name
     );
     this.selectedCompanies =
-  this.parseStoredCompanies(applicant.companies);
+      this.parseStoredCompanies(applicant.companies);
   }
-cancelEdit(): void {
+  cancelEdit(): void {
 
-  this.editingId = null;
+    this.editingId = null;
 
-  this.editData = {
-    name: '',
-    email: '',
-    phone: '',
-    qualification: '',
-    gender: '',
-    languages: '',
-    companies: ''
-  };
+    this.editData = {
+      name: '',
+      email: '',
+      phone: '',
+      qualification: '',
+      gender: '',
+      languages: '',
+      companies: ''
+    };
 
-  this.editResumeFile = null;
-  this.editMarksheetFile = null;
+    this.editResumeFile = null;
+    this.editMarksheetFile = null;
 
-  this.selectedLanguages = [];
-  this.selectedLanguageNames = [];
+    this.selectedLanguages = [];
+    this.selectedLanguageNames = [];
 
-  this.selectedCompanies = [];
+    this.selectedCompanies = [];
 
-}
+  }
 
   onEditResumeSelect(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
@@ -186,7 +206,7 @@ cancelEdit(): void {
       this.editMarksheetFile = event.target.files[0];
     }
   }
-//Creating a Language
+  //Creating a Language
   createLanguageSkill(name: string) {
     return {
       name,
@@ -196,7 +216,7 @@ cancelEdit(): void {
       all: false
     };
   }
-//Adding a Language
+  //Adding a Language
   addLanguage(name: string): void {
     if (!this.selectedLanguages.some(lang => lang.name === name)) {
       this.selectedLanguages.push(
@@ -208,7 +228,7 @@ cancelEdit(): void {
       this.selectedLanguageNames.push(name);
     }
   }
-//removing a Language
+  //removing a Language
   removeLanguage(name: string): void {
     this.selectedLanguages = this.selectedLanguages.filter(
       lang => lang.name !== name
@@ -219,14 +239,14 @@ cancelEdit(): void {
   }
   toggleLanguage(language: string, event: any): void {
 
-  if (event.target.checked) {
-    this.addLanguage(language);
-  } else {
-    this.removeLanguage(language);
-  }
+    if (event.target.checked) {
+      this.addLanguage(language);
+    } else {
+      this.removeLanguage(language);
+    }
 
-}
-//Synchronizing Dropdown
+  }
+  //Synchronizing Dropdown
   syncSelectedLanguages(names: string[]): void {
     const removed = this.selectedLanguages
       .map(lang => lang.name)
@@ -240,7 +260,7 @@ cancelEdit(): void {
       }
     });
   }
-//All Checkbox
+  //All Checkbox
   toggleAll(language: any): void {
     if (language.all) {
       language.read = true;
@@ -252,11 +272,11 @@ cancelEdit(): void {
       language.speak = false;
     }
   }
-//Updating All Automatically
+  //Updating All Automatically
   updateLanguageAllState(language: any): void {
     language.all = language.read && language.write && language.speak;
   }
-//Progress Calculation
+  //Progress Calculation
   getProgress(language: any): number {
     if (language.all) {
       return 100;
@@ -339,53 +359,53 @@ cancelEdit(): void {
   }
   getCompanySummary(value: string): string {
 
-  if (!value) {
-    return '';
-  }
-
-  try {
-    return JSON.parse(value).join(', ');
-  }
-  catch {
-    return value;
-  }
-
-}
-parseStoredCompanies(value: string): string[] {
-
-  if (!value) {
-    return [];
-  }
-
-  try {
-    return JSON.parse(value);
-  }
-  catch {
-    return value
-      .split(',')
-      .map(x => x.trim())
-      .filter(x => x);
-  }
-
-}
-toggleCompany(company: string, event: any): void {
-
-  if (event.target.checked) {
-
-    if (!this.selectedCompanies.includes(company)) {
-      this.selectedCompanies.push(company);
+    if (!value) {
+      return '';
     }
 
-  } else {
-
-    this.selectedCompanies =
-      this.selectedCompanies.filter(
-        x => x !== company
-      );
+    try {
+      return JSON.parse(value).join(', ');
+    }
+    catch {
+      return value;
+    }
 
   }
+  parseStoredCompanies(value: string): string[] {
 
-}
+    if (!value) {
+      return [];
+    }
+
+    try {
+      return JSON.parse(value);
+    }
+    catch {
+      return value
+        .split(',')
+        .map(x => x.trim())
+        .filter(x => x);
+    }
+
+  }
+  toggleCompany(company: string, event: any): void {
+
+    if (event.target.checked) {
+
+      if (!this.selectedCompanies.includes(company)) {
+        this.selectedCompanies.push(company);
+      }
+
+    } else {
+
+      this.selectedCompanies =
+        this.selectedCompanies.filter(
+          x => x !== company
+        );
+
+    }
+
+  }
 
   openEditModal(applicant: any): void {
 
@@ -456,9 +476,9 @@ toggleCompany(company: string, event: any): void {
       JSON.stringify(this.selectedLanguages)
     );
     formData.append(
-  'companies',
-  JSON.stringify(this.selectedCompanies)
-);
+      'companies',
+      JSON.stringify(this.selectedCompanies)
+    );
     if (this.editResumeFile) {
       formData.append('resume', this.editResumeFile);
     }
@@ -467,10 +487,19 @@ toggleCompany(company: string, event: any): void {
       formData.append('marksheet', this.editMarksheetFile);
     }
 
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
     this.http.put(
       `http://localhost:8081/api/applicants/${this.editingId}`,
       formData,
-      { responseType: 'text' }
+      {
+        headers,
+        responseType: 'text'
+      }
     ).subscribe({
       next: (response) => {
         alert(response);
@@ -486,37 +515,46 @@ toggleCompany(company: string, event: any): void {
   }
   deleteApplicant(id: number): void {
 
-  const confirmed = confirm(
-    'Are you sure you want to delete this applicant?'
-  );
+    const confirmed = confirm(
+      'Are you sure you want to delete this applicant?'
+    );
 
-  if (!confirmed) {
-    return;
+    if (!confirmed) {
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    this.http.delete(
+      `http://localhost:8081/api/applicants/${id}`,
+      {
+        headers,
+        responseType: 'text'
+      }
+    )
+      .subscribe({
+
+        next: (response) => {
+
+          alert(response);
+
+          this.loadApplicants();
+
+        },
+
+        error: (error) => {
+
+          console.error(error);
+
+          alert(error.error);
+
+        }
+
+      });
+
   }
-
-  this.http.delete(
-    `http://localhost:8081/api/applicants/${id}`,
-    { responseType: 'text' }
-  )
-  .subscribe({
-
-    next: (response) => {
-
-      alert(response);
-
-      this.loadApplicants();
-
-    },
-
-   error: (error) => {
-
-  console.error(error);
-
-  alert(error.error);
-
-}
-
-  });
-
-}
 }

@@ -634,16 +634,6 @@
   gap: 12px;
 }
 
-.company-btn {
-  min-width: 220px;
-  padding: 10px 14px;
-  border: 1px solid #ced4da;
-  border-radius: 10px;
-  background: white;
-  cursor: pointer;
-  text-align: left;
-}
-
 .company-done-btn {
   width: auto;
   padding: 10px 16px;
@@ -672,4 +662,31 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+}
+.company-btn{
+    width: 200px;
+    min-height: 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 15px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+
+    cursor: pointer;
+}
+
+.company-text{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.company-arrow{
+    margin-left: 10px;
+    font-size: 14px;
 }

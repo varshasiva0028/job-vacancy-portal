@@ -1,236 +1,314 @@
-<h2>Job Application Form</h2>
+<div class="form-container">
 
-<form #form="ngForm" (ngSubmit)="submitForm(form)">
+  <h2>
+    <i class="fas fa-briefcase"></i>
+    Job Application Form
+  </h2>
 
-  <input type="text" name="name" [(ngModel)]="applicant.name" required>
-  <br><br>
+  <form #form="ngForm" (ngSubmit)="submitForm(form)" *ngIf="!submitted">
 
-  <input type="email" name="email" [(ngModel)]="applicant.email" required>
-  <br><br>
-
-  <input type="text" name="phone" [(ngModel)]="applicant.phone" required>
-  <br><br>
-
-  <input type="text" name="qualification" [(ngModel)]="applicant.qualification" required>
-  <br><br>
-
-  <label>Gender:</label><br>
-
-<label>
-  <input
-    type="radio"
-    name="gender"
-    value="Male"
-    [(ngModel)]="applicant.gender"
-    required>
-  Male
-</label>
-
-<label style="margin-left:20px;">
-  <input
-    type="radio"
-    name="gender"
-    value="Female"
-    [(ngModel)]="applicant.gender">
-  Female
-</label>
-
-<br><br>
-
-  <label>Languages Known:</label><br>
-
-<div class="dropdown-header">
-
-  <button
-    type="button"
-    class="dropdown-btn"
-    (click)="showLanguages = !showLanguages">
-
-    Select Languages ▼
-
-  </button>
-
-<button
-  *ngIf="showLanguages"
-  type="button"
-  class="done-btn"
-  (click)="showLanguages = false">
-
-  Done
-
-</button>
-
-</div>
-
-<div
-  *ngIf="showLanguages"
-  class="dropdown-content">
-
-  <div *ngFor="let group of languageGroups">
-
-    <strong>{{ group.label }}</strong>
-
-    <div *ngFor="let option of group.options">
-
+    <!-- Full Name -->
+    <div class="form-group">
       <label>
-
-        <input
-          type="checkbox"
-          [checked]="selectedLanguageNames.includes(option)"
-          (change)="toggleLanguage(option, $event)">
-
-        {{ option }}
-
+        <i class="fas fa-user"></i>
+        Full Name
       </label>
 
+      <input type="text" placeholder="Enter your name" [(ngModel)]="applicant.name" name="name" required>
     </div>
 
-    <hr>
+    <!-- Email -->
+    <div class="form-group">
+      <label>
+        <i class="fas fa-envelope"></i>
+        Email Address
+      </label>
 
-  </div>
+      <input type="email" placeholder="Enter your email" [(ngModel)]="applicant.email" name="email" required>
+    </div>
 
-</div>
+    <!-- Phone -->
+    <div class="form-group">
+      <label>
+        <i class="fas fa-phone"></i>
+        Phone Number
+      </label>
 
-  <div
-    class="language-card-list"
-    *ngIf="selectedLanguages.length > 0">
+      <input type="text" maxlength="10" placeholder="Enter 10-digit phone number" [(ngModel)]="applicant.phone"
+        name="phone" required>
+    </div>
 
-    <div
-      class="language-card"
-      *ngFor="let language of selectedLanguages">
+    <!-- Qualification -->
+    <div class="form-group">
+      <label>
+        <i class="fas fa-graduation-cap"></i>
+        Qualification
+      </label>
 
-      <div class="language-card-header">
-        <h4>{{ language.name }}</h4>
-        <button
-          type="button"
-          class="trash-btn"
-          (click)="removeLanguage(language.name)"
-          aria-label="Remove {{ language.name }}">
-          <i class="fas fa-trash"></i>
+      <input type="text" placeholder="Enter your qualification" [(ngModel)]="applicant.qualification"
+        name="qualification" required>
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group">
+
+      <label>
+        <i class="fas fa-venus-mars"></i>
+        Gender
+      </label>
+
+      <div class="radio-group">
+
+        <label class="radio-option">
+          <input type="radio" name="gender" value="Male" [(ngModel)]="applicant.gender">
+
+          <i class="fas fa-mars"></i>
+          Male
+        </label>
+
+        <label class="radio-option">
+          <input type="radio" name="gender" value="Female" [(ngModel)]="applicant.gender">
+
+          <i class="fas fa-venus"></i>
+          Female
+        </label>
+
+      </div>
+
+    </div>
+
+    <!-- Languages -->
+    <div class="form-group">
+
+      <label>
+        <i class="fas fa-language"></i>
+        Languages Known
+      </label>
+
+      <div class="dropdown-header">
+
+        <button type="button" class="dropdown-btn" (click)="showLanguages = !showLanguages">
+
+          <i class="fas fa-globe"></i>
+          Select Languages
+          <i class="fas fa-chevron-down"></i>
+
         </button>
+
+        <button *ngIf="showLanguages" type="button" class="done-btn" (click)="showLanguages = false">
+
+          <i class="fas fa-check"></i>
+          Done
+
+        </button>
+
       </div>
 
-      <div class="skill-options">
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="language.read"
-            [ngModelOptions]="{standalone: true}"
-            (change)="updateLanguageAllState(language)">
-          Read
-        </label>
+      <div *ngIf="showLanguages" class="dropdown-content">
 
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="language.write"
-            [ngModelOptions]="{standalone: true}"
-            (change)="updateLanguageAllState(language)">
-          Write
-        </label>
+        <div *ngFor="let group of languageGroups">
 
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="language.speak"
-            [ngModelOptions]="{standalone: true}"
-            (change)="updateLanguageAllState(language)">
-          Speak
-        </label>
-     
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="language.all"
-            [ngModelOptions]="{standalone: true}"
-            (change)="toggleAll(language)">
-          All
-        </label>
+          <strong>{{group.label}}</strong>
+
+          <div *ngFor="let option of group.options">
+
+            <label>
+
+              <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
+                (change)="toggleLanguage(option,$event)">
+
+              {{option}}
+
+            </label>
+
+          </div>
+
+          <hr>
+
+        </div>
+
       </div>
 
-      <div class="progress-wrapper">
-        <progress
-          [value]="getProgress(language)"
-          max="100">
-        </progress>
-        <span>{{ getProgress(language) }}%</span>
+      <!-- Language Cards -->
+      <div class="language-card-list" *ngIf="selectedLanguages.length > 0">
+
+        <div class="language-card" *ngFor="let language of selectedLanguages">
+
+          <div class="language-card-header">
+
+            <h4>{{language.name}}</h4>
+
+            <button type="button" class="trash-btn" (click)="removeLanguage(language.name)">
+
+              <i class="fas fa-trash"></i>
+
+            </button>
+
+          </div>
+
+          <div class="skill-options">
+
+            <label>
+              <input type="checkbox" [(ngModel)]="language.read" [ngModelOptions]="{standalone:true}"
+                (change)="updateLanguageAllState(language)">
+              Read
+            </label>
+
+            <label>
+              <input type="checkbox" [(ngModel)]="language.write" [ngModelOptions]="{standalone:true}"
+                (change)="updateLanguageAllState(language)">
+              Write
+            </label>
+
+            <label>
+              <input type="checkbox" [(ngModel)]="language.speak" [ngModelOptions]="{standalone:true}"
+                (change)="updateLanguageAllState(language)">
+              Speak
+            </label>
+
+            <label>
+              <input type="checkbox" [(ngModel)]="language.all" [ngModelOptions]="{standalone:true}"
+                (change)="toggleAll(language)">
+              All
+            </label>
+
+          </div>
+
+          <div class="progress-wrapper">
+
+            <progress [value]="getProgress(language)" max="100">
+            </progress>
+
+            <span>
+              {{getProgress(language)}}%
+            </span>
+
+          </div>
+
+        </div>
+
       </div>
+
     </div>
-  </div>
 
-<br><br>
-<label>Company Name:</label>
+    <!-- Companies -->
+    <div class="form-group">
 
-<div class="custom-dropdown">
+      <label>
+        <i class="fas fa-building"></i>
+        Preferred Companies
+      </label>
 
-  <div class="dropdown-header">
+      <div class="dropdown-header">
 
-    <button
-      type="button"
-      class="dropdown-btn"
-      (click)="showCompanies = !showCompanies">
+        <button type="button" class="company-btn" (click)="showCompanies = !showCompanies">
 
-      {{
-      selectedCompanies.length > 0
-      ? selectedCompanies.join(', ')
-      : 'Select Company'
-      }}
+          <span class="company-text">
 
-      ▼
+            <i class="fas fa-briefcase"></i>
+
+            {{
+            selectedCompanies.length > 0
+            ? selectedCompanies.join(', ')
+            : 'Select Company'
+            }}
+
+          </span>
+
+          <i class="fas fa-chevron-down"></i>
+
+        </button>
+
+        <button *ngIf="showCompanies" type="button" class="company-done-btn" (click)="showCompanies = false">
+
+          <i class="fas fa-check"></i>
+          Done
+
+        </button>
+
+      </div>
+      <div *ngIf="showCompanies" class="company-content">
+
+        <div class="company-list">
+
+          <label *ngFor="let company of companyNames">
+
+            <input type="checkbox" [checked]="selectedCompanies.includes(company)"
+              (change)="toggleCompany(company,$event)">
+
+            {{company}}
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Upload Resume -->
+    <div class="form-group upload-card">
+
+      <label>
+        <i class="fas fa-file-pdf"></i>
+        Upload Resume
+      </label>
+
+      <input type="file" class="file-input" (change)="onResumeSelect($event)">
+
+    </div>
+
+    <!-- Upload Marksheet -->
+    <div class="form-group upload-card">
+
+      <label>
+        <i class="fas fa-file-alt"></i>
+        Upload Marksheet
+      </label>
+
+      <input type="file" class="file-input" (change)="onMarksheetSelect($event)">
+
+    </div>
+
+    <!-- Upload Photo -->
+    <div class="form-group upload-card">
+
+      <label>
+        <i class="fas fa-image"></i>
+        Upload Photo
+      </label>
+
+      <input type="file" accept="image/*" class="file-input" (change)="onPhotoSelect($event)">
+
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn-primary" [disabled]="loading">
+
+      <i class="fas fa-paper-plane"></i>
+      Submit Application
 
     </button>
 
-    <button
-      *ngIf="showCompanies"
-      type="button"
-      class="done-btn"
-      (click)="showCompanies = false">
+  </form>
 
-      Done
+  <!-- Success -->
+  <div *ngIf="submitted" class="success-box">
+
+    <h3>
+
+      <i class="fas fa-circle-check"></i>
+
+      Application Submitted Successfully!
+
+    </h3>
+
+    <button (click)="downloadForm()" class="btn-secondary">
+
+      Download Details
 
     </button>
 
   </div>
 
-  <div
-  *ngIf="showCompanies"
-  class="company-content">
-
-  <div class="company-list">
-
-    <label *ngFor="let company of companyNames">
-
-      <input
-        type="checkbox"
-        [checked]="selectedCompanies.includes(company)"
-        (change)="toggleCompany(company, $event)">
-
-      {{ company }}
-
-    </label>
-
-  </div>
-
-</div>
-
-</div>
-
-  <input type="file" (change)="onResumeSelect($event)">
-  <br><br>
-
-  <input type="file" (change)="onMarksheetSelect($event)">
-  <br><br>
-  <label>Upload Photo:</label>
-<input type="file" accept="image/*" (change)="onPhotoSelect($event)">
-<br><br>
-
-  <button type="submit" [disabled]="loading">
-    Submit
-  </button>
-
-</form>
-
-<div *ngIf="submitted">
-  <h3>Application Submitted Successfully</h3>
-  <button (click)="downloadForm()">Download</button>
 </div>
