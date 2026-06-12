@@ -9,13 +9,15 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
-    
-  path: ':dashboard',
-  component: DashboardComponent
-
+    path: 'dashboard',
+    component: DashboardComponent
   },
   {
-    path:':apply',
-    component:ApplyComponent
+    path: 'apply',
+    component: ApplyComponent
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
