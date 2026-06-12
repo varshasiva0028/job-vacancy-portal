@@ -31,15 +31,16 @@ public class ApplicantController {
             @RequestParam("qualification") String qualification,
             @RequestParam("gender") String gender,
             @RequestParam("languages") String languages,
-            @RequestParam("resume") MultipartFile resume,
-            @RequestParam("photo") MultipartFile photo,
-            @RequestParam("marksheet") MultipartFile marksheet) {
+            @RequestParam("companies") String companies,
+            @RequestParam(value = "resume", required = false) MultipartFile resume,
+            @RequestParam(value = "photo", required = false) MultipartFile photo,
+            @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
 
         try {
 
-            if (name == null || email == null || phone == null || qualification == null ||
-                    name.trim().isEmpty() || email.trim().isEmpty() ||
-                    phone.trim().isEmpty() || qualification.trim().isEmpty()) {
+            if (name == null || email == null || phone == null || qualification == null
+                    || name.trim().isEmpty() || email.trim().isEmpty()
+                    || phone.trim().isEmpty() || qualification.trim().isEmpty()) {
 
                 return ResponseEntity.badRequest().body("All fields are required");
             }
@@ -92,6 +93,7 @@ public class ApplicantController {
             applicant.setQualification(qualification.trim());
             applicant.setGender(gender.trim());
             applicant.setLanguages(languages.trim());
+            applicant.setCompanies(companies.trim());
             applicant.setResumePath(resumeFileName);
             applicant.setPhotoPath(photoFileName);
             applicant.setMarksheetPath(marksheetFileName);
@@ -127,15 +129,16 @@ public class ApplicantController {
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<String> updateApplicant(
             @PathVariable Long id,
-          @RequestParam("name") String name,
-@RequestParam("email") String email, 
-@RequestParam("phone") String phone, 
-@RequestParam("qualification") String qualification,
-@RequestParam("gender") String gender,
-@RequestParam("languages") String languages, 
-@RequestParam("resume") MultipartFile resume, 
-@RequestParam("photo") MultipartFile photo, 
-@RequestParam("marksheet") MultipartFile marksheet) {
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("phone") String phone,
+            @RequestParam("qualification") String qualification,
+            @RequestParam("gender") String gender,
+            @RequestParam("languages") String languages,
+            @RequestParam("companies") String companies,
+            @RequestParam(value = "resume", required = false) MultipartFile resume,
+            @RequestParam(value = "photo", required = false) MultipartFile photo,
+            @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
 
         try {
 
@@ -145,9 +148,9 @@ public class ApplicantController {
                 return ResponseEntity.notFound().build();
             }
 
-            if (name == null || email == null || phone == null || qualification == null ||
-                    name.trim().isEmpty() || email.trim().isEmpty() ||
-                    phone.trim().isEmpty() || qualification.trim().isEmpty()) {
+            if (name == null || email == null || phone == null || qualification == null
+                    || name.trim().isEmpty() || email.trim().isEmpty()
+                    || phone.trim().isEmpty() || qualification.trim().isEmpty()) {
 
                 return ResponseEntity.badRequest().body("All text fields are required");
             }
@@ -158,6 +161,7 @@ public class ApplicantController {
             applicant.setQualification(qualification.trim());
             applicant.setGender(gender.trim());
             applicant.setLanguages(languages.trim());
+            applicant.setCompanies(companies.trim());
 
             String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
 

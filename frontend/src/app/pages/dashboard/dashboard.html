@@ -127,63 +127,52 @@
       </div>
       <div class="edit-section">
 
-  <label><strong>Company Name:</strong></label>
+        <label><strong>Company Name:</strong></label>
 
-  <div class="company-dropdown">
+        <div class="company-dropdown">
 
-    <div class="company-header">
+          <div class="company-header">
 
-      <button
-        type="button"
-        class="company-btn"
-        (click)="showCompanies = !showCompanies">
+            <button type="button" class="company-btn" (click)="showCompanies = !showCompanies">
 
-        {{
-          selectedCompanies.length > 0
-            ? selectedCompanies.join(', ')
-            : 'Select Company'
-        }}
+              {{
+              selectedCompanies.length > 0
+              ? selectedCompanies.join(', ')
+              : 'Select Company'
+              }}
 
-        ▼
+              ▼
 
-      </button>
+            </button>
 
-      <button
-        *ngIf="showCompanies"
-        type="button"
-        class="company-done-btn"
-        (click)="showCompanies = false">
+            <button *ngIf="showCompanies" type="button" class="company-done-btn" (click)="showCompanies = false">
 
-        Done
+              Done
 
-      </button>
+            </button>
 
-    </div>
+          </div>
 
-    <div
-      *ngIf="showCompanies"
-      class="company-content">
+          <div *ngIf="showCompanies" class="company-content">
 
-      <div class="company-list">
+            <div class="company-list">
 
-        <label *ngFor="let company of companyNames">
+              <label *ngFor="let company of companyNames">
 
-          <input
-            type="checkbox"
-            [checked]="selectedCompanies.includes(company)"
-            (change)="toggleCompany(company,$event)">
+                <input type="checkbox" [checked]="selectedCompanies.includes(company)"
+                  (change)="toggleCompany(company,$event)">
 
-          {{ company }}
+                {{ company }}
 
-        </label>
+              </label>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
-
-    </div>
-
-  </div>
-
-</div>
     </div>
   </ng-template>
 

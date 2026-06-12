@@ -508,13 +508,13 @@ toggleCompany(company: string, event: any): void {
 
     },
 
-    error: (error) => {
+   error: (error) => {
 
-      console.error(error);
+  console.error(error);
 
-      alert('Failed to delete applicant');
+  alert(error.error);
 
-    }
+}
 
   });
 
