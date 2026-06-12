@@ -39,6 +39,7 @@ public class ApplicantController {
 
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<String> createApplicant(
+            @RequestHeader("Authorization") String authHeader,
             @RequestParam("name") String name,
             @RequestParam("email") String email,
             @RequestParam("phone") String phone,
@@ -49,6 +50,11 @@ public class ApplicantController {
             @RequestParam(value = "resume", required = false) MultipartFile resume,
             @RequestParam(value = "photo", required = false) MultipartFile photo,
             @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
+        String token = authHeader.replace("Bearer ", "");
+
+        Claims claims = JwtUtil.extractClaims(token);
+
+        String username = claims.getSubject();
 
         try {
 
@@ -102,6 +108,7 @@ public class ApplicantController {
             Applicant applicant = new Applicant();
 
             applicant.setName(name.trim());
+            applicant.setUsername(username);
             applicant.setEmail(email.trim());
             applicant.setPhone(phone.trim());
             applicant.setQualification(qualification.trim());
@@ -142,8 +149,9 @@ public class ApplicantController {
             );
 
         }
+
         Applicant applicant
-                = service.getApplicantByEmail(username);
+                = service.getApplicantByUsername(username);
 
         if (applicant == null) {
 
@@ -152,6 +160,7 @@ public class ApplicantController {
             );
 
         }
+
         return ResponseEntity.ok(
                 Collections.singletonList(applicant)
         );
@@ -164,6 +173,28 @@ public class ApplicantController {
 
         if (applicant == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(applicant);
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<?> myApplication(
+            @RequestHeader("Authorization") String authHeader) {
+
+        String token = authHeader.replace("Bearer ", "");
+
+        Claims claims = JwtUtil.extractClaims(token);
+
+        String username = claims.getSubject();
+
+        Applicant applicant
+                = service.getApplicantByUsername(username);
+
+        if (applicant == null) {
+
+            return ResponseEntity.notFound().build();
+
         }
 
         return ResponseEntity.ok(applicant);

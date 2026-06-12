@@ -17,6 +17,10 @@ public class ApplicantService {
         return repo.findByEmail(email);
     }
 
+    public Applicant getApplicantByUsername(String username) {
+        return repo.findByUsername(username);
+    }
+
     public Applicant save(Applicant applicant) {
 
         return repo.save(applicant);

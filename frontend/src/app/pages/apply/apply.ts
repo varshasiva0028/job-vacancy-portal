@@ -257,15 +257,25 @@ export class ApplyComponent {
       'languages',
       JSON.stringify(this.selectedLanguages)
     );
-    this.loading = true;
-    this.http.post(
-      'http://localhost:8081/api/applicants',
-      formData,
-      {
-        observe: 'response',
-        responseType: 'text'
-      }
-    ).subscribe({
+    formData.append(
+  'companies',
+  JSON.stringify(this.selectedCompanies)
+);
+   this.loading = true;
+
+const token = localStorage.getItem('token');
+
+this.http.post(
+  'http://localhost:8081/api/applicants',
+  formData,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    observe: 'response',
+    responseType: 'text'
+  }
+).subscribe({
       next: (response) => {
         console.log(response.body);
         this.loading = false;

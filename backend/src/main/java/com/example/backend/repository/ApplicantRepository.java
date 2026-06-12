@@ -7,4 +7,6 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
 
     Applicant findByEmail(String email);
 
+    Applicant findByUsername(String username);
+
 }

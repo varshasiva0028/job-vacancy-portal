@@ -45,6 +45,13 @@
   flex-direction: column;
   gap: 20px;
 }
+label {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c3e50;
+  letter-spacing: 0.3px;
+}
 
 .input-wrapper {
   position: relative;
@@ -69,6 +76,7 @@
   color: #2f3640;
   box-sizing: border-box;
   transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
 }
 
 .login-input:focus {
