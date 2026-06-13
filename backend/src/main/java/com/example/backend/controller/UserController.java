@@ -57,11 +57,12 @@ public class UserController {
             if (!user.getPassword().equals(password)) {
                 return ResponseEntity.badRequest().body("Invalid Password");
             }
+            // Generate JWT token for authenticated user
 
             String token = JwtUtil.generateToken(
                     user.getUsername(),
                     user.getRole());
-
+// Send token and role back to frontend
             return ResponseEntity.ok(
                     java.util.Map.of(
                             "token", token,
@@ -70,7 +71,7 @@ public class UserController {
         } catch (Exception e) {
 
             e.printStackTrace();
-
+// Handle any unexpected errors
             return ResponseEntity.internalServerError()
                     .body(e.getMessage());
         }

@@ -26,13 +26,13 @@ export const routes: Routes = [
   },
 
   {
-    path: '**',
-    redirectTo: ''
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [authGuard, adminGuard]
   },
   {
-  path: 'admin',
-  component: AdminComponent,
-  canActivate: [authGuard, adminGuard]
-}
+    path: '**',
+    redirectTo: ''
+  }
 
 ];

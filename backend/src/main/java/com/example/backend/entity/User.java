@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "portal_users")
 public class User {
+// User entity for authentication and authorization
 
     @Id
+    // Auto-generated ID for each user
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

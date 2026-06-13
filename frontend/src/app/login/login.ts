@@ -62,7 +62,7 @@ this.http.post<any>(
 .subscribe({
 
 next: (response) => {
-
+  // Store token and role in localStorage after successfull login
   localStorage.setItem('token', response.token);
   localStorage.setItem('role', response.role);
 
@@ -70,7 +70,7 @@ next: (response) => {
   this.loginError = '';
 
   const token = response.token;
-
+// Check if the user has an existing application
  this.http.get(
 'http://localhost:8081/api/applicants/my'
 ).subscribe({
@@ -104,7 +104,7 @@ next: (response) => {
   });
 
 },
-
+// Handle login errors
   error: (error) => {
 
     this.loginError =
@@ -117,6 +117,7 @@ next: (response) => {
 });
 
 }
+//  Handles user registration with validation and backend integration
 
  register(): void {
 

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.Authentication;
 
 import com.example.backend.entity.Applicant;
 import com.example.backend.security.JwtUtil;
@@ -50,12 +51,13 @@ public class ApplicantController {
             @RequestParam(value = "resume", required = false) MultipartFile resume,
             @RequestParam(value = "photo", required = false) MultipartFile photo,
             @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
+        // Extract the JWT token from the Authorization header
         String token = authHeader.replace("Bearer ", "");
-
+// Extract claims from the token to get the username
         Claims claims = JwtUtil.extractClaims(token);
-
+// Get the username from the claims
         String username = claims.getSubject();
-
+// Check if the user has already submitted an application using the email
         try {
 
             if (name == null || email == null || phone == null || qualification == null
@@ -141,7 +143,7 @@ public class ApplicantController {
         String username = claims.getSubject();
 
         String role = claims.get("role", String.class);
-
+// If the user has ADMIN role, return all applicants, otherwise return only the applicant's own application
         if ("ADMIN".equals(role)) {
 
             return ResponseEntity.ok(
@@ -165,6 +167,7 @@ public class ApplicantController {
                 Collections.singletonList(applicant)
         );
     }
+// Get applicant by ID (only for admin or the applicant themselves)
 
     @GetMapping("/{id}")
     public ResponseEntity<Applicant> getApplicantById(@PathVariable Long id) {
@@ -177,28 +180,17 @@ public class ApplicantController {
 
         return ResponseEntity.ok(applicant);
     }
+// Get the logged-in applicant's own application details
 
     @GetMapping("/my")
-    public ResponseEntity<?> myApplication(
-            @RequestHeader("Authorization") String authHeader) {
+    public Applicant getMyApplication(
+            Authentication authentication) {
 
-        String token = authHeader.replace("Bearer ", "");
+        String username = authentication.getName();
 
-        Claims claims = JwtUtil.extractClaims(token);
-
-        String username = claims.getSubject();
-
-        Applicant applicant
-                = service.getApplicantByUsername(username);
-
-        if (applicant == null) {
-
-            return ResponseEntity.notFound().build();
-
-        }
-
-        return ResponseEntity.ok(applicant);
+        return service.getApplicantByUsername(username);
     }
+// Update applicant details (only for admin or the applicant themselves)
 
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<String> updateApplicant(
@@ -236,7 +228,7 @@ public class ApplicantController {
             applicant.setGender(gender.trim());
             applicant.setLanguages(languages.trim());
             applicant.setCompanies(companies.trim());
-
+// Handle file uploads and updates
             String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
 
             File dir = new File(uploadDir);

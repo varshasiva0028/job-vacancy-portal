@@ -10,8 +10,10 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Applicant {
+// Applicant entity representing job applicants in the system
 
     @Id
+    // Auto-generated ID for each applicant
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
