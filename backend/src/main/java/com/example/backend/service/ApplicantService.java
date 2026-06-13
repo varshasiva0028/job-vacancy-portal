@@ -50,6 +50,13 @@ public class ApplicantService {
         existingApplicant.setEmail(updatedApplicant.getEmail());
         existingApplicant.setPhone(updatedApplicant.getPhone());
         existingApplicant.setQualification(updatedApplicant.getQualification());
+        existingApplicant.setGender(updatedApplicant.getGender());
+        existingApplicant.setLanguages(updatedApplicant.getLanguages());
+        existingApplicant.setCompanies(updatedApplicant.getCompanies());
+
+        existingApplicant.setResumePath(updatedApplicant.getResumePath());
+        existingApplicant.setPhotoPath(updatedApplicant.getPhotoPath());
+        existingApplicant.setMarksheetPath(updatedApplicant.getMarksheetPath());
 
         return repo.save(existingApplicant);
     }

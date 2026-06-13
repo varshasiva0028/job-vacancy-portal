@@ -1,0 +1,80 @@
+<h2>Applicant Details</h2>
+
+<div class="details">
+
+  <p><b>ID :</b> {{ applicant.id }}</p>
+
+  <p><b>Name :</b> {{ applicant.name }}</p>
+
+  <p><b>Email :</b> {{ applicant.email }}</p>
+
+  <p><b>Qualification :</b> {{ applicant.qualification }}</p>
+
+  <p><b>Gender :</b> {{ applicant.gender }}</p>
+
+  <p>
+    <b>Languages Known :</b>
+
+    <span *ngFor="let lang of languages">
+      {{ lang.name }}
+    </span>
+
+  </p>
+
+  <p>
+
+    <b>Resume :</b>
+
+    <a
+      *ngIf="applicant.resumePath"
+      [href]="'http://localhost:8081/uploads/' + applicant.resumePath"
+      target="_blank">
+
+      View Resume
+
+    </a>
+
+  </p>
+
+  <p>
+
+    <b>Marksheet :</b>
+
+    <a
+      *ngIf="applicant.marksheetPath"
+      [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath"
+      target="_blank">
+
+      View Marksheet
+
+    </a>
+
+  </p>
+
+</div>
+<hr>
+
+<h2>Companies Applied</h2>
+
+<ul>
+
+  <li *ngFor="let company of companies">
+
+    {{ company }}
+
+  </li>
+
+</ul>
+
+<hr>
+
+<button (click)="editMode = true">
+
+  Edit Profile
+
+</button>
+<button (click)="logout()">
+
+  Logout
+
+</button>

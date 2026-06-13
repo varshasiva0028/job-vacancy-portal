@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -183,12 +184,17 @@ public class ApplicantController {
 // Get the logged-in applicant's own application details
 
     @GetMapping("/my")
-    public Applicant getMyApplication(
-            Authentication authentication) {
+    public Applicant getMyApplication(Authentication authentication) {
 
         String username = authentication.getName();
 
-        return service.getApplicantByUsername(username);
+        Applicant applicant = service.getApplicantByUsername(username);
+
+        if (applicant == null) {
+            applicant = service.getApplicantByEmail(username);
+        }
+
+        return applicant;
     }
 // Update applicant details (only for admin or the applicant themselves)
 

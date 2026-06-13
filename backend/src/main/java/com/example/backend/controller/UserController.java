@@ -51,7 +51,7 @@ public class UserController {
             User user = service.findByUsername(username);
 
             if (user == null) {
-                return ResponseEntity.badRequest().body("User not found");
+                return ResponseEntity.badRequest().body("User not found.Register now to create an account");
             }
 
             if (!user.getPassword().equals(password)) {

@@ -66,6 +66,11 @@ next: (response) => {
   localStorage.setItem('token', response.token);
   localStorage.setItem('role', response.role);
 
+  localStorage.setItem(
+  'username',
+  this.loginInput.usernameOrEmail
+);
+
   this.isLoggedIn = true;
   this.loginError = '';
 
@@ -80,8 +85,16 @@ next: (response) => {
       // Application exists
       alert('Login Successful');
 
-      this.router.navigate(['/dashboard']);
+if (response.role === 'ADMIN') {
 
+  this.router.navigate(['/admin']);
+
+}
+else {
+
+  this.router.navigate(['/user-dashboard']);
+
+}
     },
 
     error: (err) => {

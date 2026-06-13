@@ -12,7 +12,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.util.List;
 
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -38,15 +39,22 @@ public class JwtFilter extends OncePerRequestFilter {
             // Get username from token
             String username = claims.getSubject();
 
+            String role = claims.get("role", String.class);
+
+            System.out.println("Role : " + role);
+
             System.out.println("===== JWT FILTER =====");
             System.out.println("Username : " + username);
 
-            // Create Authentication object
             UsernamePasswordAuthenticationToken authentication
                     = new UsernamePasswordAuthenticationToken(
                             username,
                             null,
-                            Collections.emptyList()
+                            List.of(
+                                    new SimpleGrantedAuthority(
+                                            "ROLE_" + role
+                                    )
+                            )
                     );
 
             // Attach request details

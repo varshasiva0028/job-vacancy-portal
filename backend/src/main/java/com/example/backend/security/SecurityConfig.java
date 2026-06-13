@@ -27,10 +27,16 @@ public class SecurityConfig {
                         -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                // Public APIs
                 .requestMatchers(
                         "/api/users/login",
                         "/api/users/register"
                 ).permitAll()
+                // Admin APIs
+                .requestMatchers(
+                        "/api/admin/**"
+                ).hasRole("ADMIN")
+                // Everything else requires login
                 .anyRequest().authenticated()
                 )
                 //Whenever a request comes, execute JwtFilter first
