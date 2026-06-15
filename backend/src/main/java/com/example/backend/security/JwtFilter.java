@@ -24,51 +24,46 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Read Authorization header
         String authHeader = request.getHeader("Authorization");
 
-        // Check whether it starts with Bearer
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
-            // Remove "Bearer "
-            String token = authHeader.substring(7);
+            try {
 
-            // Extract claims
-            Claims claims = JwtUtil.extractClaims(token);
+                String token = authHeader.substring(7);
 
-            // Get username from token
-            String username = claims.getSubject();
+                Claims claims = JwtUtil.extractClaims(token);
 
-            String role = claims.get("role", String.class);
+                String username = claims.getSubject();
+                String role = claims.get("role", String.class);
 
-            System.out.println("Role : " + role);
+                UsernamePasswordAuthenticationToken authentication
+                        = new UsernamePasswordAuthenticationToken(
+                                username,
+                                null,
+                                List.of(
+                                        new SimpleGrantedAuthority(
+                                                "ROLE_" + role
+                                        )
+                                )
+                        );
 
-            System.out.println("===== JWT FILTER =====");
-            System.out.println("Username : " + username);
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource()
+                                .buildDetails(request)
+                );
 
-            UsernamePasswordAuthenticationToken authentication
-                    = new UsernamePasswordAuthenticationToken(
-                            username,
-                            null,
-                            List.of(
-                                    new SimpleGrantedAuthority(
-                                            "ROLE_" + role
-                                    )
-                            )
-                    );
+                SecurityContextHolder.getContext()
+                        .setAuthentication(authentication);
 
-            // Attach request details
-            authentication.setDetails(
-                    new WebAuthenticationDetailsSource()
-                            .buildDetails(request)
-            );
+            } catch (Exception e) {
 
-            // Store authentication inside SecurityContext
-            SecurityContextHolder.getContext()
-                    .setAuthentication(authentication);
+                // Expired or invalid token
+                SecurityContextHolder.clearContext();
+
+            }
         }
 
-        // Continue request
         filterChain.doFilter(request, response);
     }
 }

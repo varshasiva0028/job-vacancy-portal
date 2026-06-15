@@ -66,9 +66,9 @@ next: (response) => {
   localStorage.setItem('token', response.token);
   localStorage.setItem('role', response.role);
 
-  localStorage.setItem(
+localStorage.setItem(
   'username',
-  this.loginInput.usernameOrEmail
+  email
 );
 
   this.isLoggedIn = true;
@@ -76,9 +76,15 @@ next: (response) => {
 
   const token = response.token;
 // Check if the user has an existing application
- this.http.get(
-'http://localhost:8081/api/applicants/my'
-).subscribe({
+const headers = {
+  Authorization: `Bearer ${token}`
+};
+
+this.http.get(
+  'http://localhost:8081/api/applicants/my',
+  { headers }
+)
+.subscribe({
 
     next: () => {
 

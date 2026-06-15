@@ -1,0 +1,500 @@
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+*{
+    font-family:
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}}
+
+body{
+
+    background:
+    linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b,
+    #334155);
+
+    min-height:100vh;
+
+}
+
+/* ================= DASHBOARD ================= */
+
+.dashboard-full-width{
+
+    max-width:1200px;
+
+    margin:40px auto;
+
+    padding:40px;
+
+    border-radius:25px;
+
+    background:
+    rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.5);
+
+}
+
+/* ================= TITLE ================= */
+
+h2{
+
+    color:rgb(36, 33, 33);
+
+    font-size:32px;
+
+    font-weight:700;
+
+    margin-bottom:35px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+h2 i{
+
+    color:#38bdf8;
+
+}
+
+/* ================= PROFILE ================= */
+
+.profile-photo-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin-bottom:40px;
+
+}
+
+.profile-avatar{
+
+    width:180px;
+
+    height:180px;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    border:5px solid #38bdf8;
+
+    box-shadow:
+
+    0 0 20px #38bdf8,
+
+    0 0 40px rgba(56,189,248,.6);
+
+    transition:.4s;
+
+}
+
+.profile-avatar:hover{
+
+    transform:scale(1.08);
+
+}
+
+/* ================= DETAILS GRID ================= */
+
+.details-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:25px;
+
+}
+
+/* ================= CARDS ================= */
+
+.detail-card{
+
+    background:
+    rgba(255,255,255,.06);
+
+    border:
+    1px solid rgba(255,255,255,.1);
+
+    backdrop-filter:blur(10px);
+
+    border-radius:20px;
+
+    padding:20px;
+
+    transition:.3s;
+
+}
+
+.detail-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:
+    0 15px 30px rgba(0,0,0,.4);
+
+}
+
+.detail-label{
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    text-transform:uppercase;
+
+    margin-bottom:10px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.detail-label i{
+
+    color:#38bdf8;
+
+}
+
+.detail-value{
+
+    color:rgb(10, 10, 10);
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+/* ================= INPUT ================= */
+
+.dashboard-input,
+.dashboard-select{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:12px;
+
+    background:#1e293b;
+
+    color:white;
+
+    margin-top:10px;
+
+}
+
+.dashboard-input:focus,
+.dashboard-select:focus{
+
+    box-shadow:
+    0 0 15px rgba(56,189,248,.5);
+
+}
+
+/* ================= LANGUAGES ================= */
+
+.languages-view-container{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+}
+
+.lang-badge{
+
+    background:#1d4ed8;
+
+    color:white;
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+}
+
+.languages-edit-container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.lang-edit-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#1e293b;
+
+    padding:10px;
+
+    border-radius:12px;
+
+}
+
+.lang-name{
+
+    color:white;
+
+    font-weight:600;
+
+}
+
+.lang-skills{
+
+    display:flex;
+
+    gap:15px;
+
+    color:white;
+
+}
+
+.btn-remove-lang{
+
+    background:none;
+
+    border:none;
+
+    color:#ef4444;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+.add-lang-select{
+
+    padding:10px;
+
+    border-radius:12px;
+
+    background:#1e293b;
+
+    color:white;
+
+}
+
+/* ================= DOWNLOAD LINKS ================= */
+
+.download-link{
+
+    color:#38bdf8;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.download-link:hover{
+
+    color:white;
+
+}
+
+/* ================= COMPANIES ================= */
+
+.companies-section{
+
+    margin-top:40px;
+
+}
+
+.companies-section h3{
+
+    color:rgb(82, 73, 73);
+
+    margin-bottom:25px;
+
+}
+
+.companies-list{
+
+    list-style:none;
+
+}
+
+.companies-list li{
+
+    background:
+
+    rgba(255,255,255,.08);
+
+    border-left:5px solid #10b981;
+
+    color:rgb(107, 41, 41);
+
+    padding:15px;
+
+    margin-bottom:15px;
+
+    border-radius:15px;
+
+    transition:.3s;
+
+}
+
+.companies-list li:hover{
+
+    transform:translateX(10px);
+
+}
+
+.text-success{
+
+    color:#10b981;
+
+}
+
+/* ================= BUTTONS ================= */
+
+.actions-section{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:15px;
+
+    margin-top:35px;
+
+}
+
+button{
+
+    padding:14px 25px;
+
+    border:none;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.btn-edit-profile{
+
+    background:
+    linear-gradient(
+    45deg,
+    #3b82f6,
+    #06b6d4);
+
+    color:white;
+
+}
+
+.btn-save-changes{
+
+    background:
+    linear-gradient(
+    45deg,
+    #22c55e,
+    #10b981);
+
+    color:white;
+
+}
+
+.btn-cancel{
+
+    background:
+    linear-gradient(
+    45deg,
+    #64748b,
+    #475569);
+
+    color:white;
+
+}
+
+.btn-logout{
+
+    background:
+    linear-gradient(
+    45deg,
+    #ef4444,
+    #dc2626);
+
+    color:white;
+
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+    .dashboard-full-width{
+
+        padding:20px;
+
+    }
+
+    .actions-section{
+
+        flex-direction:column;
+
+    }
+
+    button{
+
+        width:100%;
+
+    }
+
+}
+

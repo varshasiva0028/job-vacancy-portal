@@ -30,7 +30,8 @@ public class SecurityConfig {
                 // Public APIs
                 .requestMatchers(
                         "/api/users/login",
-                        "/api/users/register"
+                        "/api/users/register",
+                        "/uploads/**"
                 ).permitAll()
                 // Admin APIs
                 .requestMatchers(
@@ -58,10 +59,19 @@ public class SecurityConfig {
                 List.of("http://localhost:4200"));
 
         configuration.setAllowedMethods(
-                List.of("GET", "POST", "PUT", "DELETE"));
+                List.of(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                ));
 
         configuration.setAllowedHeaders(
-                List.of("*"));
+                List.of(
+                        "Authorization",
+                        "Content-Type"
+                ));
 
         configuration.setAllowCredentials(true);
 

@@ -1,80 +1,162 @@
-<h2>Applicant Details</h2>
+<div class="dashboard-full-width">
+  <h2><i class="fas fa-user-circle"></i> Applicant Dashboard</h2>
 
-<div class="details">
+  <!-- Profile Photo at the Top -->
+  <div class="profile-photo-container">
+    <img *ngIf="applicant.photoPath" [src]="'http://localhost:8081/uploads/' + applicant.photoPath" alt="Profile Photo"
+      class="profile-avatar" />
+  </div>
 
-  <p><b>ID :</b> {{ applicant.id }}</p>
+  <!-- Applicant Details in a Horizontal Layout -->
+  <div class="details-grid">
+    <!-- ID -->
+    <div class="detail-card">
+      <span class="detail-label"><i class="fas fa-id-card"></i> ID</span>
+      <span class="detail-value">{{ applicant.id }}</span>
+    </div>
 
-  <p><b>Name :</b> {{ applicant.name }}</p>
+    <!-- Name -->
+    <div class="detail-card">
 
-  <p><b>Email :</b> {{ applicant.email }}</p>
+  <span class="detail-label">
+    <i class="fas fa-user"></i> Name
+  </span>
 
-  <p><b>Qualification :</b> {{ applicant.qualification }}</p>
+  <ng-container *ngIf="!editMode; else editName">
 
-  <p><b>Gender :</b> {{ applicant.gender }}</p>
-
-  <p>
-    <b>Languages Known :</b>
-
-    <span *ngFor="let lang of languages">
-      {{ lang.name }}
+    <span class="detail-value">
+      {{ editApplicant.name }}
     </span>
 
-  </p>
+  </ng-container>
 
-  <p>
+  <ng-template #editName>
 
-    <b>Resume :</b>
+    <input
+      type="text"
+      [(ngModel)]="editApplicant.name"
+      class="dashboard-input"
+    />
 
-    <a
-      *ngIf="applicant.resumePath"
-      [href]="'http://localhost:8081/uploads/' + applicant.resumePath"
-      target="_blank">
-
-      View Resume
-
-    </a>
-
-  </p>
-
-  <p>
-
-    <b>Marksheet :</b>
-
-    <a
-      *ngIf="applicant.marksheetPath"
-      [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath"
-      target="_blank">
-
-      View Marksheet
-
-    </a>
-
-  </p>
+  </ng-template>
 
 </div>
-<hr>
+    <!-- Email -->
+    <div class="detail-card">
+      <span class="detail-label"><i class="fas fa-envelope"></i> Email</span>
+<span class="detail-value">
+  {{ editApplicant.email }}
+</span>      <input type="email" [(ngModel)]="editApplicant.email" name="email" class="dashboard-input" *ngIf="editMode" />
+    </div>
 
-<h2>Companies Applied</h2>
+    <!-- Qualification -->
+    <div class="detail-card">
+      <span class="detail-label"><i class="fas fa-graduation-cap"></i> Qualification</span>
+<span class="detail-value">
+  {{ editApplicant.qualification }}
+</span>      <input type="text" [(ngModel)]="editApplicant.qualification" name="qualification" class="dashboard-input"
+        *ngIf="editMode" />
+    </div>
 
-<ul>
+    <!-- Gender -->
+    <div class="detail-card">
+      <span class="detail-label"><i class="fas fa-venus-mars"></i> Gender</span>
+<span class="detail-value">
+  {{ editApplicant.gender }}
+</span>      <select [(ngModel)]="editApplicant.gender" name="gender" class="dashboard-select" *ngIf="editMode">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
 
-  <li *ngFor="let company of companies">
+    <!-- Languages Known -->
+    <div class="detail-card lang-card-col">
+      <span class="detail-label"><i class="fas fa-language"></i> Languages Known</span>
 
-    {{ company }}
+      <!-- Read-only View -->
+      <div class="languages-view-container" *ngIf="!editMode">
+        <div *ngFor="let lang of languages" class="lang-badge">
+          <span class="lang-title">{{ lang.name }}</span>
+          <span class="lang-skills-text">
+            ({{ (lang.read ? 'Read' : '') + (lang.read && (lang.write || lang.speak) ? ', ' : '') + (lang.write ?
+            'Write' : '') + (lang.write && lang.speak ? ', ' : '') + (lang.speak ? 'Speak' : '') }})
+          </span>
+        </div>
+        <div *ngIf="languages.length === 0" class="no-lang">None</div>
+      </div>
 
-  </li>
+      <!-- Edit View -->
+      <div class="languages-edit-container" *ngIf="editMode">
+        <div *ngFor="let lang of editLanguages" class="lang-edit-row">
+          <span class="lang-name">{{ lang.name }}</span>
+          <div class="lang-skills">
+            <label><input type="checkbox" [(ngModel)]="lang.read" /> R</label>
+            <label><input type="checkbox" [(ngModel)]="lang.write" /> W</label>
+            <label><input type="checkbox" [(ngModel)]="lang.speak" /> S</label>
+          </div>
+          <button type="button" class="btn-remove-lang" (click)="removeLanguage(lang.name)">&times;</button>
+        </div>
 
-</ul>
+        <!-- Add Language Select -->
+        <select (change)="addLanguageFromSelect($event)" class="add-lang-select">
+          <option value="">+ Add Language</option>
+          <option *ngFor="let opt of allLanguagesOptions" [value]="opt">{{ opt }}</option>
+        </select>
+      </div>
+    </div>
 
-<hr>
+    <!-- Resume -->
+    <div class="detail-card">
+      <span class="detail-label"><i class="fas fa-file-pdf"></i> Resume</span>
+      <a *ngIf="applicant.resumePath" [href]="'http://localhost:8081/uploads/' + applicant.resumePath" target="_blank"
+        class="download-link">
+        <i class="fas fa-external-link-alt"></i> View Resume
+      </a>
+    </div>
 
-<button (click)="editMode = true">
+    <!-- Marksheet -->
+    <div class="detail-card">
+      <span class="detail-label"><i class="fas fa-file-alt"></i> Marksheet</span>
+      <a *ngIf="applicant.marksheetPath" [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath"
+        target="_blank" class="download-link">
+        <i class="fas fa-external-link-alt"></i> View Marksheet
+      </a>
+    </div>
+  </div>
 
-  Edit Profile
+  <hr />
 
-</button>
-<button (click)="logout()">
+  <!-- Companies Applied below as a vertical list -->
+  <div class="companies-section">
+    <h3><i class="fas fa-building"></i> Companies Applied</h3>
+    <ul class="companies-list">
+      <li *ngFor="let company of companies">
+        <i class="fas fa-check-circle text-success"></i> {{ company }}
+      </li>
+      <li *ngIf="companies.length === 0" class="no-companies">No companies applied</li>
+    </ul>
+  </div>
 
-  Logout
+  <hr />
 
-</button>
+  <!-- Action Buttons -->
+  <div class="actions-section">
+    <ng-container *ngIf="!editMode">
+      <button (click)="editProfile()" class="btn-edit-profile">
+        <i class="fas fa-edit"></i> Edit Profile
+      </button>
+      <button (click)="logout()" class="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="editMode">
+      <button (click)="saveChanges()" class="btn-save-changes">
+        <i class="fas fa-save"></i> Save Changes
+      </button>
+      <button (click)="cancelEdit()" class="btn-cancel">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+    </ng-container>
+  </div>
+</div>
