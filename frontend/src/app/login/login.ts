@@ -35,7 +35,7 @@ constructor(
 
 ) { }
 
-  login(): void {
+ login(): void {
 
   const email = this.loginInput.usernameOrEmail.trim().toLowerCase();
   const password = this.loginInput.password;
@@ -51,89 +51,75 @@ constructor(
   }
 
   const formData = new FormData();
-//creates the request
+
   formData.append('username', email);
   formData.append('password', password);
-//Calls Backend
-this.http.post<any>(
-  'http://localhost:8081/api/users/login',
-  formData
-)
-.subscribe({
 
-next: (response) => {
-  // Store token and role in localStorage after successfull login
-  localStorage.setItem('token', response.token);
-  localStorage.setItem('role', response.role);
+  this.http.post<any>(
+    'http://localhost:8081/api/users/login',
+    formData
+  )
+  .subscribe({
 
-localStorage.setItem(
-  'username',
-  email
-);
+    next: (response) => {
 
-  this.isLoggedIn = true;
-  this.loginError = '';
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('role', response.role);
+      localStorage.setItem('username', email);
 
-  const token = response.token;
-// Check if the user has an existing application
-const headers = {
-  Authorization: `Bearer ${token}`
-};
+      this.isLoggedIn = true;
+      this.loginError = '';
 
-this.http.get(
-  'http://localhost:8081/api/applicants/my',
-  { headers }
-)
-.subscribe({
+      const headers = {
+        Authorization: `Bearer ${response.token}`
+      };
 
-    next: () => {
+      this.http.get(
+        'http://localhost:8081/api/applicants/my',
+        { headers }
+      )
+      .subscribe({
 
-      // Application exists
-      alert('Login Successful');
+        next: () => {
 
-if (response.role === 'ADMIN') {
+          alert('Login Successful');
 
-  this.router.navigate(['/admin']);
+          if (response.role === 'ADMIN') {
 
-}
-else {
+            this.router.navigate(['/admin']);
 
-  this.router.navigate(['/user-dashboard']);
+          } else {
 
-}
+            this.router.navigate(['/user-dashboard']);
+
+          }
+
+        },
+
+        error: (err: any) => {
+
+          console.log(err);
+
+          alert('Login Successful');
+
+          this.router.navigate(['/apply']);
+
+        }
+
+      });
+
     },
 
-    error: (err) => {
+    error: (error: any) => {
 
-      if (err.status === 404) {
+      this.loginError =
+        error.error || 'Invalid username or password';
 
-        // No application yet
-        alert('Login Successful');
-
-        this.router.navigate(['/apply']);
-
-      } else {
-
-        alert('Unable to load user details');
-
-      }
+      alert(this.loginError);
 
     }
 
   });
-
-},
-// Handle login errors
-  error: (error) => {
-
-    this.loginError =
-      error.error || 'Invalid username or password';
-
-    alert(this.loginError);
-
-  }
-
-});
 
 }
 //  Handles user registration with validation and backend integration

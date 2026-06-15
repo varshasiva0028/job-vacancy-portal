@@ -26,7 +26,7 @@ public class JwtUtil {
                 // Set the token expiration time to 24 hours
                 .expiration(
                         new Date(System.currentTimeMillis()
-                                + 1000 * 60 * 60 * 24))
+                                + 1000L * 60 * 60 * 24 * 7))
                 .signWith(KEY)
                 .compact();
     }
