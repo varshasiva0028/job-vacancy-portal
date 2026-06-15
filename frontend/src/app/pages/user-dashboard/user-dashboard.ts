@@ -63,21 +63,40 @@ export class UserDashboardComponent implements OnInit {
 
           console.log("applicant =", this.applicant);
           // Companies
-          if (response.companies) {
+         // Companies
+this.companies = [];
 
-            try {
+if (response.companies) {
 
-              this.companies = JSON.parse(response.companies);
+  try {
 
-            }
+    this.companies = [...JSON.parse(response.companies)];
 
-            catch {
+  } catch {
 
-              this.companies = [];
+    this.companies = [];
 
-            }
+  }
 
-          }
+}
+
+// Languages
+this.languages = [];
+
+if (response.languages) {
+
+  try {
+
+    this.languages = [...JSON.parse(response.languages)];
+
+  } catch {
+
+    this.languages = [];
+
+  }
+  this.cdr.detectChanges();
+
+}
 
           // Languages
           if (response.languages) {
@@ -104,6 +123,7 @@ export class UserDashboardComponent implements OnInit {
         }
 
       });
+      
 
   }
 
