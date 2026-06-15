@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
-export class LoginComponent  {
-  
+export class LoginComponent {
+
   isLoggedIn = false;
   isRegisterMode = false;
 
@@ -29,157 +29,171 @@ export class LoginComponent  {
     password: '',
     confirmPassword: ''
   };
-constructor(
-  private http: HttpClient,
-  private router: Router,
+  constructor(
+    private http: HttpClient,
+    private router: Router,
 
-) { }
+  ) { }
 
- login(): void {
+  login(): void {
 
-  const email = this.loginInput.usernameOrEmail.trim().toLowerCase();
-  const password = this.loginInput.password;
+    const email = this.loginInput.usernameOrEmail.trim().toLowerCase();
+    const password = this.loginInput.password;
 
-  if (!email) {
-    alert('Please enter your Username or Email ID');
-    return;
-  }
+    if (!email) {
+      alert('Please enter your Username or Email ID');
+      return;
+    }
 
-  if (!password) {
-    alert('Please enter your Password');
-    return;
-  }
+    if (!password) {
+      alert('Please enter your Password');
+      return;
+    }
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append('username', email);
-  formData.append('password', password);
+    formData.append('username', email);
+    formData.append('password', password);
 
-  this.http.post<any>(
-    'http://localhost:8081/api/users/login',
-    formData
-  )
-  .subscribe({
-
-    next: (response) => {
-
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('role', response.role);
-      localStorage.setItem('username', email);
-
-      this.isLoggedIn = true;
-      this.loginError = '';
-
-      const headers = {
-        Authorization: `Bearer ${response.token}`
-      };
-
-      this.http.get(
-        'http://localhost:8081/api/applicants/my',
-        { headers }
-      )
+    this.http.post<any>(
+      'http://localhost:8081/api/users/login',
+      formData
+    )
       .subscribe({
 
-        next: () => {
+        next: (response) => {
 
-          alert('Login Successful');
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('role', response.role);
+          localStorage.setItem('username', email);
 
-          if (response.role === 'ADMIN') {
+          this.isLoggedIn = true;
+          this.loginError = '';
 
-            this.router.navigate(['/admin']);
+          const headers = {
+            Authorization: `Bearer ${response.token}`
+          };
 
-          } else {
+          this.http.get(
+            'http://localhost:8081/api/applicants/my',
+            { headers }
+          )
+           this.http.get(
+  'http://localhost:8081/api/applicants/my',
+  { headers }
+)
+.subscribe({
 
-            this.router.navigate(['/user-dashboard']);
+  next: () => {
 
-          }
+    alert('Login Successful');
+
+    if (response.role === 'ADMIN') {
+
+      this.router.navigate(['/admin']);
+
+    } else {
+
+      this.router.navigate(['/user-dashboard']);
+
+    }
+
+  },
+
+  error: (err: any) => {
+
+    console.log("ERROR BLOCK");
+    console.log(err);
+    console.log(err.status);
+
+    if (err.status === 404) {
+
+      alert('Login Successful');
+
+      this.router.navigate(['/apply']);
+
+    } else {
+
+      alert('Unable to load applicant');
+
+    }
+
+  }
+
+});
 
         },
 
-        error: (err: any) => {
+        error: (error: any) => {
 
-          console.log(err);
+          this.loginError =
+            error.error || 'Invalid username or password';
 
-          alert('Login Successful');
-
-          this.router.navigate(['/apply']);
+          alert(this.loginError);
 
         }
 
       });
 
-    },
+  }
+  //  Handles user registration with validation and backend integration
 
-    error: (error: any) => {
+  register(): void {
 
-      this.loginError =
-        error.error || 'Invalid username or password';
-
-      alert(this.loginError);
-
+    const email = this.registerInput.usernameOrEmail.trim().toLowerCase();
+    const password = this.registerInput.password;
+    const confirmPassword = this.registerInput.confirmPassword;
+    //validation
+    if (!email) {
+      alert('Please enter a Username or Email ID');
+      return;
     }
 
-  });
+    if (!password) {
+      alert('Please enter a Password');
+      return;
+    }
 
-}
-//  Handles user registration with validation and backend integration
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
 
- register(): void {
+    const formData = new FormData();
+    //creates the request
+    formData.append('username', email);
+    formData.append('password', password);
+    //Calls Backend
+    this.http.post(
+      'http://localhost:8081/api/users/register',
+      formData,
+      { responseType: 'text' }
+    ).subscribe({
+      next: (response) => {
 
-  const email = this.registerInput.usernameOrEmail.trim().toLowerCase();
-  const password = this.registerInput.password;
-  const confirmPassword = this.registerInput.confirmPassword;
-//validation
-  if (!email) {
-    alert('Please enter a Username or Email ID');
-    return;
-  }
+        alert(response);
 
-  if (!password) {
-    alert('Please enter a Password');
-    return;
-  }
+        this.registerInput = {
+          usernameOrEmail: '',
+          password: '',
+          confirmPassword: ''
+        };
 
-  if (password !== confirmPassword) {
-    alert('Passwords do not match!');
-    return;
-  }
+        this.isRegisterMode = false;
+      },
 
-  const formData = new FormData();
-//creates the request
-  formData.append('username', email);
-  formData.append('password', password);
-//Calls Backend
-  this.http.post(
-    'http://localhost:8081/api/users/register',
-    formData,
-    { responseType: 'text' }
-  ).subscribe({
-    next: (response) => {
+      error: (error) => {
 
-      alert(response);
+        if (error.error) {
+          alert(error.error);
+        } else {
+          alert('Registration Failed');
+        }
 
-      this.registerInput = {
-        usernameOrEmail: '',
-        password: '',
-        confirmPassword: ''
-      };
-
-      this.isRegisterMode = false;
-    },
-
-    error: (error) => {
-
-      if (error.error) {
-        alert(error.error);
-      } else {
-        alert('Registration Failed');
       }
+    });
 
-    }
-  });
-
-}
+  }
   logout(): void {
     this.isLoggedIn = false;
     this.loginInput = {

@@ -184,17 +184,31 @@ public class ApplicantController {
 // Get the logged-in applicant's own application details
 
     @GetMapping("/my")
-    public Applicant getMyApplication(Authentication authentication) {
+    public ResponseEntity<?> getMyApplication(
+            Authentication authentication) {
 
         String username = authentication.getName();
 
-        Applicant applicant = service.getApplicantByUsername(username);
+        Applicant applicant
+                = service.getApplicantByUsername(username);
 
         if (applicant == null) {
-            applicant = service.getApplicantByEmail(username);
+
+            applicant
+                    = service.getApplicantByEmail(username);
+
         }
 
-        return applicant;
+        if (applicant == null) {
+
+            return ResponseEntity
+                    .notFound()
+                    .build();
+
+        }
+
+        return ResponseEntity.ok(applicant);
+
     }
 // Update applicant details (only for admin or the applicant themselves)
 
