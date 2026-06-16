@@ -148,6 +148,7 @@ body{
     display: flex;
     gap: 20px;
     margin-bottom: 25px;
+    align-items: flex-start;
 }
 
 .row-group .input-group{
@@ -159,6 +160,7 @@ body{
     display:flex;
     gap:25px;
     margin-bottom:25px;
+    align-items: flex-start;
 }
 
 .row-group > *{
@@ -279,6 +281,10 @@ body{
 
     font-size: 22px;
 
+}
+.gender-container{
+    width: 100%;
+    height: 60px;
 }
 /*qualifictaion*/
 .qualification-gender-row{

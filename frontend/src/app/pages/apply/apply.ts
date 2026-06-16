@@ -32,7 +32,7 @@ export class ApplyComponent {
     'Infosys',
     'TCS',
     'Wipro'
-  ];
+  ].sort();
 
   selectedCompanies: string[] = [];
 
