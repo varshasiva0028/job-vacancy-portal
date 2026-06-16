@@ -121,147 +121,127 @@
     </div>
 
     <!-- Languages Known -->
-<div class="detail-card lang-card-full">
+    <div class="detail-card lang-card-full">
 
-  <span class="detail-label">
-    <i class="fa-solid fa-language"></i>
-    Languages Known
-  </span>
-
-  <!-- Read-only View -->
-  <div class="languages-view-container" *ngIf="!editMode">
-
-    <div *ngFor="let lang of languages" class="lang-badge">
-
-      <span class="lang-title">
-        {{ lang.name }}
+      <span class="detail-label">
+        <i class="fa-solid fa-language"></i>
+        Languages Known
       </span>
 
-      <span class="lang-skills-text">
-        ({{ (lang.read ? 'Read' : '') +
-        (lang.read && (lang.write || lang.speak) ? ', ' : '') +
-        (lang.write ? 'Write' : '') +
-        (lang.write && lang.speak ? ', ' : '') +
-        (lang.speak ? 'Speak' : '') }})
-      </span>
+      <!-- Read-only View -->
+      <div class="languages-view-container" *ngIf="!editMode">
 
-    </div>
+        <div *ngFor="let lang of languages" class="lang-badge">
 
-    <div *ngIf="!languages.length" class="no-lang">
-      None
-    </div>
+          <span class="lang-title">
+            {{ lang.name }}
+          </span>
 
-  </div>
+          <span class="lang-skills-text">
+            ({{ (lang.read ? 'Read' : '') +
+            (lang.read && (lang.write || lang.speak) ? ', ' : '') +
+            (lang.write ? 'Write' : '') +
+            (lang.write && lang.speak ? ', ' : '') +
+            (lang.speak ? 'Speak' : '') }})
+          </span>
 
-  <!-- Edit Mode -->
-  <div class="languages-edit-container" *ngIf="editMode">
+        </div>
 
-    <div *ngFor="let lang of editLanguages" class="lang-edit-row">
-
-      <span class="lang-name">
-        {{ lang.name }}
-      </span>
-
-      <div class="skill-options">
-
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="lang.read"
-            (change)="updateLanguageAllState(lang)">
-          Read
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="lang.write"
-            (change)="updateLanguageAllState(lang)">
-          Write
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="lang.speak"
-            (change)="updateLanguageAllState(lang)">
-          Speak
-        </label>
-
-        <label>
-          <input
-            type="checkbox"
-            [(ngModel)]="lang.all"
-            (change)="toggleAll(lang)">
-          All
-        </label>
+        <div *ngIf="!languages.length" class="no-lang">
+          None
+        </div>
 
       </div>
 
-      <div class="progress-wrapper">
+      <!-- Edit Mode -->
+      <div class="languages-edit-container" *ngIf="editMode">
 
-        <progress
-          [value]="getProgress(lang)"
-          max="100">
-        </progress>
+        <div *ngFor="let lang of editLanguages" class="lang-edit-row">
 
-        <span>
-          {{ getProgress(lang) }}%
-        </span>
+          <span class="lang-name">
+            {{ lang.name }}
+          </span>
 
-      </div>
-
-      <button
-        type="button"
-        class="btn-remove-lang"
-        (click)="removeLanguage(lang.name)">
-
-        &times;
-
-      </button>
-
-    </div>
-
-    <!-- Add Language -->
-    <div class="custom-dropdown">
-
-      <button
-        type="button"
-        class="dropdown-btn"
-        (click)="showLanguages=!showLanguages">
-
-        {{
-        selectedLanguageNames.length
-        ? selectedLanguageNames.join(', ')
-        : 'Select Languages'
-        }}
-
-        ▼
-
-      </button>
-
-      <div
-        *ngIf="showLanguages"
-        class="dropdown-content">
-
-        <div *ngFor="let group of languageGroups">
-
-          <strong>
-            {{ group.label }}
-          </strong>
-
-          <div *ngFor="let option of group.options">
+          <div class="skill-options">
 
             <label>
-
-              <input
-                type="checkbox"
-                [checked]="selectedLanguageNames.includes(option)"
-                (change)="toggleLanguage(option,$event)">
-
-              {{ option }}
-
+              <input type="checkbox" [(ngModel)]="lang.read" (change)="updateLanguageAllState(lang)">
+              Read
             </label>
+
+            <label>
+              <input type="checkbox" [(ngModel)]="lang.write" (change)="updateLanguageAllState(lang)">
+              Write
+            </label>
+
+            <label>
+              <input type="checkbox" [(ngModel)]="lang.speak" (change)="updateLanguageAllState(lang)">
+              Speak
+            </label>
+
+            <label>
+              <input type="checkbox" [(ngModel)]="lang.all" (change)="toggleAll(lang)">
+              All
+            </label>
+
+          </div>
+
+          <div class="progress-wrapper">
+
+            <progress [value]="getProgress(lang)" max="100">
+            </progress>
+
+            <span>
+              {{ getProgress(lang) }}%
+            </span>
+
+          </div>
+
+          <button type="button" class="btn-remove-lang" (click)="removeLanguage(lang.name)">
+
+            &times;
+
+          </button>
+
+        </div>
+
+        <!-- Add Language -->
+        <div class="custom-dropdown">
+
+          <button type="button" class="dropdown-btn" (click)="showLanguages=!showLanguages">
+
+            {{
+            selectedLanguageNames.length
+            ? selectedLanguageNames.join(', ')
+            : 'Select Languages'
+            }}
+
+            ▼
+
+          </button>
+
+          <div *ngIf="showLanguages" class="dropdown-content">
+
+            <div *ngFor="let group of languageGroups">
+
+              <strong>
+                {{ group.label }}
+              </strong>
+
+              <div *ngFor="let option of group.options">
+
+                <label>
+
+                  <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
+                    (change)="toggleLanguage(option,$event)">
+
+                  {{ option }}
+
+                </label>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -271,111 +251,138 @@
 
     </div>
 
-  </div>
 
-</div>
-
-
-<!-- DOCUMENTS -->
-<div class="detail-card documents-card">
-
-  <span class="detail-label">
-    <i class="fa-solid fa-file-lines"></i>
-    Documents
-  </span>
-
-  <div class="documents-container">
-
-    <!-- Resume -->
-    <div class="document-item">
-
-      <span class="detail-label">
-        <i class="fa-solid fa-file-pdf"></i>
-        Resume
-      </span>
-
-      <a
-        *ngIf="applicant.resumePath"
-        [href]="'http://localhost:8081/uploads/' + applicant.resumePath"
-        target="_blank"
-        class="download-link">
-
-        <i class="fa-solid fa-up-right-from-square"></i>
-        View Resume
-
-      </a>
-
-    </div>
-
-
-    <!-- Marksheet -->
-    <div class="document-item">
+    <!-- DOCUMENTS -->
+    <div class="detail-card documents-card">
 
       <span class="detail-label">
         <i class="fa-solid fa-file-lines"></i>
-        Marksheet
+        Documents
       </span>
 
-      <a
-        *ngIf="applicant.marksheetPath"
-        [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath"
-        target="_blank"
-        class="download-link">
+      <div class="documents-container">
 
-        <i class="fa-solid fa-up-right-from-square"></i>
-        View Marksheet
+        <!-- Resume -->
+        <div class="document-item">
 
-      </a>
+          <span class="detail-label">
+            <i class="fa-solid fa-file-pdf"></i>
+            Resume
+          </span>
+
+          <a *ngIf="applicant.resumePath" class="download-link" (click)="openPreview(applicant.resumePath,'Resume')">
+            <i class="fa-solid fa-up-right-from-square"></i>
+            View Resume
+
+          </a>
+
+        </div>
+
+
+        <!-- Marksheet -->
+        <div class="document-item">
+
+          <span class="detail-label">
+            <i class="fa-solid fa-file-lines"></i>
+            Marksheet
+          </span>
+
+          <a *ngIf="applicant.marksheetPath" class="download-link"
+            (click)="openPreview(applicant.marksheetPath,'Marksheet')">
+
+            <i class="fa-solid fa-up-right-from-square"></i>
+            View Marksheet
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+    <!-- Action Buttons -->
+    <div class="actions-section">
+
+      <ng-container *ngIf="!editMode">
+
+        <button (click)="editProfile()" class="btn-edit-profile">
+          <i class="fa-solid fa-pen-to-square"></i>
+          Edit Profile
+        </button>
+
+
+
+      </ng-container>
+
+      <ng-container *ngIf="editMode">
+
+        <button (click)="saveChanges()" class="btn-save-changes">
+          <i class="fa-solid fa-floppy-disk"></i>
+          Save Changes
+        </button>
+
+        <button (click)="cancelEdit()" class="btn-cancel">
+          <i class="fa-solid fa-xmark"></i>
+          Cancel
+        </button>
+
+      </ng-container>
 
     </div>
 
   </div>
+  <h3>
+    <i class="fa-solid fa-building"></i>
+    Companies Applied
+  </h3>
+  <div class="companies-card">
 
-</div>
-  <!-- Action Buttons -->
-  <div class="actions-section">
+    <ul class="companies-list">
 
-    <ng-container *ngIf="!editMode">
+      <li *ngFor="let company of companies">
+        <i class="fa-solid fa-circle-check text-success"></i>
+        {{ company }}
+      </li>
 
-      <button (click)="editProfile()" class="btn-edit-profile">
-        <i class="fa-solid fa-pen-to-square"></i>
-        Edit Profile
-      </button>
+    </ul>
 
+  </div>
+  <!---dialog-->
+<dialog #previewDialog class="preview-dialog">
 
+  <div class="dialog-header">
 
-    </ng-container>
+    <h2>{{ previewTitle }}</h2>
 
-    <ng-container *ngIf="editMode">
+    <button
+      class="close-icon"
+      (click)="closePreview()">
 
-      <button (click)="saveChanges()" class="btn-save-changes">
-        <i class="fa-solid fa-floppy-disk"></i>
-        Save Changes
-      </button>
+      ✕
 
-      <button (click)="cancelEdit()" class="btn-cancel">
-        <i class="fa-solid fa-xmark"></i>
-        Cancel
-      </button>
-
-    </ng-container>
+    </button>
 
   </div>
 
-</div>
-<h3>
-  <i class="fa-solid fa-building"></i>
-  Companies Applied
-</h3>
-<div class="companies-card">
 
-  <ul class="companies-list">
+  <iframe
+    [src]="previewUrl"
+    width="100%"
+    height="600">
 
-    <li *ngFor="let company of companies">
-      <i class="fa-solid fa-circle-check text-success"></i>
-      {{ company }}
-    </li>
+  </iframe>
 
-  </ul>
 
-</div>
+  <div class="dialog-footer">
+
+    <button
+      class="close-btn"
+      (click)="closePreview()">
+
+      Close
+
+    </button>
+
+  </div>
+
+</dialog>

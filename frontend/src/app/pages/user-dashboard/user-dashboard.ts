@@ -1,8 +1,11 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef
-} from '@angular/core'; import { CommonModule } from '@angular/common';
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -10,7 +13,10 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './user-dashboard.html',
   styleUrls: ['./user-dashboard.css']
 })
@@ -29,6 +35,16 @@ export class UserDashboardComponent implements OnInit {
   selectedLanguageNames: string[] = [];
 
   showLanguages = false;
+
+  previewTitle = '';
+
+  previewUrl = '';
+
+  isPdf = false;
+  @ViewChild('previewDialog')
+  previewDialog!: ElementRef<HTMLDialogElement>;
+   
+ 
 
   languageGroups = [
     {
@@ -162,97 +178,97 @@ export class UserDashboardComponent implements OnInit {
   }
   createLanguageSkill(name: string) {
 
-  return {
+    return {
 
-    name,
+      name,
 
-    read: false,
+      read: false,
 
-    write: false,
+      write: false,
 
-    speak: false,
+      speak: false,
 
-    all: false
+      all: false
 
-  };
-
-}
-addLanguage(name: string): void {
-
-  if (!this.editLanguages.some(
-    lang => lang.name === name
-  )) {
-
-    this.editLanguages.push(
-
-      this.createLanguageSkill(name)
-
-    );
+    };
 
   }
+  addLanguage(name: string): void {
 
-  if (!this.selectedLanguageNames.includes(name)) {
+    if (!this.editLanguages.some(
+      lang => lang.name === name
+    )) {
 
-    this.selectedLanguageNames.push(name);
+      this.editLanguages.push(
 
-  }
+        this.createLanguageSkill(name)
 
-}toggleLanguage(language: string, event: any): void {
+      );
 
-  if (event.target.checked) {
+    }
 
-    this.addLanguage(language);
+    if (!this.selectedLanguageNames.includes(name)) {
 
-  }
+      this.selectedLanguageNames.push(name);
 
-  else {
+    }
 
-    this.removeLanguage(language);
+  } toggleLanguage(language: string, event: any): void {
 
-  }
+    if (event.target.checked) {
 
-}updateLanguageAllState(language: any): void {
+      this.addLanguage(language);
 
-  language.all =
+    }
 
-    language.read &&
+    else {
 
-    language.write &&
+      this.removeLanguage(language);
 
-    language.speak;
+    }
 
-}
-getProgress(language: any): number {
+  } updateLanguageAllState(language: any): void {
 
-  if (language.all) {
+    language.all =
 
-    return 100;
+      language.read &&
 
-  }
+      language.write &&
 
-  let progress = 0;
-
-  if (language.read) {
-
-    progress += 30;
+      language.speak;
 
   }
+  getProgress(language: any): number {
 
-  if (language.write) {
+    if (language.all) {
 
-    progress += 30;
+      return 100;
+
+    }
+
+    let progress = 0;
+
+    if (language.read) {
+
+      progress += 30;
+
+    }
+
+    if (language.write) {
+
+      progress += 30;
+
+    }
+
+    if (language.speak) {
+
+      progress += 40;
+
+    }
+
+    return progress;
 
   }
-
-  if (language.speak) {
-
-    progress += 40;
-
-  }
-
-  return progress;
-
-}
 
 
   removeLanguage(name: string): void {
@@ -354,25 +370,25 @@ getProgress(language: any): number {
     });
   }
 
-toggleAll(language: any): void {
+  toggleAll(language: any): void {
 
-  if (language.all) {
+    if (language.all) {
 
-    language.read = true;
-    language.write = true;
-    language.speak = true;
+      language.read = true;
+      language.write = true;
+      language.speak = true;
+
+    }
+
+    else {
+
+      language.read = false;
+      language.write = false;
+      language.speak = false;
+
+    }
 
   }
-
-  else {
-
-    language.read = false;
-    language.write = false;
-    language.speak = false;
-
-  }
-
-}
 
   toggleCompany(company: string): void {
 
@@ -382,12 +398,41 @@ toggleAll(language: any): void {
         this.companies.filter(c => c !== company);
 
     }
-
     else {
 
       this.companies.push(company);
 
     }
+
+  }
+
+  openPreview(filePath: string, title: string): void {
+
+  const fileUrl =
+    'http://localhost:8081/uploads/' + filePath;
+
+  const lower = filePath.toLowerCase();
+
+  if (
+      lower.endsWith('.doc') ||
+      lower.endsWith('.docx')
+  ) {
+
+      window.open(fileUrl, '_blank');
+      return;
+
+  }
+
+  this.previewTitle = title;
+  this.previewUrl = fileUrl;
+
+  this.previewDialog.nativeElement.showModal();
+
+}
+
+  closePreview(): void {
+
+    this.previewDialog.nativeElement.close();
 
   }
   logout(): void {
