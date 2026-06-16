@@ -26,12 +26,27 @@ export class UserDashboardComponent implements OnInit {
   languages: any[] = [];
   editLanguages: any[] = [];
   selectedPhoto: File | null = null;
+  selectedLanguageNames: string[] = [];
 
-  allLanguagesOptions: string[] = [
-    'Tamil', 'Telugu', 'Hindi', 'Malayalam', 'Kannada', 'Bengali', 'Marathi', 'Gujarati', 'Punjabi', 'Odia',
-    'English', 'Japanese', 'French', 'German', 'Spanish', 'Chinese', 'Korean', 'Russian', 'Italian', 'Arabic'
+  showLanguages = false;
+
+  languageGroups = [
+    {
+      label: 'Indian Languages',
+      options: [
+        'Tamil', 'Telugu', 'Hindi', 'Malayalam', 'Kannada',
+        'Bengali', 'Marathi', 'Gujarati', 'Punjabi', 'Odia'
+      ]
+    },
+    {
+      label: 'Foreign Languages',
+      options: [
+        'English', 'Japanese', 'French', 'German',
+        'Spanish', 'Chinese', 'Korean', 'Russian',
+        'Italian', 'Arabic'
+      ]
+    }
   ];
-
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -63,40 +78,40 @@ export class UserDashboardComponent implements OnInit {
 
           console.log("applicant =", this.applicant);
           // Companies
-         // Companies
-this.companies = [];
+          // Companies
+          this.companies = [];
 
-if (response.companies) {
+          if (response.companies) {
 
-  try {
+            try {
 
-    this.companies = [...JSON.parse(response.companies)];
+              this.companies = [...JSON.parse(response.companies)];
 
-  } catch {
+            } catch {
 
-    this.companies = [];
+              this.companies = [];
 
-  }
+            }
 
-}
+          }
 
-// Languages
-this.languages = [];
+          // Languages
+          this.languages = [];
 
-if (response.languages) {
+          if (response.languages) {
 
-  try {
+            try {
 
-    this.languages = [...JSON.parse(response.languages)];
+              this.languages = [...JSON.parse(response.languages)];
 
-  } catch {
+            } catch {
 
-    this.languages = [];
+              this.languages = [];
 
-  }
-  this.cdr.detectChanges();
+            }
+            this.cdr.detectChanges();
 
-}
+          }
 
           // Languages
           if (response.languages) {
@@ -123,36 +138,135 @@ if (response.languages) {
         }
 
       });
-      
+
 
   }
-
   editProfile(): void {
+
     this.editApplicant = { ...this.applicant };
-    this.editLanguages = JSON.parse(JSON.stringify(this.languages));
+
+    this.editLanguages =
+      JSON.parse(JSON.stringify(this.languages));
+
+    this.selectedLanguageNames =
+      this.editLanguages.map(
+        lang => lang.name
+      );
+
     this.editMode = true;
+
   }
 
   cancelEdit(): void {
     this.editMode = false;
   }
+  createLanguageSkill(name: string) {
 
-  addLanguageFromSelect(event: any): void {
-    const name = event.target.value;
-    if (name && !this.editLanguages.some((l: any) => l.name === name)) {
-      this.editLanguages.push({
-        name,
-        read: false,
-        write: false,
-        speak: false,
-        all: false
-      });
-    }
-    event.target.value = ''; // Reset select
+  return {
+
+    name,
+
+    read: false,
+
+    write: false,
+
+    speak: false,
+
+    all: false
+
+  };
+
+}
+addLanguage(name: string): void {
+
+  if (!this.editLanguages.some(
+    lang => lang.name === name
+  )) {
+
+    this.editLanguages.push(
+
+      this.createLanguageSkill(name)
+
+    );
+
   }
 
+  if (!this.selectedLanguageNames.includes(name)) {
+
+    this.selectedLanguageNames.push(name);
+
+  }
+
+}toggleLanguage(language: string, event: any): void {
+
+  if (event.target.checked) {
+
+    this.addLanguage(language);
+
+  }
+
+  else {
+
+    this.removeLanguage(language);
+
+  }
+
+}updateLanguageAllState(language: any): void {
+
+  language.all =
+
+    language.read &&
+
+    language.write &&
+
+    language.speak;
+
+}
+getProgress(language: any): number {
+
+  if (language.all) {
+
+    return 100;
+
+  }
+
+  let progress = 0;
+
+  if (language.read) {
+
+    progress += 30;
+
+  }
+
+  if (language.write) {
+
+    progress += 30;
+
+  }
+
+  if (language.speak) {
+
+    progress += 40;
+
+  }
+
+  return progress;
+
+}
+
+
   removeLanguage(name: string): void {
-    this.editLanguages = this.editLanguages.filter((l: any) => l.name !== name);
+
+    this.editLanguages =
+      this.editLanguages.filter(
+        lang => lang.name !== name
+      );
+
+    this.selectedLanguageNames =
+      this.selectedLanguageNames.filter(
+        existing => existing !== name
+      );
+
   }
   onPhotoSelected(event: any): void {
 
@@ -240,14 +354,25 @@ if (response.languages) {
     });
   }
 
-  toggleAll(language: any): void {
+toggleAll(language: any): void {
 
-    language.read = language.all;
-    language.write = language.all;
-    language.speak = language.all;
+  if (language.all) {
+
+    language.read = true;
+    language.write = true;
+    language.speak = true;
 
   }
 
+  else {
+
+    language.read = false;
+    language.write = false;
+    language.speak = false;
+
+  }
+
+}
 
   toggleCompany(company: string): void {
 

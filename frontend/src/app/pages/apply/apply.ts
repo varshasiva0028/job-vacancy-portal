@@ -13,7 +13,8 @@ import { ElementRef, HostListener } from '@angular/core';
 })
 export class ApplyComponent {
   applicant = {
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     phone: '',
     qualification: '',
@@ -81,18 +82,48 @@ export class ApplyComponent {
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
   photoFile: File | null = null;
+
+  resumeFileName: string = '';
+  marksheetFileName: string = '';
+  photoFileName: string = '';
+
   submitted = false;
   loading = false;
   constructor(private http: HttpClient) { }
   onResumeSelect(event: any) {
+
     this.resumeFile = event.target.files[0];
+
+    if (this.resumeFile) {
+
+      this.resumeFileName = this.resumeFile.name;
+
+    }
+
   }
+
   onMarksheetSelect(event: any) {
+
     this.marksheetFile = event.target.files[0];
+
+    if (this.marksheetFile) {
+
+      this.marksheetFileName = this.marksheetFile.name;
+
+    }
+
   }
 
   onPhotoSelect(event: any) {
+
     this.photoFile = event.target.files[0];
+
+    if (this.photoFile) {
+
+      this.photoFileName = this.photoFile.name;
+
+    }
+
   }
   createLanguageSkill(name: string) {
     return {
@@ -241,8 +272,10 @@ export class ApplyComponent {
       return;
     }
     const formData = new FormData();
-    formData.append('name', this.applicant.name);
-    formData.append('email', this.applicant.email);
+    formData.append(
+      'name',
+      `${this.applicant.firstName} ${this.applicant.lastName}`
+    ); formData.append('email', this.applicant.email);
     formData.append('phone', this.applicant.phone);
     formData.append('qualification', this.applicant.qualification);
     formData.append('resume', this.resumeFile);
@@ -258,31 +291,32 @@ export class ApplyComponent {
       JSON.stringify(this.selectedLanguages)
     );
     formData.append(
-  'companies',
-  JSON.stringify(this.selectedCompanies)
-);
-   this.loading = true;
+      'companies',
+      JSON.stringify(this.selectedCompanies)
+    );
+    this.loading = true;
 
-const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
-this.http.post(
-  'http://localhost:8081/api/applicants',
-  formData,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`
-    },
-    observe: 'response',
-    responseType: 'text'
-  }
-).subscribe({
+    this.http.post(
+      'http://localhost:8081/api/applicants',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        observe: 'response',
+        responseType: 'text'
+      }
+    ).subscribe({
       next: (response) => {
         console.log(response.body);
         this.loading = false;
         this.submitted = true;
         alert("Application Submitted Successfully");
         this.applicant = {
-          name: '',
+          firstName: '',
+          lastName: '',
           email: '',
           phone: '',
           qualification: '',

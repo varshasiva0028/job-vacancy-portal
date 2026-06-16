@@ -1,24 +1,40 @@
+<div class="dashboard-header">
+
+  <h2>
+    <i class="fa-solid fa-circle-user"></i>
+    Applicant Dashboard
+  </h2>
+
+  <button (click)="logout()" class="btn-logout">
+
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+
+  </button>
+
+</div>
 <div class="dashboard-full-width">
-  <h2><i class="fa-solid fa-circle-user"></i> Applicant Dashboard</h2>
 
   <!-- Profile Photo at the Top -->
   <div class="profile-photo-container">
-    <img *ngIf="applicant.photoPath"
-         [src]="'http://localhost:8081/uploads/' + applicant.photoPath"
-         alt="Profile Photo"
-         class="profile-avatar" />
+    <img *ngIf="applicant.photoPath" [src]="'http://localhost:8081/uploads/' + applicant.photoPath" alt="Profile Photo"
+      class="profile-avatar" />
+  </div>
+  <!-- ID -->
+  <div class="profile-id">
+
+    <span class="profile-id-value">
+
+      <i class="fa-solid fa-id-card"></i>
+
+      ID : {{ applicant.id }}
+
+    </span>
+
   </div>
 
   <!-- Applicant Details in a Horizontal Layout -->
   <div class="details-grid">
-
-    <!-- ID -->
-    <div class="detail-card">
-      <span class="detail-label">
-        <i class="fa-solid fa-id-card"></i> ID
-      </span>
-      <span class="detail-value">{{ applicant.id }}</span>
-    </div>
 
     <!-- Name -->
     <div class="detail-card">
@@ -33,10 +49,7 @@
       </ng-container>
 
       <ng-template #editName>
-        <input
-          type="text"
-          [(ngModel)]="editApplicant.name"
-          class="dashboard-input" />
+        <input type="text" [(ngModel)]="editApplicant.name" class="dashboard-input" />
       </ng-template>
     </div>
 
@@ -46,16 +59,19 @@
         <i class="fa-solid fa-envelope"></i> Email
       </span>
 
-      <span class="detail-value">
-        {{ editApplicant.email }}
-      </span>
+      <ng-container *ngIf="!editMode; else editEmail">
 
-      <input
-        type="email"
-        [(ngModel)]="editApplicant.email"
-        name="email"
-        class="dashboard-input"
-        *ngIf="editMode" />
+        <span class="detail-value">
+          {{ editApplicant.email }}
+        </span>
+
+      </ng-container>
+
+      <ng-template #editEmail>
+
+        <input type="email" [(ngModel)]="editApplicant.email" class="dashboard-input">
+
+      </ng-template>
     </div>
 
     <!-- Qualification -->
@@ -64,16 +80,19 @@
         <i class="fa-solid fa-graduation-cap"></i> Qualification
       </span>
 
-      <span class="detail-value">
-        {{ editApplicant.qualification }}
-      </span>
+      <ng-container *ngIf="!editMode; else editQualification">
 
-      <input
-        type="text"
-        [(ngModel)]="editApplicant.qualification"
-        name="qualification"
-        class="dashboard-input"
-        *ngIf="editMode" />
+        <span class="detail-value">
+          {{ editApplicant.qualification }}
+        </span>
+
+      </ng-container>
+
+      <ng-template #editQualification>
+
+        <input type="text" [(ngModel)]="editApplicant.qualification" class="dashboard-input" />
+
+      </ng-template>
     </div>
 
     <!-- Gender -->
@@ -81,25 +100,28 @@
       <span class="detail-label">
         <i class="fa-solid fa-venus-mars"></i> Gender
       </span>
+      <ng-container *ngIf="!editMode; else editGender">
 
-      <span class="detail-value">
-        {{ editApplicant.gender }}
-      </span>
+        <span class="detail-value">
+          {{ editApplicant.gender }}
+        </span>
 
-      <select
-        [(ngModel)]="editApplicant.gender"
-        name="gender"
-        class="dashboard-select"
-        *ngIf="editMode">
+      </ng-container>
 
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
+      <ng-template #editGender>
 
-      </select>
+        <select [(ngModel)]="editApplicant.gender" class="dashboard-select">
+
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+
+        </select>
+
+      </ng-template>
     </div>
 
     <!-- Languages Known -->
-    <div class="detail-card lang-card-col">
+    <div class="detail-card lang-card-full">
       <span class="detail-label">
         <i class="fa-solid fa-language"></i> Languages Known
       </span>
@@ -119,87 +141,175 @@
           </span>
 
         </div>
-
-        <div *ngIf="!languages?.length" class="no-lang">
+<div *ngIf="!languages.length" class="no-lang">
           None
         </div>
       </div>
 
       <!-- Edit View -->
-      <div class="languages-edit-container" *ngIf="editMode">
+     <div class="languages-edit-container" *ngIf="editMode">
 
-        <div *ngFor="let lang of editLanguages" class="lang-edit-row">
+  <div *ngFor="let lang of editLanguages" class="lang-edit-row">
 
-          <span class="lang-name">{{ lang.name }}</span>
+    <span class="lang-name">
+      {{ lang.name }}
+    </span>
 
-          <div class="lang-skills">
-            <label><input type="checkbox" [(ngModel)]="lang.read" /> R</label>
-            <label><input type="checkbox" [(ngModel)]="lang.write" /> W</label>
-            <label><input type="checkbox" [(ngModel)]="lang.speak" /> S</label>
-          </div>
+    <div class="skill-options">
 
-          <button
-            type="button"
-            class="btn-remove-lang"
-            (click)="removeLanguage(lang.name)">
-            &times;
-          </button>
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="lang.read"
+               (change)="updateLanguageAllState(lang)">
+        Read
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="lang.write"
+               (change)="updateLanguageAllState(lang)">
+        Write
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="lang.speak"
+               (change)="updateLanguageAllState(lang)">
+        Speak
+      </label>
+
+      <label>
+        <input type="checkbox"
+               [(ngModel)]="lang.all"
+               (change)="toggleAll(lang)">
+        All
+      </label>
+
+    </div>
+
+    <div class="progress-wrapper">
+
+      <progress
+        [value]="getProgress(lang)"
+        max="100">
+      </progress>
+
+      <span>
+        {{ getProgress(lang) }}%
+      </span>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn-remove-lang"
+      (click)="removeLanguage(lang.name)">
+
+      &times;
+
+    </button>
+
+  </div>
+
+  <!-- Add Language -->
+
+  <div class="custom-dropdown">
+
+    <button
+      type="button"
+      class="dropdown-btn"
+      (click)="showLanguages = !showLanguages">
+
+      {{
+      selectedLanguageNames.length
+      ? selectedLanguageNames.join(', ')
+      : 'Select Languages'
+      }}
+
+      ▼
+
+    </button>
+
+    <div
+      *ngIf="showLanguages"
+      class="dropdown-content">
+
+      <div *ngFor="let group of languageGroups">
+
+        <strong>
+          {{ group.label }}
+        </strong>
+
+        <div *ngFor="let option of group.options">
+
+          <label>
+
+            <input
+              type="checkbox"
+              [checked]="selectedLanguageNames.includes(option)"
+              (change)="toggleLanguage(option,$event)">
+
+            {{ option }}
+
+          </label>
 
         </div>
 
-        <select
-          (change)="addLanguageFromSelect($event)"
-          class="add-lang-select">
+      </div>
 
-          <option value="">+ Add Language</option>
+    </div>
 
-          <option
-            *ngFor="let opt of allLanguagesOptions"
-            [value]="opt">
-            {{ opt }}
-          </option>
+  </div>
 
-        </select>
+</div>
+
+
+    <div class="detail-card documents-card">
+
+      <span class="detail-label">
+        <i class="fa-solid fa-file-lines"></i>
+        Documents
+      </span>
+
+      <div class="documents-container">
+
+        <div class="document-item">
+
+          <span class="detail-label">
+            <i class="fa-solid fa-file-pdf"></i>
+            Resume
+          </span>
+
+          <a *ngIf="applicant.resumePath" [href]="'http://localhost:8081/uploads/' + applicant.resumePath"
+            target="_blank" class="download-link">
+
+            <i class="fa-solid fa-up-right-from-square"></i>
+            View Resume
+
+          </a>
+
+        </div>
+
+        <div class="document-item">
+
+          <span class="detail-label">
+            <i class="fa-solid fa-file-lines"></i>
+            Marksheet
+          </span>
+
+          <a *ngIf="applicant.marksheetPath" [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath"
+            target="_blank" class="download-link">
+
+            <i class="fa-solid fa-up-right-from-square"></i>
+            View Marksheet
+
+          </a>
+
+        </div>
 
       </div>
+
     </div>
-
-    <!-- Resume -->
-    <div class="detail-card">
-      <span class="detail-label">
-        <i class="fa-solid fa-file-pdf"></i> Resume
-      </span>
-
-      <a
-        *ngIf="applicant.resumePath"
-        [href]="'http://localhost:8081/uploads/' + applicant.resumePath"
-        target="_blank"
-        class="download-link">
-
-        <i class="fa-solid fa-up-right-from-square"></i>
-        View Resume
-
-      </a>
-    </div>
-
-    <!-- Marksheet -->
-    <div class="detail-card">
-      <span class="detail-label">
-        <i class="fa-solid fa-file-lines"></i> Marksheet
-      </span>
-
-      <a
-        *ngIf="applicant.marksheetPath"
-        [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath"
-        target="_blank"
-        class="download-link">
-
-        <i class="fa-solid fa-up-right-from-square"></i>
-        View Marksheet
-
-      </a>
-    </div>
-
   </div>
 
   <!-- Action Buttons -->
@@ -212,10 +322,7 @@
         Edit Profile
       </button>
 
-      <button (click)="logout()" class="btn-logout">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        Logout
-      </button>
+
 
     </ng-container>
 
@@ -236,12 +343,11 @@
   </div>
 
 </div>
+<h3>
+  <i class="fa-solid fa-building"></i>
+  Companies Applied
+</h3>
 <div class="companies-card">
-
-  <h3>
-    <i class="fa-solid fa-building"></i>
-    Companies Applied
-  </h3>
 
   <ul class="companies-list">
 

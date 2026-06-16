@@ -45,31 +45,52 @@ body {
     0 5px 15px rgba(0,0,0,.15);
 
 }
+/* ================= Dashboard header ================= */
 
-/* ================= TITLE ================= */
-
-h2 {
-
-    color: rgb(36, 33, 33);
-
-    font-size: 32px;
-
-    font-weight: 700;
-
-    margin-bottom: 35px;
-
+.dashboard-header{
+    position: relative;
     display: flex;
-
+    justify-content: center;
     align-items: center;
+    margin-bottom: 30px;
 
-    gap: 10px;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+
+
+/* ================= LOGOUT BUTTON ================= */
+
+.btn-logout{
+
+    position:absolute;
+
+    right:20px;
+
+    top:50%;
+
+    transform:translateY(-50%);
 
 }
 
-h2 i {
 
+/* ================= TITLE ================= */
+h2{
+    color: rgb(36,33,33);
+    font-size: 40px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+h2 i{
     color: #38bdf8;
-
 }
 
 /* ================= PROFILE ================= */
@@ -111,6 +132,38 @@ h2 i {
     transform: scale(1.08);
 
 }
+.profile-id{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin:25px 0 50px;
+
+}
+
+.profile-id-value{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    color:rgb(36,33,33);
+
+}
+
+.profile-id-value i{
+
+    color:#38bdf8;
+
+}
+
 
 /* ================= DETAILS GRID ================= */
 
@@ -225,25 +278,76 @@ h2 i {
 
     display: flex;
 
+    flex-direction: row;
+
     flex-wrap: wrap;
 
-    gap: 10px;
+    gap: 15px;
+
+    width: 100%;
+
+    margin-top: 20px;
 
 }
 
 .lang-badge {
 
-    background: #1d4ed8;
+    flex: 1;
 
-    color: white;
+    min-width: 250px;
 
-    padding: 8px 14px;
+    background: rgba(255,255,255,.06);
 
-    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,.1);
 
-    font-size: 13px;
+    border-left: 5px solid #3b82f6;
+
+    color: rgb(36,33,33);
+
+    padding: 18px 22px;
+
+    border-radius: 15px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition: .3s;
 
 }
+
+.lang-badge:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.1);
+
+}
+
+.lang-title {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+}
+
+.lang-skills-text {
+
+    color: #64748b;
+
+    font-size: 14px;
+
+}
+.lang-card-full{
+
+    grid-column: 1 / -1;
+
+}/* ================= EDIT MODE ================= */
 
 .languages-edit-container {
 
@@ -251,43 +355,113 @@ h2 i {
 
     flex-direction: column;
 
-    gap: 10px;
+    gap: 18px;
+
+    margin-top: 20px;
 
 }
+
+/* Language Card */
 
 .lang-edit-row {
 
-    display: flex;
+    display: grid;
 
-    justify-content: space-between;
+    grid-template-columns: 180px 1fr 220px 50px;
 
     align-items: center;
 
+    gap: 25px;
+
     background: #1e293b;
 
-    padding: 10px;
+    padding: 20px 25px;
 
-    border-radius: 12px;
+    border-radius: 16px;
 
 }
+
+/* Language Name */
 
 .lang-name {
 
     color: white;
 
+    font-size: 18px;
+
     font-weight: 600;
 
 }
 
-.lang-skills {
+/* Checkboxes */
+
+.skill-options {
 
     display: flex;
 
-    gap: 15px;
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+.skill-options label {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
 
     color: white;
 
+    font-size: 14px;
+
+    cursor: pointer;
+
 }
+
+.skill-options input[type="checkbox"] {
+
+    width: 16px;
+
+    height: 16px;
+
+}
+
+/* Progress */
+
+.progress-wrapper {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+.progress-wrapper progress {
+
+    width: 160px;
+
+    height: 10px;
+
+    accent-color: #3b82f6;
+
+}
+
+.progress-wrapper span {
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+}
+
+/* Delete Button */
 
 .btn-remove-lang {
 
@@ -297,24 +471,121 @@ h2 i {
 
     color: #ef4444;
 
-    font-size: 22px;
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+}
+
+.btn-remove-lang:hover {
+
+    color: #dc2626;
+
+}
+
+/* Dropdown */
+
+.custom-dropdown {
+
+    margin-top: 15px;
+
+}
+
+.dropdown-btn {
+
+    background: #f3f4f6;
+
+    border: none;
+
+    padding: 14px 20px;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+}
+
+.dropdown-content {
+
+    margin-top: 15px;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.15);
+
+    max-height: 300px;
+
+    overflow-y: auto;
+
+}
+
+.dropdown-content strong {
+
+    display: block;
+
+    margin-top: 15px;
+
+    margin-bottom: 10px;
+
+    color: #1e293b;
+
+}
+
+.dropdown-content label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #475569;
 
     cursor: pointer;
 
 }
 
-.add-lang-select {
+/* Full Width Card */
 
-    padding: 10px;
+.lang-card-full {
 
-    border-radius: 12px;
-
-    background: #1e293b;
-
-    color: white;
+    width: 100%;
 
 }
 
+/* Mobile */
+
+@media(max-width:768px){
+
+    .lang-edit-row {
+
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+
+    }
+
+    .skill-options {
+
+        flex-wrap: wrap;
+
+    }
+
+    .progress-wrapper progress {
+
+        width: 100%;
+
+    }
+
+}
 /* ================= DOWNLOAD LINKS ================= */
 
 .download-link {
@@ -362,26 +633,24 @@ h2 i {
 }
 
 /* ================= HEADING ================= */
-
-.companies-card h3{
+ h3{
 
     color:rgb(36,33,33);
 
     font-size:28px;
 
-    font-weight:700;
-
-    margin-bottom:30px;
+    margin-bottom:25px;
 
     display:flex;
 
     align-items:center;
+    justify-content:center;
 
     gap:12px;
 
 }
 
-.companies-card h3 i{
+ h3 i{
 
     color:#38bdf8;
 
@@ -501,16 +770,49 @@ h2 i {
 
 }
 /* ================= BUTTONS ================= */
+/* ================= ACTION BUTTONS ================= */
+.actions-section{
 
-.actions-section {
+    grid-column:1/-1;
 
-    display: flex;
+    display:flex;
 
-    justify-content: flex-end;
+    justify-content:flex-end;
 
-    gap: 15px;
+    margin-top:35px;
 
-    margin-top: 35px;
+}
+
+.btn-edit-profile {
+
+    background: linear-gradient(
+        45deg,
+        #3b82f6,
+        #06b6d4);
+
+    color: white;
+
+}
+
+.btn-save-changes {
+
+    background: linear-gradient(
+        45deg,
+        #22c55e,
+        #10b981);
+
+    color: white;
+
+}
+
+.btn-cancel {
+
+    background: linear-gradient(
+        45deg,
+        #64748b,
+        #475569);
+
+    color: white;
 
 }
 
@@ -536,38 +838,8 @@ button:hover {
 
 }
 
-.btn-edit-profile {
 
-    background:
-        linear-gradient(45deg,
-            #3b82f6,
-            #06b6d4);
 
-    color: white;
-
-}
-
-.btn-save-changes {
-
-    background:
-        linear-gradient(45deg,
-            #22c55e,
-            #10b981);
-
-    color: white;
-
-}
-
-.btn-cancel {
-
-    background:
-        linear-gradient(45deg,
-            #64748b,
-            #475569);
-
-    color: white;
-
-}
 
 .btn-logout {
 
@@ -613,3 +885,78 @@ button:hover {
 .fa-solid {
     font-weight: 900 !important;
 }
+/* ================= DOCUMENTS ================= */
+
+.documents-card{
+    grid-column:1/-1;
+
+    width:100%;
+
+}
+
+.documents-container{
+
+    display:flex;
+
+    flex-direction:row;
+
+    gap:20px;
+
+    width:100%;
+
+    margin-top:20px;
+
+}
+
+.document-item{
+
+    width:100%;
+
+    background:rgba(255,255,255,.06);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    border-left:5px solid #38bdf8;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    transition:.3s;
+
+}
+
+.document-item:hover{
+
+    transform:translateX(8px);
+
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+}
+
+.download-link{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#38bdf8;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    margin-top:15px;
+
+    transition:.3s;
+
+}
+
+.download-link:hover{
+
+    color:#0ea5e9;
+
+}
+
