@@ -350,6 +350,7 @@
   <!---dialog-->
 <dialog #previewDialog class="preview-dialog">
 
+
   <div class="dialog-header">
 
     <h2>{{ previewTitle }}</h2>
@@ -364,25 +365,12 @@
 
   </div>
 
-
   <iframe
-    [src]="previewUrl"
+    *ngIf="isPdf"
+    [src]="safePreviewUrl"
     width="100%"
-    height="600">
+    height="500">
 
   </iframe>
-
-
-  <div class="dialog-footer">
-
-    <button
-      class="close-btn"
-      (click)="closePreview()">
-
-      Close
-
-    </button>
-
-  </div>
 
 </dialog>

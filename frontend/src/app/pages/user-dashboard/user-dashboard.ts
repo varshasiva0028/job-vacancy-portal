@@ -3,8 +3,13 @@ import {
   OnInit,
   ChangeDetectorRef,
   ViewChild,
-  ElementRef
+  ElementRef,
+
 } from '@angular/core';
+import {
+  DomSanitizer,
+  SafeResourceUrl
+} from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -36,6 +41,8 @@ export class UserDashboardComponent implements OnInit {
 
   showLanguages = false;
 
+  safePreviewUrl!: SafeResourceUrl;
+
   previewTitle = '';
 
   previewUrl = '';
@@ -43,8 +50,8 @@ export class UserDashboardComponent implements OnInit {
   isPdf = false;
   @ViewChild('previewDialog')
   previewDialog!: ElementRef<HTMLDialogElement>;
-   
- 
+
+
 
   languageGroups = [
     {
@@ -66,7 +73,8 @@ export class UserDashboardComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -405,31 +413,39 @@ export class UserDashboardComponent implements OnInit {
     }
 
   }
+openPreview(filePath: string, title: string): void {
 
-  openPreview(filePath: string, title: string): void {
+  this.previewTitle = title;
 
   const fileUrl =
     'http://localhost:8081/uploads/' + filePath;
 
   const lower = filePath.toLowerCase();
 
+  // Word files
   if (
       lower.endsWith('.doc') ||
       lower.endsWith('.docx')
   ) {
 
       window.open(fileUrl, '_blank');
-      return;
 
+      return;
   }
 
-  this.previewTitle = title;
-  this.previewUrl = fileUrl;
+  // PDF files
+  if (lower.endsWith('.pdf')) {
 
-  this.previewDialog.nativeElement.showModal();
+      this.isPdf = true;
 
+      this.safePreviewUrl =
+        this.sanitizer.bypassSecurityTrustResourceUrl(
+          fileUrl
+        );
+
+      this.previewDialog.nativeElement.showModal();
+  }
 }
-
   closePreview(): void {
 
     this.previewDialog.nativeElement.close();

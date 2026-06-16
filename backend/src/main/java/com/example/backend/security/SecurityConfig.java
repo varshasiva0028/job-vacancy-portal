@@ -17,12 +17,19 @@ import java.util.List;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http)
             throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
+                // Allow PDFs/images to be displayed inside iframe
+                .headers(headers
+                        -> headers.frameOptions(
+                        frame -> frame.disable()
+                )
+                )
                 .sessionManagement(session
                         -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
@@ -40,7 +47,7 @@ public class SecurityConfig {
                 // Everything else requires login
                 .anyRequest().authenticated()
                 )
-                //Whenever a request comes, execute JwtFilter first
+                // Execute JwtFilter before UsernamePasswordAuthenticationFilter
                 .addFilterBefore(
                         new JwtFilter(),
                         UsernamePasswordAuthenticationFilter.class

@@ -90,29 +90,59 @@ export class ApplyComponent {
   submitted = false;
   loading = false;
   constructor(private http: HttpClient) { }
-  onResumeSelect(event: any) {
+onResumeSelected(event: any): void {
 
-    this.resumeFile = event.target.files[0];
+  const file = event.target.files[0];
 
-    if (this.resumeFile) {
+  if (file) {
 
-      this.resumeFileName = this.resumeFile.name;
+    const allowedTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
 
+    if (!allowedTypes.includes(file.type)) {
+
+      alert('Resume must be a PDF or Word document (.pdf, .doc, .docx)');
+
+      event.target.value = '';
+
+      return;
     }
 
+    this.resumeFile = file;
+
+    this.resumeFileName = file.name;
   }
+}
 
-  onMarksheetSelect(event: any) {
+onMarksheetSelected(event: any): void {
 
-    this.marksheetFile = event.target.files[0];
+  const file = event.target.files[0];
 
-    if (this.marksheetFile) {
+  if (file) {
 
-      this.marksheetFileName = this.marksheetFile.name;
+    const allowedTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    ];
 
+    if (!allowedTypes.includes(file.type)) {
+
+      alert('Marksheet must be a PDF or Word document (.pdf, .doc, .docx)');
+
+      event.target.value = '';
+
+      return;
     }
 
+    this.marksheetFile = file;
+
+    this.marksheetFileName = file.name;
   }
+}
 
   onPhotoSelect(event: any) {
 

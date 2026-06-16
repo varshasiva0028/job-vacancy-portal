@@ -291,9 +291,7 @@
 
         <i class="fas fa-file upload-icon"></i>
         <label class="upload-area">
-
-          <input type="file" class="file-input" (change)="onResumeSelect($event)">
-
+          <input type="file" accept=".pdf,.doc,.docx" class="file-input" (change)="onResumeSelected($event)">
           <span class="upload-btn">
             Upload Resume
           </span>
@@ -316,8 +314,7 @@
 
         <label class="upload-area">
 
-          <input type="file" class="file-input" (change)="onMarksheetSelect($event)">
-
+          <input type="file" accept=".pdf,.doc,.docx" class="file-input" (change)="onMarksheetSelected($event)">
           <span class="upload-btn">
             Upload Marksheet
           </span>

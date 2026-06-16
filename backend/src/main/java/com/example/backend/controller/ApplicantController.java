@@ -67,6 +67,33 @@ public class ApplicantController {
 
                 return ResponseEntity.badRequest().body("All fields are required");
             }
+            if (resume != null && !resume.isEmpty()) {
+
+                String resumeType = resume.getContentType();
+
+                if (!resumeType.equals("application/pdf")
+                        && !resumeType.equals("application/msword")
+                        && !resumeType.equals(
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+
+                    return ResponseEntity.badRequest()
+                            .body("Resume must be a PDF or Word document");
+                }
+            }
+
+            if (marksheet != null && !marksheet.isEmpty()) {
+
+                String marksheetType = marksheet.getContentType();
+
+                if (!marksheetType.equals("application/pdf")
+                        && !marksheetType.equals("application/msword")
+                        && !marksheetType.equals(
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+
+                    return ResponseEntity.badRequest()
+                            .body("Marksheet must be a PDF or Word document");
+                }
+            }
 
             if (resume == null || resume.isEmpty()) {
                 return ResponseEntity.badRequest().body("Resume file is missing");
@@ -78,6 +105,29 @@ public class ApplicantController {
 
             if (marksheet == null || marksheet.isEmpty()) {
                 return ResponseEntity.badRequest().body("Marksheet file is missing");
+            }
+            // Resume validation
+            String resumeType = resume.getContentType();
+
+            if (!resumeType.equals("application/pdf")
+                    && !resumeType.equals("application/msword")
+                    && !resumeType.equals(
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+
+                return ResponseEntity.badRequest()
+                        .body("Resume must be a PDF or Word document");
+            }
+
+// Marksheet validation
+            String marksheetType = marksheet.getContentType();
+
+            if (!marksheetType.equals("application/pdf")
+                    && !marksheetType.equals("application/msword")
+                    && !marksheetType.equals(
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+
+                return ResponseEntity.badRequest()
+                        .body("Marksheet must be a PDF or Word document");
             }
             Applicant existingApplicant = service.getApplicantByEmail(email.trim());
 
