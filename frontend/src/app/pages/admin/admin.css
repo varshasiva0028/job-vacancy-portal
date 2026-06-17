@@ -733,3 +733,116 @@
     align-items: center;
     margin-bottom: 30px;
 }
+/* ================= MOBILE ================= */
+
+@media (max-width:768px){
+
+    .admin-header{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .logout-btn{
+        width:100%;
+        justify-content:center;
+    }
+
+    .search-container{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .search-box{
+        max-width:100%;
+    }
+
+    .view-toggle-group{
+        position:static;
+    }
+
+    .summary-text{
+        text-align:center;
+    }
+
+    .grid-container{
+        grid-template-columns:1fr;
+    }
+
+    .profile-section{
+        width:90px;
+    }
+
+    .profile-photo,
+    .profile-avatar{
+        width:90px;
+        height:90px;
+    }
+
+    .profile-avatar{
+        font-size:35px;
+    }
+
+    .company-header{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .company-btn{
+        width:100%;
+    }
+
+    .company-content{
+        width:100%;
+        box-sizing:border-box;
+    }
+
+    .company-list{
+        grid-template-columns:1fr;
+    }
+
+    .radio-group{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .skill-options{
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .action-cell{
+        flex-direction:column;
+    }
+
+    .btn-save,
+    .btn-cancel{
+        width:100%;
+    }
+
+    .file-placeholder{
+        width:100%;
+    }
+
+    .action-buttons{
+        flex-wrap:wrap;
+    }
+
+    .basic-table{
+        min-width:1200px;
+    }
+}
+@media (max-width:768px){
+
+    .admin-header{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logout-btn{
+        position: static;    
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+        margin-top: 15px;
+    }
+}
