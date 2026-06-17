@@ -269,12 +269,23 @@
             <i class="fa-solid fa-file-pdf"></i>
             Resume
           </span>
+          <a *ngIf="!editMode && applicant.resumePath" class="download-link"
+            (click)="openPreview(applicant.resumePath,'Resume')">
 
-          <a *ngIf="applicant.resumePath" class="download-link" (click)="openPreview(applicant.resumePath,'Resume')">
             <i class="fa-solid fa-up-right-from-square"></i>
             View Resume
 
           </a>
+
+          <div *ngIf="editMode">
+
+            <input type="file" accept=".pdf,.doc,.docx" (change)="onResumeSelected($event)">
+
+            <p>
+              {{ resumeFileName || 'No file selected' }}
+            </p>
+
+          </div>
 
         </div>
 
@@ -287,13 +298,28 @@
             Marksheet
           </span>
 
-          <a *ngIf="applicant.marksheetPath" class="download-link"
-            (click)="openPreview(applicant.marksheetPath,'Marksheet')">
+          <a
+  *ngIf="!editMode && applicant.marksheetPath"
+  class="download-link"
+  (click)="openPreview(applicant.marksheetPath,'Marksheet')">
 
-            <i class="fa-solid fa-up-right-from-square"></i>
-            View Marksheet
+  <i class="fa-solid fa-up-right-from-square"></i>
+  View Marksheet
 
-          </a>
+</a>
+
+<div *ngIf="editMode">
+
+  <input
+    type="file"
+    accept=".pdf,.doc,.docx"
+    (change)="onMarksheetSelected($event)">
+
+  <p>
+    {{ marksheetFileName || 'No file selected' }}
+  </p>
+
+</div>
 
         </div>
 
@@ -348,29 +374,23 @@
 
   </div>
   <!---dialog-->
-<dialog #previewDialog class="preview-dialog">
+  <dialog #previewDialog class="preview-dialog">
 
 
-  <div class="dialog-header">
+    <div class="dialog-header">
 
-    <h2>{{ previewTitle }}</h2>
+      <h2>{{ previewTitle }}</h2>
 
-    <button
-      class="close-icon"
-      (click)="closePreview()">
+      <button class="close-icon" (click)="closePreview()">
 
-      ✕
+        ✕
 
-    </button>
+      </button>
 
-  </div>
+    </div>
 
-  <iframe
-    *ngIf="isPdf"
-    [src]="safePreviewUrl"
-    width="100%"
-    height="500">
+    <iframe *ngIf="isPdf" [src]="safePreviewUrl" width="100%" height="500">
 
-  </iframe>
+    </iframe>
 
-</dialog>
+  </dialog>

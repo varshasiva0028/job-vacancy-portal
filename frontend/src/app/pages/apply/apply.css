@@ -483,6 +483,25 @@ body{
     }
 
 }
+.done-btn {
+  margin-top: 15px;
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.3s ease;
+}
+
+.done-btn:hover {
+  background: #16a34a;
+}
 /* Trash */
 .trash-btn{
     border:none;
@@ -738,4 +757,35 @@ progress{
 }
 .inline-label{
     white-space: nowrap;
+}
+.logout-container {
+  position: fixed;
+  top: 20px;
+  right: 25px;
+  z-index: 1000;
+}
+
+.btn-logout {
+  background: linear-gradient(135deg, #ff4d5a, #e63946);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 20px rgba(230, 57, 70, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(230, 57, 70, 0.4);
+}
+
+.btn-logout i {
+  font-size: 14px;
 }

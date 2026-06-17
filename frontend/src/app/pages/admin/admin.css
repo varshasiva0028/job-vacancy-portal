@@ -690,3 +690,46 @@
     margin-left: 10px;
     font-size: 14px;
 }
+.logout-btn {
+    position: fixed;
+    top: 40px;
+    right: 40px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+
+    border: none;
+    border-radius: 30px;
+
+    background: linear-gradient(135deg, #ff4b5c, #e11d48);
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow: 0 8px 20px rgba(225, 29, 72, 0.3);
+
+    transition: all 0.3s ease;
+
+    z-index: 1000;
+}
+
+.logout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(225, 29, 72, 0.4);
+}
+
+.logout-btn i {
+    font-size: 16px;
+}
+.admin-header {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 30px;
+}

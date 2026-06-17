@@ -40,6 +40,11 @@ export class UserDashboardComponent implements OnInit {
   selectedLanguageNames: string[] = [];
 
   showLanguages = false;
+  selectedResume: File | null = null;
+  selectedMarksheet: File | null = null;
+
+  resumeFileName = '';
+  marksheetFileName = '';
 
   safePreviewUrl!: SafeResourceUrl;
 
@@ -302,6 +307,32 @@ export class UserDashboardComponent implements OnInit {
 
   }
 
+onResumeSelected(event: any): void {
+
+  if (event.target.files.length > 0) {
+
+    this.selectedResume = event.target.files[0];
+
+    this.resumeFileName =
+      this.selectedResume!.name;
+
+  }
+
+}
+
+onMarksheetSelected(event: any): void {
+
+  if (event.target.files.length > 0) {
+
+    this.selectedMarksheet =
+      event.target.files[0];
+
+    this.marksheetFileName =
+      this.selectedMarksheet!.name;
+
+  }
+
+}
   saveChanges(): void {
     if (!this.editApplicant.name || !this.editApplicant.name.trim()) {
       alert("Name is required");
@@ -344,6 +375,23 @@ export class UserDashboardComponent implements OnInit {
       );
 
     }
+    if (this.selectedResume) {
+
+  formData.append(
+    'resume',
+    this.selectedResume
+  );
+
+}
+
+if (this.selectedMarksheet) {
+
+  formData.append(
+    'marksheet',
+    this.selectedMarksheet
+  );
+
+}
     formData.append('name', this.editApplicant.name.trim());
     formData.append('email', this.editApplicant.email.trim());
     formData.append('phone', this.applicant.phone || '');
@@ -413,28 +461,30 @@ export class UserDashboardComponent implements OnInit {
     }
 
   }
-openPreview(filePath: string, title: string): void {
+  openPreview(filePath: string, title: string): void {
+     console.log("TITLE =", title);
+  console.log("FILE PATH =", filePath);
 
-  this.previewTitle = title;
+    this.previewTitle = title;
 
-  const fileUrl =
-    'http://localhost:8081/uploads/' + filePath;
+    const fileUrl =
+      'http://localhost:8081/uploads/' + filePath;
 
-  const lower = filePath.toLowerCase();
+    const lower = filePath.toLowerCase();
 
-  // Word files
-  if (
+    // Word files
+    if (
       lower.endsWith('.doc') ||
       lower.endsWith('.docx')
-  ) {
+    ) {
 
       window.open(fileUrl, '_blank');
 
       return;
-  }
+    }
 
-  // PDF files
-  if (lower.endsWith('.pdf')) {
+    // PDF files
+    if (lower.endsWith('.pdf')) {
 
       this.isPdf = true;
 
@@ -444,8 +494,8 @@ openPreview(filePath: string, title: string): void {
         );
 
       this.previewDialog.nativeElement.showModal();
+    }
   }
-}
   closePreview(): void {
 
     this.previewDialog.nativeElement.close();

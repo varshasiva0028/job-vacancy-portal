@@ -283,6 +283,35 @@ public class ApplicantController {
             if (applicant == null) {
                 return ResponseEntity.notFound().build();
             }
+            // Resume validation
+            if (resume != null && !resume.isEmpty()) {
+
+                String resumeType = resume.getContentType();
+
+                if (!resumeType.equals("application/pdf")
+                        && !resumeType.equals("application/msword")
+                        && !resumeType.equals(
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+
+                    return ResponseEntity.badRequest()
+                            .body("Resume must be a PDF or Word document");
+                }
+            }
+
+// Marksheet validation
+            if (marksheet != null && !marksheet.isEmpty()) {
+
+                String marksheetType = marksheet.getContentType();
+
+                if (!marksheetType.equals("application/pdf")
+                        && !marksheetType.equals("application/msword")
+                        && !marksheetType.equals(
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
+
+                    return ResponseEntity.badRequest()
+                            .body("Marksheet must be a PDF or Word document");
+                }
+            }
 
             if (name == null || email == null || phone == null || qualification == null
                     || name.trim().isEmpty() || email.trim().isEmpty()

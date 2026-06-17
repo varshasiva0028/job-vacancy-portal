@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ElementRef, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-apply',
@@ -89,7 +90,7 @@ export class ApplyComponent {
 
   submitted = false;
   loading = false;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 onResumeSelected(event: any): void {
 
   const file = event.target.files[0];
@@ -378,4 +379,11 @@ onMarksheetSelected(event: any): void {
     a.download = 'application.json';
     a.click();
   }
+  logout(): void {
+
+  localStorage.clear();
+
+  this.router.navigate(['/']);
+
+}
 }

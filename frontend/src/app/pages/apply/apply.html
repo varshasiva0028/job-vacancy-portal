@@ -157,13 +157,45 @@
 
         </div>
 
-        <button type="button" class="done-btn" (click)="showLanguages=false">
+      <div *ngIf="showLanguages" class="dropdown-content">
 
-          <i class="fas fa-check"></i>
-          Done
+  <div *ngFor="let group of languageGroups">
 
-        </button>
+    <h4 class="language-group-title">
+      {{ group.label }}
+    </h4>
 
+    <div class="language-grid">
+
+      <label class="language-option" *ngFor="let option of group.options">
+
+        <input
+          type="checkbox"
+          [checked]="selectedLanguageNames.includes(option)"
+          (change)="toggleLanguage(option,$event)">
+
+        <span>{{ option }}</span>
+
+      </label>
+
+    </div>
+
+    <hr>
+
+  </div>
+
+</div>
+
+<button
+  *ngIf="showLanguages"
+  type="button"
+  class="done-btn"
+  (click)="showLanguages = false">
+
+  <i class="fas fa-check"></i>
+  Done
+
+</button>
       </div>
 
     </div>
@@ -361,7 +393,12 @@
       Submit
 
     </button>
-
+  <div class="logout-container">
+  <button class="btn-logout" (click)="logout()">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    Logout
+  </button>
+</div>
   </form>
 
   <!-- Success -->

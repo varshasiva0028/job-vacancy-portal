@@ -99,26 +99,31 @@ export class LoginComponent {
     }
 
   },
+error: (err: any) => {
 
-  error: (err: any) => {
+  console.log("ERROR BLOCK");
+  console.log(err);
+  console.log(err.status);
 
-    console.log("ERROR BLOCK");
-    console.log(err);
-    console.log(err.status);
+  alert('Login Successful');
 
-    if (err.status === 404) {
+  if (response.role === 'ADMIN') {
 
-      alert('Login Successful');
-
-      this.router.navigate(['/apply']);
-
-    } else {
-
-      alert('Unable to load applicant');
-
-    }
+    this.router.navigate(['/admin']);
 
   }
+  else if (err.status === 404) {
+
+    this.router.navigate(['/apply']);
+
+  }
+  else {
+
+    alert('Unable to load applicant');
+
+  }
+
+}
 
 });
 
