@@ -461,46 +461,27 @@ if (this.selectedMarksheet) {
     }
 
   }
-  openPreview(filePath: string, title: string): void {
-     console.log("TITLE =", title);
-  console.log("FILE PATH =", filePath);
+ openPreview(filePath: string, title: string): void {
 
-    this.previewTitle = title;
+  this.previewTitle = title;
 
-    const fileUrl =
-      'http://localhost:8081/uploads/' + filePath;
+  const fileUrl =
+    'http://localhost:8081/uploads/' + filePath;
 
-    const lower = filePath.toLowerCase();
+ this.safePreviewUrl =
+  this.sanitizer.bypassSecurityTrustResourceUrl(
+    fileUrl 
+  );
 
-    // Word files
-    if (
-      lower.endsWith('.doc') ||
-      lower.endsWith('.docx')
-    ) {
+  this.isPdf = true;
+}
+ closePreview(): void {
 
-      window.open(fileUrl, '_blank');
+  this.isPdf = false;
 
-      return;
-    }
+  this.previewDialog.nativeElement.close();
 
-    // PDF files
-    if (lower.endsWith('.pdf')) {
-
-      this.isPdf = true;
-
-      this.safePreviewUrl =
-        this.sanitizer.bypassSecurityTrustResourceUrl(
-          fileUrl
-        );
-
-      this.previewDialog.nativeElement.showModal();
-    }
-  }
-  closePreview(): void {
-
-    this.previewDialog.nativeElement.close();
-
-  }
+}
   logout(): void {
 
     localStorage.clear();

@@ -373,24 +373,29 @@
     </ul>
 
   </div>
-  <!---dialog-->
-  <dialog #previewDialog class="preview-dialog">
+  <!--dialogue-->
+  <div
+  *ngIf="isPdf"
+  class="preview-overlay">
+</div>
+<div
+  *ngIf="isPdf"
+  class="preview-dialog">
 
+  <div class="dialog-header">
+    <h2>{{previewTitle}}</h2>
 
-    <div class="dialog-header">
+    <button
+      class="close-icon"
+      (click)="closePreview()">
+      ✕
+    </button>
+  </div>
 
-      <h2>{{ previewTitle }}</h2>
+  <iframe
+      [src]="safePreviewUrl"
+      width="100%"
+      height="500">
+  </iframe>
 
-      <button class="close-icon" (click)="closePreview()">
-
-        ✕
-
-      </button>
-
-    </div>
-
-    <iframe *ngIf="isPdf" [src]="safePreviewUrl" width="100%" height="500">
-
-    </iframe>
-
-  </dialog>
+</div>
