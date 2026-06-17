@@ -43,45 +43,45 @@
     </span>
   </p>
 
-  <ng-template #languageEditor>
-    <div class="edit-section">
-      <label><strong>Languages Known</strong></label>
+ <ng-template #languageEditor>
 
-      <div class="custom-dropdown">
+  <!-- Languages -->
+  <div class="edit-section">
 
-        <button type="button" class="dropdown-btn" (click)="showLanguages = !showLanguages">
+    <div class="field-row">
 
-          {{
-          selectedLanguageNames.length
-          ? selectedLanguageNames.join(', ')
-          : 'Select Languages'
-          }}
-          ▼
+      <label class="field-label">
+        Languages Known
+      </label>
 
-        </button>
+      <div class="language-dropdown">
 
-        <div *ngIf="showLanguages" class="dropdown-content">
+        <div class="language-header">
 
-          <div *ngFor="let group of languageGroups">
+          <button
+            type="button"
+            class="language-btn"
+            (click)="showLanguages=!showLanguages">
 
-            <strong>{{ group.label }}</strong>
+            <span class="language-text">
+              {{
+              selectedLanguageNames.length
+              ? selectedLanguageNames.join(', ')
+              : 'Select Languages'
+              }}
+            </span>
 
-            <div *ngFor="let option of group.options">
+            <span class="language-arrow">
+              ▼
+            </span>
 
-              <label>
+          </button>
 
-                <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
-                  (change)="toggleLanguage(option, $event)">
-
-                {{ option }}
-
-              </label>
-
-            </div>
-
-          </div>
-
-          <button type="button" class="done-btn" (click)="showLanguages = false">
+          <button
+            *ngIf="showLanguages"
+            type="button"
+            class="language-done-btn"
+            (click)="showLanguages=false">
 
             Done
 
@@ -90,115 +90,208 @@
         </div>
 
       </div>
-      <div class="language-card-list" *ngIf="selectedLanguages.length > 0">
 
-        <div class="language-card" *ngFor="let language of selectedLanguages">
-
-          <div class="language-card-header">
-            <h4>{{ language.name }}</h4>
-            <button type="button" class="trash-btn" (click)="removeLanguage(language.name)"
-              aria-label="Remove {{ language.name }}">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>
-
-          <div class="skill-options">
-            <label>
-              <input type="checkbox" [(ngModel)]="language.read" [ngModelOptions]="{standalone: true}"
-                (change)="updateLanguageAllState(language)">
-              Read
-            </label>
-
-            <label>
-              <input type="checkbox" [(ngModel)]="language.write" [ngModelOptions]="{standalone: true}"
-                (change)="updateLanguageAllState(language)">
-              Write
-            </label>
-
-            <label>
-              <input type="checkbox" [(ngModel)]="language.speak" [ngModelOptions]="{standalone: true}"
-                (change)="updateLanguageAllState(language)">
-              Speak
-            </label>
-
-            <label>
-              <input type="checkbox" [(ngModel)]="language.all" [ngModelOptions]="{standalone: true}"
-                (change)="toggleAll(language)">
-              All
-            </label>
-          </div>
-
-          <div class="progress-wrapper">
-            <progress [value]="getProgress(language)" max="100">
-            </progress>
-            <span>{{ getProgress(language) }}%</span>
-          </div>
-        </div>
-      </div>
-      <div class="edit-section">
-
-        <label><strong>Company Name:</strong></label>
-
-        <div class="company-dropdown">
-
-          <div class="company-header">
-
-          <div class="company-header">
-
-  <button
-    type="button"
-    class="company-btn"
-    (click)="showCompanies = !showCompanies">
-
-    <span class="company-text">
-      {{
-        selectedCompanies.length > 0
-          ? selectedCompanies.join(', ')
-          : 'Select Company'
-      }}
-    </span>
-
-    <span class="company-arrow">
-      ▼
-    </span>
-
-  </button>
-
-  <button
-    *ngIf="showCompanies"
-    type="button"
-    class="company-done-btn"
-    (click)="showCompanies = false">
-
-    Done
-
-  </button>
-
-</div>
-          </div>
-
-          <div *ngIf="showCompanies" class="company-content">
-
-            <div class="company-list">
-
-              <label *ngFor="let company of companyNames">
-
-                <input type="checkbox" [checked]="selectedCompanies.includes(company)"
-                  (change)="toggleCompany(company,$event)">
-
-                {{ company }}
-
-              </label>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
     </div>
-  </ng-template>
+
+    <!-- Language Dropdown -->
+    <div *ngIf="showLanguages" class="dropdown-content">
+
+      <div *ngFor="let group of languageGroups">
+
+        <strong>{{ group.label }}</strong>
+
+        <div *ngFor="let option of group.options">
+
+          <label>
+
+            <input
+              type="checkbox"
+              [checked]="selectedLanguageNames.includes(option)"
+              (change)="toggleLanguage(option,$event)">
+
+            {{ option }}
+
+          </label>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Language Cards -->
+    <div class="language-card-list"
+         *ngIf="selectedLanguages.length > 0">
+
+      <div
+        class="language-card"
+        *ngFor="let language of selectedLanguages">
+
+        <div class="language-card-header">
+
+          <h4>{{ language.name }}</h4>
+
+          <button
+            type="button"
+            class="trash-btn"
+            (click)="removeLanguage(language.name)">
+
+            <i class="fas fa-trash"></i>
+
+          </button>
+
+        </div>
+
+        <div class="skill-options">
+
+          <label>
+
+            <input
+              type="checkbox"
+              [(ngModel)]="language.read"
+              [ngModelOptions]="{standalone:true}"
+              (change)="updateLanguageAllState(language)">
+
+            Read
+
+          </label>
+
+          <label>
+
+            <input
+              type="checkbox"
+              [(ngModel)]="language.write"
+              [ngModelOptions]="{standalone:true}"
+              (change)="updateLanguageAllState(language)">
+
+            Write
+
+          </label>
+
+          <label>
+
+            <input
+              type="checkbox"
+              [(ngModel)]="language.speak"
+              [ngModelOptions]="{standalone:true}"
+              (change)="updateLanguageAllState(language)">
+
+            Speak
+
+          </label>
+
+          <label>
+
+            <input
+              type="checkbox"
+              [(ngModel)]="language.all"
+              [ngModelOptions]="{standalone:true}"
+              (change)="toggleAll(language)">
+
+            All
+
+          </label>
+
+        </div>
+
+        <div class="progress-wrapper">
+
+          <progress
+            [value]="getProgress(language)"
+            max="100">
+
+          </progress>
+
+          <span>
+            {{ getProgress(language) }}%
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Company -->
+  <div class="edit-section">
+
+    <div class="field-row">
+
+      <label class="field-label">
+        Company Name
+      </label>
+
+      <div class="company-dropdown">
+
+        <div class="company-header">
+
+          <button
+            type="button"
+            class="company-btn"
+            (click)="showCompanies=!showCompanies">
+
+            <span class="company-text">
+
+              {{
+              selectedCompanies.length
+              ? selectedCompanies.join(', ')
+              : 'Select Company'
+              }}
+
+            </span>
+
+            <span class="company-arrow">
+              ▼
+            </span>
+
+          </button>
+
+          <button
+            *ngIf="showCompanies"
+            type="button"
+            class="company-done-btn"
+            (click)="showCompanies=false">
+
+            Done
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Company Grid -->
+    <div
+      *ngIf="showCompanies"
+      class="company-content">
+
+      <div class="company-grid">
+
+        <label
+          class="company-option"
+          *ngFor="let company of companyNames">
+
+          <input
+            type="checkbox"
+            [checked]="selectedCompanies.includes(company)"
+            (change)="toggleCompany(company,$event)">
+
+          {{ company }}
+
+        </label>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</ng-template>
 
   <table class="basic-table" *ngIf="
       viewMode === 'list' &&
@@ -366,36 +459,66 @@
 
     <h2>Edit Applicant</h2>
 
-    <input type="text" [(ngModel)]="editData.name" placeholder="Name" class="edit-input">
+    <div class="edit-input-grid">
 
-    <input type="email" [(ngModel)]="editData.email" placeholder="Email" class="edit-input">
+  <input
+    type="text"
+    [(ngModel)]="editData.name"
+    placeholder="Name"
+    class="edit-input">
 
-    <input type="text" [(ngModel)]="editData.phone" placeholder="Phone" class="edit-input">
+  <input
+    type="email"
+    [(ngModel)]="editData.email"
+    placeholder="Email"
+    class="edit-input">
 
-    <input type="text" [(ngModel)]="editData.qualification" placeholder="Qualification" class="edit-input">
+  <input
+    type="text"
+    [(ngModel)]="editData.phone"
+    placeholder="Phone"
+    class="edit-input">
+
+  <input
+    type="text"
+    [(ngModel)]="editData.qualification"
+    placeholder="Qualification"
+    class="edit-input">
+
+</div>
 
     <div class="edit-section">
-      <strong>Gender</strong>
+      <div class="field-row">
 
-      <div class="radio-group">
+    <label class="field-label">
+        Gender
+    </label>
+
+    <div class="radio-group">
 
         <label>
-          <input type="radio" value="Male" [(ngModel)]="editData.gender">
-          Male
+            <input type="radio"
+                   value="Male"
+                   [(ngModel)]="editData.gender">
+            Male
         </label>
 
         <label>
-          <input type="radio" value="Female" [(ngModel)]="editData.gender">
-          Female
+            <input type="radio"
+                   value="Female"
+                   [(ngModel)]="editData.gender">
+            Female
         </label>
 
-      </div>
+    </div>
+
+</div>
     </div>
 
     <div class="edit-section">
       <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
     </div>
-
+    <div class="upload-container" >
     <label class="file-placeholder">
       <input type="file" (change)="onEditResumeSelect($event)">
       {{ editResumeFile?.name || '📄 Upload Resume' }}
@@ -405,6 +528,7 @@
       <input type="file" (change)="onEditMarksheetSelect($event)">
       {{ editMarksheetFile?.name || '🎓 Upload Marksheet' }}
     </label>
+    </div>
     <div class="action-cell">
 
       <button (click)="saveEdit()" class="btn-save">
