@@ -357,25 +357,37 @@
     </div>
 
   </div>
-  <h3>
-    <i class="fa-solid fa-building"></i>
-    Companies Applied
-  </h3>
+  </div>
+<!-- COMPANIES DASHBOARD -->
+<div class="company-dashboard">
+
+  <div class="company-dashboard-header">
+
+    <h2>
+      <i class="fa-solid fa-building"></i>
+      Companies Applied
+    </h2>
+
+  </div>
+
   <div class="companies-card">
 
     <ul class="companies-list">
 
       <li *ngFor="let company of companies">
+
         <i class="fa-solid fa-circle-check text-success"></i>
+
         {{ company }}
+
       </li>
 
     </ul>
 
   </div>
-  <!--dialogue-->
-  <div
-  *ngIf="isPdf"
+
+</div>
+<div  *ngIf="isPdf"
   class="preview-overlay">
 </div>
 <div

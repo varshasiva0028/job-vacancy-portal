@@ -57,7 +57,25 @@ body {
     border-bottom: none !important;
     box-shadow: none !important;
 }
+.company-dashboard {
+    margin-top: 40px;
+}
 
+.company-dashboard-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.company-dashboard-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 700;
+}
 
 
 /* ================= LOGOUT BUTTON ================= */
@@ -1074,6 +1092,29 @@ iframe{
     flex-direction: column;
     gap: 15px;
   }
+  .company-dashboard{
+    margin-top:40px;
+    padding:40px;
+    background:#f7f7f7;
+    border-radius:30px;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.company-dashboard-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.company-dashboard-header h2{
+    font-size:2.2rem;
+    font-weight:700;
+    color:#222;
+}
+
+.company-dashboard-header i{
+    color:#33b5ff;
+    margin-right:12px;
+}
 
   .actions-section{
     display: flex;

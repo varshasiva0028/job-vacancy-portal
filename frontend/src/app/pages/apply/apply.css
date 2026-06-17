@@ -668,14 +668,7 @@ progress {
     word-break: break-word;
 }
 
-/* Submit Button */
-@media (max-width:768px) {
 
-    .submit-btn {
-        width: 100%;
-    }
-
-}
 
 .btn-primary {
     width: 100%;
@@ -861,78 +854,77 @@ progress {
 }
 
 /* ================= MOBILE RESPONSIVE ================= */
+@media screen and (max-width:768px){
 
-@media screen and (max-width:768px) {
-
-    /* Main container */
-   .form-container{
-    width:95%;
-    padding:20px;
-    box-sizing:border-box;
-}
-    .form-container h2 {
-        font-size: 22px;
-        line-height: 1.4;
+    .form-container{
+        width:95%;
+        padding:20px;
+        box-sizing:border-box;
     }
 
-    /* Name row */
-    .name-row {
-        flex-direction: column;
-        gap: 15px;
+    .name-row,
+    .row-group{
+        display:flex;
+        flex-direction:column;
+        gap:20px;
     }
 
-    /* Email + phone */
-    .row-group {
-        flex-direction: column;
-        gap: 15px;
+    /* Make every field equal width */
+    .input-group,
+    .gender-card{
+        width:100%;
+        max-width:100%;
+        box-sizing:border-box;
     }
 
-    /* Labels + dropdown button */
-    .inline-group {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
+    /* Equal height */
+    .input-group input,
+    .gender-card{
+        min-height:70px;
     }
 
-    .inline-label {
-        width: 100%;
-        min-width: unset;
+    /* Gender section */
+    .gender-card{
+        padding:18px 20px;
+        height:auto;
+    }
+
+    .gender-options{
+        display:flex;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+        margin-top:15px;
+    }
+
+    /* Equal spacing everywhere */
+    .name-row,
+    .row-group,
+    .form-group,
+    .upload-section{
+        margin-bottom:20px;
+    }
+
+    .inline-group{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
     }
 
     .dropdown-btn,
-    .company-btn {
-        width: 100%;
+    .company-btn{
+        width:100%;
     }
 
-    /* Gender */
-    .gender-card {
-        height: auto;
-        padding: 20px;
+    .language-grid,
+    .company-grid{
+        grid-template-columns:1fr;
     }
 
-    .gender-options {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        margin-top: 10px;
+    .btn-primary{
+        width:100%;
     }
-
-    /* Language cards */
-    .language-grid {
-        grid-template-columns: 1fr;
-    }
-
-    /* Company cards */
-    .company-grid {
-        grid-template-columns: 1fr;
-    }
-
-
-    /* Submit button */
-    .btn-primary {
-        width: 100%;
-    }
-
+}
     /* Logout */
     @media (max-width:768px) {
 
@@ -950,6 +942,16 @@ progress {
         }
 
     }
+@media (max-width:768px){
+
+    .input-group{
+        width:100% !important;
+    }
+
+    .input-group input{
+        width:100% !important;
+    }
+
 }
 
 @media (max-width:768px) {
