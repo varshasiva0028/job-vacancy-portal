@@ -64,6 +64,18 @@
           Qualification
         </label>
       </div>
+
+      <!-- DOB -->
+      <div class="input-group">
+
+        <input type="date" [(ngModel)]="applicant.dob" name="dob" required>
+
+        <label>
+          <i class="fas fa-calendar-days"></i>
+          Date of Birth
+        </label>
+
+      </div>
       <!-- Gender -->
       <div class="gender-card">
 
@@ -157,45 +169,39 @@
 
         </div>
 
-      <div *ngIf="showLanguages" class="dropdown-content">
+        <div *ngIf="showLanguages" class="dropdown-content">
 
-  <div *ngFor="let group of languageGroups">
+          <div *ngFor="let group of languageGroups">
 
-    <h4 class="language-group-title">
-      {{ group.label }}
-    </h4>
+            <h4 class="language-group-title">
+              {{ group.label }}
+            </h4>
 
-    <div class="language-grid">
+            <div class="language-grid">
 
-      <label class="language-option" *ngFor="let option of group.options">
+              <label class="language-option" *ngFor="let option of group.options">
 
-        <input
-          type="checkbox"
-          [checked]="selectedLanguageNames.includes(option)"
-          (change)="toggleLanguage(option,$event)">
+                <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
+                  (change)="toggleLanguage(option,$event)">
 
-        <span>{{ option }}</span>
+                <span>{{ option }}</span>
 
-      </label>
+              </label>
 
-    </div>
+            </div>
 
-    <hr>
+            <hr>
 
-  </div>
+          </div>
 
-</div>
+        </div>
 
-<button
-  *ngIf="showLanguages"
-  type="button"
-  class="done-btn"
-  (click)="showLanguages = false">
+        <button *ngIf="showLanguages" type="button" class="done-btn" (click)="showLanguages = false">
 
-  <i class="fas fa-check"></i>
-  Done
+          <i class="fas fa-check"></i>
+          Done
 
-</button>
+        </button>
       </div>
 
     </div>
@@ -393,12 +399,12 @@
       Submit
 
     </button>
-  <div class="logout-container">
-  <button class="btn-logout" (click)="logout()">
-    <i class="fa-solid fa-right-from-bracket"></i>
-    Logout
-  </button>
-</div>
+    <div class="logout-container">
+      <button class="btn-logout" (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </div>
   </form>
 
   <!-- Success -->

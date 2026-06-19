@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +47,7 @@ public class ApplicantController {
             @RequestParam("email") String email,
             @RequestParam("phone") String phone,
             @RequestParam("qualification") String qualification,
+            @RequestParam("dob") LocalDate dob,
             @RequestParam("gender") String gender,
             @RequestParam("languages") String languages,
             @RequestParam("companies") String companies,
@@ -165,6 +167,7 @@ public class ApplicantController {
             applicant.setEmail(email.trim());
             applicant.setPhone(phone.trim());
             applicant.setQualification(qualification.trim());
+            applicant.setDob(dob);
             applicant.setGender(gender.trim());
             applicant.setLanguages(languages.trim());
             applicant.setCompanies(companies.trim());
@@ -269,6 +272,7 @@ public class ApplicantController {
             @RequestParam("email") String email,
             @RequestParam("phone") String phone,
             @RequestParam("qualification") String qualification,
+            @RequestParam("dob") LocalDate dob,
             @RequestParam("gender") String gender,
             @RequestParam("languages") String languages,
             @RequestParam("companies") String companies,
@@ -324,6 +328,7 @@ public class ApplicantController {
             applicant.setEmail(email.trim());
             applicant.setPhone(phone.trim());
             applicant.setQualification(qualification.trim());
+            applicant.setDob(dob);
             applicant.setGender(gender.trim());
             applicant.setLanguages(languages.trim());
             applicant.setCompanies(companies.trim());

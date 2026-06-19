@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -27,6 +28,9 @@ public class Applicant {
     private String phone;
 
     private String qualification;
+
+    @Column(name = "dob")
+    private LocalDate dob;
 
     private String gender;
 
@@ -91,6 +95,14 @@ public class Applicant {
 
     public void setQualification(String qualification) {
         this.qualification = qualification;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
     }
 
     public String getGender() {

@@ -1,3 +1,12 @@
+<div class="welcome-banner">
+  <div class="welcome-content">
+    <span class="welcome-icon">👋</span>
+    <div>
+      <h2>Hii {{ applicant.name }}</h2>
+      <p>Welcome back! Have a great day.</p>
+    </div>
+  </div>
+</div>
 <div class="dashboard-header">
 
   <h2>
@@ -6,10 +15,8 @@
   </h2>
 
   <button (click)="logout()" class="btn-logout">
-
     <i class="fa-solid fa-right-from-bracket"></i>
     Logout
-
   </button>
 
 </div>
@@ -94,6 +101,18 @@
 
       </ng-template>
     </div>
+
+    <!-- Date of Birth -->
+<div class="detail-card">
+  <span class="detail-label">
+    <i class="fa-solid fa-calendar-days"></i>
+    Date of Birth
+  </span>
+
+  <span class="detail-value">
+    {{ applicant.dob | date:'dd-MM-yyyy' }}
+  </span>
+</div>
 
     <!-- Gender -->
     <div class="detail-card">

@@ -91,6 +91,7 @@ export class AdminComponent implements OnInit {
     email: '',
     phone: '',
     qualification: '',
+    dob: '',
     gender: '',
     languages: '',
     companies: ''
@@ -163,6 +164,7 @@ export class AdminComponent implements OnInit {
       email: applicant.email,
       phone: applicant.phone,
       qualification: applicant.qualification,
+      dob: applicant.dob,
       gender: applicant.gender,
       languages: applicant.languages,
       companies: applicant.companies
@@ -186,11 +188,11 @@ export class AdminComponent implements OnInit {
       email: '',
       phone: '',
       qualification: '',
+      dob: '',
       gender: '',
       languages: '',
       companies: ''
     };
-
     this.editResumeFile = null;
     this.editMarksheetFile = null;
 
@@ -474,6 +476,7 @@ export class AdminComponent implements OnInit {
     formData.append('email', this.editData.email.trim());
     formData.append('phone', this.editData.phone.trim());
     formData.append('qualification', this.editData.qualification.trim());
+    formData.append('dob',this.editData.dob);
     formData.append('gender', this.editData.gender);
     formData.append(
       'languages',

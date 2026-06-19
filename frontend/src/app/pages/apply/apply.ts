@@ -19,6 +19,7 @@ export class ApplyComponent {
     email: '',
     phone: '',
     qualification: '',
+    dob: '',
     gender: '',
     languages: [] as string[]
   };
@@ -91,59 +92,59 @@ export class ApplyComponent {
   submitted = false;
   loading = false;
   constructor(private http: HttpClient, private router: Router) { }
-onResumeSelected(event: any): void {
+  onResumeSelected(event: any): void {
 
-  const file = event.target.files[0];
+    const file = event.target.files[0];
 
-  if (file) {
+    if (file) {
 
-    const allowedTypes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    ];
+      const allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ];
 
-    if (!allowedTypes.includes(file.type)) {
+      if (!allowedTypes.includes(file.type)) {
 
-      alert('Resume must be a PDF or Word document (.pdf, .doc, .docx)');
+        alert('Resume must be a PDF or Word document (.pdf, .doc, .docx)');
 
-      event.target.value = '';
+        event.target.value = '';
 
-      return;
+        return;
+      }
+
+      this.resumeFile = file;
+
+      this.resumeFileName = file.name;
     }
-
-    this.resumeFile = file;
-
-    this.resumeFileName = file.name;
   }
-}
 
-onMarksheetSelected(event: any): void {
+  onMarksheetSelected(event: any): void {
 
-  const file = event.target.files[0];
+    const file = event.target.files[0];
 
-  if (file) {
+    if (file) {
 
-    const allowedTypes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    ];
+      const allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ];
 
-    if (!allowedTypes.includes(file.type)) {
+      if (!allowedTypes.includes(file.type)) {
 
-      alert('Marksheet must be a PDF or Word document (.pdf, .doc, .docx)');
+        alert('Marksheet must be a PDF or Word document (.pdf, .doc, .docx)');
 
-      event.target.value = '';
+        event.target.value = '';
 
-      return;
+        return;
+      }
+
+      this.marksheetFile = file;
+
+      this.marksheetFileName = file.name;
     }
-
-    this.marksheetFile = file;
-
-    this.marksheetFileName = file.name;
   }
-}
 
   onPhotoSelect(event: any) {
 
@@ -289,6 +290,10 @@ onMarksheetSelected(event: any): void {
       alert("Qualification must contain only letters");
       return;
     }
+    if (!this.applicant.dob) {
+      alert("Please select Date of Birth");
+      return;
+    }
     if (!this.resumeFile || !this.marksheetFile || !this.photoFile) {
       alert("Upload Resume, Photo and Marksheet");
       return;
@@ -309,14 +314,17 @@ onMarksheetSelected(event: any): void {
     ); formData.append('email', this.applicant.email);
     formData.append('phone', this.applicant.phone);
     formData.append('qualification', this.applicant.qualification);
-    formData.append('resume', this.resumeFile);
-    formData.append('marksheet', this.marksheetFile);
-    formData.append('photo', this.photoFile!);
+    formData.append(
+      'dob',
+      this.applicant.dob
+    );
     formData.append(
       'gender',
       this.applicant.gender
     );
-
+    formData.append('resume', this.resumeFile);
+    formData.append('marksheet', this.marksheetFile);
+    formData.append('photo', this.photoFile!);
     formData.append(
       'languages',
       JSON.stringify(this.selectedLanguages)
@@ -351,6 +359,7 @@ onMarksheetSelected(event: any): void {
           email: '',
           phone: '',
           qualification: '',
+          dob: '',
           gender: '',
           languages: []
         };
@@ -381,9 +390,9 @@ onMarksheetSelected(event: any): void {
   }
   logout(): void {
 
-  localStorage.clear();
+    localStorage.clear();
 
-  this.router.navigate(['/']);
+    this.router.navigate(['/']);
 
-}
+  }
 }

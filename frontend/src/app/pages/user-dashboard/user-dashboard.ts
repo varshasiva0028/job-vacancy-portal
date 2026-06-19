@@ -16,8 +16,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-user-dashboard',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule
@@ -307,32 +305,32 @@ export class UserDashboardComponent implements OnInit {
 
   }
 
-onResumeSelected(event: any): void {
+  onResumeSelected(event: any): void {
 
-  if (event.target.files.length > 0) {
+    if (event.target.files.length > 0) {
 
-    this.selectedResume = event.target.files[0];
+      this.selectedResume = event.target.files[0];
 
-    this.resumeFileName =
-      this.selectedResume!.name;
+      this.resumeFileName =
+        this.selectedResume!.name;
 
-  }
-
-}
-
-onMarksheetSelected(event: any): void {
-
-  if (event.target.files.length > 0) {
-
-    this.selectedMarksheet =
-      event.target.files[0];
-
-    this.marksheetFileName =
-      this.selectedMarksheet!.name;
+    }
 
   }
 
-}
+  onMarksheetSelected(event: any): void {
+
+    if (event.target.files.length > 0) {
+
+      this.selectedMarksheet =
+        event.target.files[0];
+
+      this.marksheetFileName =
+        this.selectedMarksheet!.name;
+
+    }
+
+  }
   saveChanges(): void {
     if (!this.editApplicant.name || !this.editApplicant.name.trim()) {
       alert("Name is required");
@@ -360,6 +358,10 @@ onMarksheetSelected(event: any): void {
       alert("Please select Gender");
       return;
     }
+    if (!this.editApplicant.gender) {
+      alert("Please select Gender");
+      return;
+    }
     if (this.editLanguages.length === 0) {
       alert("Please select at least one Language Known");
       return;
@@ -377,25 +379,26 @@ onMarksheetSelected(event: any): void {
     }
     if (this.selectedResume) {
 
-  formData.append(
-    'resume',
-    this.selectedResume
-  );
+      formData.append(
+        'resume',
+        this.selectedResume
+      );
 
-}
+    }
 
-if (this.selectedMarksheet) {
+    if (this.selectedMarksheet) {
 
-  formData.append(
-    'marksheet',
-    this.selectedMarksheet
-  );
+      formData.append(
+        'marksheet',
+        this.selectedMarksheet
+      );
 
-}
+    }
     formData.append('name', this.editApplicant.name.trim());
     formData.append('email', this.editApplicant.email.trim());
     formData.append('phone', this.applicant.phone || '');
     formData.append('qualification', this.editApplicant.qualification.trim());
+    formData.append('dob', this.editApplicant.dob);
     formData.append('gender', this.editApplicant.gender);
     formData.append('languages', JSON.stringify(this.editLanguages));
     formData.append('companies', JSON.stringify(this.companies));
@@ -461,27 +464,27 @@ if (this.selectedMarksheet) {
     }
 
   }
- openPreview(filePath: string, title: string): void {
+  openPreview(filePath: string, title: string): void {
 
-  this.previewTitle = title;
+    this.previewTitle = title;
 
-  const fileUrl =
-    'http://localhost:8081/uploads/' + filePath;
+    const fileUrl =
+      'http://localhost:8081/uploads/' + filePath;
 
- this.safePreviewUrl =
-  this.sanitizer.bypassSecurityTrustResourceUrl(
-    fileUrl 
-  );
+    this.safePreviewUrl =
+      this.sanitizer.bypassSecurityTrustResourceUrl(
+        fileUrl
+      );
 
-  this.isPdf = true;
-}
- closePreview(): void {
+    this.isPdf = true;
+  }
+  closePreview(): void {
 
-  this.isPdf = false;
+    this.isPdf = false;
 
-  this.previewDialog.nativeElement.close();
+    this.previewDialog.nativeElement.close();
 
-}
+  }
   logout(): void {
 
     localStorage.clear();
