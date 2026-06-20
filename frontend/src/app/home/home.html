@@ -1,0 +1,116 @@
+<div class="home-container">
+
+  <!-- Dashboard -->
+  <button
+    class="dashboard-icon"
+    (click)="goToDashboard()">
+
+    <i class="fa-solid fa-user"></i>
+
+  </button>
+
+  <!-- Logout -->
+  <button
+    class="logout-btn"
+    (click)="logout()">
+
+    <i class="fa-solid fa-right-from-bracket"></i>
+
+  </button>
+
+
+  <!-- Welcome Card -->
+  <div class="welcome-card">
+
+    <div class="welcome-header">
+
+      <h1>
+        Hi {{ userName() }} 👋
+      </h1>
+
+      <h2>
+        ✨ {{ greeting() }}
+      </h2>
+
+    </div>
+
+ 
+
+    <div class="welcome-body">
+
+      <p>
+        Welcome back to Job Portal
+      </p>
+
+      <span>
+        Your career journey starts here 🚀
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- Birthday Card -->
+  <div
+    class="birthday-card"
+    *ngIf="birthdayMessage()">
+
+    <i class="fa-solid fa-cake-candles"></i>
+
+    {{ birthdayMessage() }}
+
+  </div>
+
+
+  <!-- Companies Card -->
+  <div class="company-card">
+
+    <div class="company-title">
+
+      <i class="fa-solid fa-building"></i>
+
+      <h2>
+        Companies Applied
+      </h2>
+
+    </div>
+
+ 
+
+    <div
+      class="company-grid"
+      *ngIf="companies().length > 0">
+
+      <div
+        class="company-item"
+        *ngFor="let company of companies()">
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        {{ company }}
+
+      </div>
+
+    </div>
+
+    <!-- Empty state -->
+    <div
+      class="empty-company"
+      *ngIf="companies().length === 0">
+
+      <i class="fa-solid fa-briefcase"></i>
+
+      <h3>
+        No companies applied yet
+      </h3>
+
+      <p>
+        Start applying and your companies will appear here.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
