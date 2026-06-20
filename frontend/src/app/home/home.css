@@ -1,17 +1,17 @@
-body{
-  background: linear-gradient(135deg,#eef2ff,#f8fafc);
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
 }
 
 /* Main Container */
-.home-container{
-  min-height:100vh;
-  padding:40px;
-  background: linear-gradient(135deg,#eef2ff,#f8fafc);
+.home-container {
+    min-height: 100vh;
+    padding: 40px;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
 }
 
 /* Floating buttons */
 .dashboard-icon,
-.logout-btn{
+.logout-btn {
     position: fixed;
     right: 30px;
     width: 65px;
@@ -21,150 +21,212 @@ body{
     cursor: pointer;
     color: white;
     font-size: 24px;
-    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
     transition: .3s;
     z-index: 1000;
 }
 
-.dashboard-icon{
+.dashboard-icon {
     top: 25px;
-    background: linear-gradient(135deg,#3b82f6,#2563eb);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
 }
 
-.logout-btn{
+.logout-btn {
     top: 105px;
-    background: linear-gradient(135deg,#ff5f6d,#ff2d55);
+    background: linear-gradient(135deg, #ff5f6d, #ff2d55);
 }
 
 .dashboard-icon:hover,
-.logout-btn:hover{
+.logout-btn:hover {
     transform: translateY(-5px) scale(1.08);
 }
 
 
 /* Welcome Card */
-.welcome-card{
-  max-width:900px;
-  margin:auto;
-  padding:70px;
-  border-radius:30px;
-  background:rgba(255,255,255,.75);
-  backdrop-filter:blur(20px);
-  box-shadow:
-      0 10px 40px rgba(0,0,0,.08);
-  text-align:center;
-}
+.welcome-card {
+    max-width: 900px;
+    margin: auto;
+    border-radius: 40px;
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, .95),
+            rgba(248, 250, 252, .9));
 
+    box-shadow:
+        0 25px 60px rgba(37, 99, 235, .10),
+        0 8px 20px rgba(0, 0, 0, .06);
+
+    text-align: center;
+
+    border: 1px solid rgba(255, 255, 255, .8);
+
+    position: relative;
+
+    overflow: hidden;
+    padding: 55px 70px;
+}
 .welcome-card h1{
-  font-size:4rem;
-  font-weight:700;
-  color:#172554;
-  margin-bottom:35px;
+    font-size: 3.3rem;
+    font-weight: 800;
+    color: #172554;
+    letter-spacing: -1px;
+    margin-bottom: 30px;
 }
-
 .welcome-card h2{
-  color:#2563eb;
-  font-size:2rem;
-  margin-bottom:30px;
-}
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
 
+    font-size: 1.7rem;
+    font-weight: 700;
+
+    color: #2563eb;
+
+    background: rgba(59,130,246,.08);
+
+    padding: 16px 35px;
+
+    border-radius: 50px;
+
+    margin-bottom: 30px;
+}
 .welcome-card p{
-  font-size:2rem;
-  color:#1e293b;
-  margin-bottom:20px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 18px;
+}
+.welcome-card span{
+    font-size: 1.1rem;
+    color: #64748b;
+}
+.welcome-card hr{
+    border: none;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            #dbeafe,
+            transparent
+        );
+
+    margin: 40px 0;
+}
+.welcome-card::before{
+    content: "";
+
+    position: absolute;
+
+    width: 350px;
+    height: 350px;
+
+    background: rgba(96,165,250,.08);
+
+    border-radius: 50%;
+
+    top: -120px;
+    right: -100px;
+}
+.welcome-card{
+    transition: .4s;
 }
 
-.welcome-card span{
-  color:#64748b;
-  font-size:1.2rem;
+.welcome-card:hover{
+    transform: translateY(-8px);
+
+    box-shadow:
+        0 35px 70px rgba(37,99,235,.15);
 }
 
 /* Birthday Card */
-.birthday-card{
-  margin:40px auto;
-  max-width:900px;
-  background:linear-gradient(135deg,#ff9966,#ff5e62);
-  color:white;
-  padding:30px;
-  border-radius:25px;
-  font-size:1.2rem;
-  box-shadow:0 10px 35px rgba(255,94,98,.4);
-  line-height:1.8;
+.birthday-card {
+    margin: 40px auto;
+    max-width: 900px;
+    background: linear-gradient(135deg, #ff9966, #ff5e62);
+    color: white;
+    padding: 30px;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    box-shadow: 0 10px 35px rgba(255, 94, 98, .4);
+    line-height: 1.8;
 }
 
 /* Company Card */
-.company-card{
-  margin-top:50px;
-  padding:50px;
-  border-radius:30px;
-  background:white;
-  box-shadow:
-    0 10px 40px rgba(0,0,0,.08);
+.company-card {
+    margin-top: 50px;
+    padding: 50px;
+    border-radius: 30px;
+    background: white;
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, .08);
 }
 
 
-.company-card h2{
-  text-align:center;
-  font-size:2.3rem;
-  color:#172554;
-  margin-bottom:40px;
+.company-card h2 {
+    text-align: center;
+    font-size: 2.3rem;
+    color: #172554;
+    margin-bottom: 40px;
 }
 
-.company-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:25px;
+.company-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
 }
-.company-item{
-    background: linear-gradient(
-        135deg,
-        #3b82f6,
-        #2563eb
-    );
 
-    color:white;
+.company-item {
+    background: linear-gradient(135deg,
+            #3b82f6,
+            #2563eb);
 
-    padding:22px 35px;
+    color: white;
 
-    border-radius:50px;
+    padding: 22px 35px;
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
+    border-radius: 50px;
 
-    font-size:1.3rem;
-    font-weight:600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 1.3rem;
+    font-weight: 600;
 
     box-shadow:
-        0 10px 25px rgba(37,99,235,.3);
+        0 10px 25px rgba(37, 99, 235, .3);
 
-    transition:.3s;
+    transition: .3s;
 }
 
-.company-item:hover{
-    transform:translateY(-5px);
+.company-item:hover {
+    transform: translateY(-5px);
 }
 
-.company-item i{
-    color:#86efac;
-}
-.company-title{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:15px;
-    margin-bottom:40px;
+.company-item i {
+    color: #86efac;
 }
 
-.company-title i{
-    font-size:34px;
-    color:#38bdf8;
+.company-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
 }
 
-.company-title h2{
-    margin:0;
-    font-size:3rem;
-    color:#0f172a;
-    font-weight:700;
+.company-title i {
+    font-size: 34px;
+    color: #38bdf8;
+}
+
+.company-title h2 {
+    margin: 0;
+    font-size: 3rem;
+    color: #0f172a;
+    font-weight: 700;
 }
