@@ -1029,3 +1029,52 @@
 
   margin: 6%;
 }
+.edit-dialog{
+    position: relative;
+}
+
+/* Close button */
+.dialog-close-btn{
+
+    position: absolute;
+
+    top: 20px;
+
+    right: 20px;
+
+    width: 45px;
+
+    height: 45px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #f1f5f9;
+
+    color: #64748b;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: .3s;
+
+}
+
+/* Hover effect */
+.dialog-close-btn:hover{
+
+    background: #ef4444;
+
+    color: white;
+
+    transform: rotate(90deg);
+
+}
