@@ -104,23 +104,9 @@ export class UserDashboardComponent implements OnInit {
           this.cdr.detectChanges();
 
           console.log("applicant =", this.applicant);
-          // Companies
-          // Companies
-          this.companies = [];
+         
 
-          if (response.companies) {
-
-            try {
-
-              this.companies = [...JSON.parse(response.companies)];
-
-            } catch {
-
-              this.companies = [];
-
-            }
-
-          }
+          
 
           // Languages
           this.languages = [];
@@ -401,7 +387,6 @@ export class UserDashboardComponent implements OnInit {
     formData.append('dob', this.editApplicant.dob);
     formData.append('gender', this.editApplicant.gender);
     formData.append('languages', JSON.stringify(this.editLanguages));
-    formData.append('companies', JSON.stringify(this.companies));
 
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
@@ -449,21 +434,6 @@ export class UserDashboardComponent implements OnInit {
 
   }
 
-  toggleCompany(company: string): void {
-
-    if (this.companies.includes(company)) {
-
-      this.companies =
-        this.companies.filter(c => c !== company);
-
-    }
-    else {
-
-      this.companies.push(company);
-
-    }
-
-  }
   openPreview(filePath: string, title: string): void {
 
     this.previewTitle = title;

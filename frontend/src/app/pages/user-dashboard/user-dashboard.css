@@ -57,25 +57,7 @@ body {
     border-bottom: none !important;
     box-shadow: none !important;
 }
-.company-dashboard {
-    margin-top: 40px;
-}
 
-.company-dashboard-header {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-}
-
-.company-dashboard-header h2 {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin: 0;
-    font-size: 3rem;
-    font-weight: 700;
-}
 
 
 /* ================= LOGOUT BUTTON ================= */
@@ -185,15 +167,11 @@ h2 i{
 
 /* ================= DETAILS GRID ================= */
 
-.details-grid {
-
-    display: grid;
-
+.details-grid{
+    display:grid;
     grid-template-columns:
-        repeat(auto-fit, minmax(260px, 1fr));
-
-    gap: 25px;
-
+        repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
 }
 
 /* ================= CARDS ================= */
@@ -622,171 +600,6 @@ h2 i{
 
 }
 
-/* ================= COMPANIES ================= */
-/* ================= COMPANIES CARD ================= */
-
-.companies-card{
-
-    width:95%;
-
-    max-width:1500px;
-
-    margin:30px auto;
-
-    padding:35px;
-
-    border-radius:25px;
-
-    background:
-    rgba(255,255,255,.08);
-
-    backdrop-filter:blur(20px);
-
-    border:
-    1px solid rgba(255,255,255,.1);
-
-    box-shadow:
-    0 8px 20px rgba(0,0,0,.15);
-
-}
-
-/* ================= HEADING ================= */
- h3{
-
-    color:rgb(36,33,33);
-
-    font-size:28px;
-
-    margin-bottom:25px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:12px;
-
-}
-
- h3 i{
-
-    color:#38bdf8;
-
-}
-
-/* ================= LIST ================= */
-
-.companies-list{
-
-    list-style:none;
-
-    padding:0;
-
-    margin:0;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:18px;
-
-}
-
-/* ================= COMPANY ITEM ================= */
-
-.companies-list li{
-
-    background:
-    rgba(255,255,255,.06);
-
-    border:
-    1px solid rgba(255,255,255,.1);
-
-    border-left:
-    5px solid #10b981;
-
-    padding:18px 25px;
-
-    border-radius:18px;
-
-    color:rgb(36,33,33);
-
-    font-size:17px;
-
-    font-weight:600;
-
-    transition:.3s;
-
-}
-
-/* ================= HOVER ================= */
-
-.companies-list li:hover{
-
-    transform:translateX(8px);
-
-    box-shadow:
-    0 5px 15px rgba(0,0,0,.12);
-
-}
-
-/* ================= CHECK ICON ================= */
-
-.text-success{
-
-    color:#10b981;
-
-    margin-right:10px;
-
-    font-size:18px;
-
-}
-
-/* ================= NO COMPANY ================= */
-
-.no-companies{
-
-    background:
-    rgba(255,255,255,.06);
-
-    border:
-    1px dashed rgba(255,255,255,.2);
-
-    padding:18px 25px;
-
-    border-radius:18px;
-
-    color:#64748b;
-
-    font-style:italic;
-
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:768px){
-
-    .companies-card{
-
-        padding:25px;
-
-    }
-
-    .companies-card h3{
-
-        font-size:24px;
-
-    }
-
-    .companies-list li{
-
-        padding:15px 18px;
-
-        font-size:15px;
-
-    }
-
-}
 /* ================= BUTTONS ================= */
 /* ================= ACTION BUTTONS ================= */
 .actions-section{
@@ -1083,38 +896,6 @@ iframe{
     width: 100%;
   }
 
-  .companies-card{
-    padding: 15px;
-  }
-
-  .companies-list{
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  .company-dashboard{
-    margin-top:40px;
-    padding:40px;
-    background:#f7f7f7;
-    border-radius:30px;
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-}
-
-.company-dashboard-header{
-    text-align:center;
-    margin-bottom:30px;
-}
-
-.company-dashboard-header h2{
-    font-size:2.2rem;
-    font-weight:700;
-    color:#222;
-}
-
-.company-dashboard-header i{
-    color:#33b5ff;
-    margin-right:12px;
-}
 
   .actions-section{
     display: flex;
