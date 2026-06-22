@@ -324,11 +324,54 @@
       </tr>
     </tbody>
   </table>
+  <div class="main-content">
+    <!-- FILTERS (GRID VIEW ONLY) -->
+    <div class="filter-container" *ngIf="viewMode === 'grid'">
+
+      <!-- Qualification -->
+      <select [(ngModel)]="selectedQualification">
+        <option value="">All Qualifications</option>
+        <option value="BE">BE</option>
+        <option value="BTech">BTech</option>
+        <option value="BCA">BCA</option>
+        <option value="MCA">MCA</option>
+        <option value="MBA">MBA</option>
+      </select>
+
+      <!-- Gender -->
+      <select [(ngModel)]="selectedGender">
+        <option value="">All Genders</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+
+      <!-- Language -->
+      <select [(ngModel)]="selectedLanguage">
+        <option value="">All Languages</option>
+        <option *ngFor="let lang of languagesList">
+          {{lang}}
+        </option>
+      </select>
+
+      <!-- Company -->
+      <select [(ngModel)]="selectedCompany">
+        <option value="">All Companies</option>
+        <option *ngFor="let company of companyNames">
+          {{company}}
+        </option>
+      </select>
+
+      <!-- DOB -->
+      <input type="date" [(ngModel)]="selectedDob">
+
+    </div>
+
+
 
   <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0">
 
-    <div class="applicant-card" *ngFor="let a of applicants | filter: searchText">
 
+    <div class="applicant-card" *ngFor="let a of filteredApplicants | filter: searchText">
       <div class="profile-section">
 
         <img *ngIf="a.photoPath" [src]="'http://localhost:8081/uploads/' + a.photoPath" class="profile-photo">
@@ -366,9 +409,9 @@
       <p><strong>Qualification:</strong> {{ a.qualification }}</p>
 
       <p>
-  <strong>DOB:</strong>
-  {{ a.dob | date:'dd-MM-yyyy' }}
-</p>
+        <strong>DOB:</strong>
+        {{ a.dob | date:'dd-MM-yyyy' }}
+      </p>
 
       <p><strong>Gender:</strong> {{ a.gender }}</p>
 
@@ -403,16 +446,14 @@
       </p>
 
     </div>
-
+  </div>
   </div>
   <dialog id="editDialog" class="edit-dialog">
-    <button
-  class="dialog-close-btn"
-  (click)="closeEditModal()">
+    <button class="dialog-close-btn" (click)="closeEditModal()">
 
-  <i class="fa-solid fa-xmark"></i>
+      <i class="fa-solid fa-xmark"></i>
 
-</button>
+    </button>
 
     <h2>Edit Applicant</h2>
 
@@ -426,7 +467,7 @@
 
       <input type="text" [(ngModel)]="editData.qualification" placeholder="Qualification" class="edit-input">
 
-       <input type="date" [(ngModel)]="editData.dob" class="edit-input">
+      <input type="date" [(ngModel)]="editData.dob" class="edit-input">
 
     </div>
 

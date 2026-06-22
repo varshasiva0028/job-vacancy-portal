@@ -74,10 +74,23 @@ export class AdminComponent implements OnInit {
     speak: boolean;
     all: boolean;
   }> = [];
+  languagesList = [
+  'Tamil',
+  'English',
+  'Telugu',
+  'Kannada',
+  'Hindi',
+  'Malayalam'
+];
 
   applicants: any[] = [];
   searchText: string = '';
   viewMode: 'list' | 'grid' = 'list';
+  selectedQualification = '';
+  selectedGender = '';
+  selectedLanguage = '';
+  selectedCompany = '';
+  selectedDob = '';
 
   toggleView(): void {
     this.viewMode =
@@ -476,7 +489,7 @@ export class AdminComponent implements OnInit {
     formData.append('email', this.editData.email.trim());
     formData.append('phone', this.editData.phone.trim());
     formData.append('qualification', this.editData.qualification.trim());
-    formData.append('dob',this.editData.dob);
+    formData.append('dob', this.editData.dob);
     formData.append('gender', this.editData.gender);
     formData.append(
       'languages',
@@ -574,4 +587,34 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['/']);
 
   }
+  get filteredApplicants() {
+
+  return this.applicants.filter(a =>
+
+    (!this.selectedQualification ||
+      a.qualification === this.selectedQualification)
+
+    &&
+
+    (!this.selectedGender ||
+      a.gender === this.selectedGender)
+
+    &&
+
+    (!this.selectedLanguage ||
+      this.getLanguageSummary(a.languages)?.includes(this.selectedLanguage))
+
+    &&
+
+    (!this.selectedCompany ||
+      a.companies?.includes(this.selectedCompany))
+
+    &&
+
+    (!this.selectedDob ||
+      a.dob === this.selectedDob)
+
+  );
+
+}
 }
