@@ -1,150 +1,313 @@
-body {
-    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+/* ================= HOME ================= */
+
+body{
+    background: linear-gradient(135deg,#eef2ff,#f8fafc);
 }
 
-/* Main Container */
-.home-container {
-    min-height: 100vh;
-    padding: 40px;
-    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+.home-container{
+    min-height:100vh;
+    padding:40px;
+}
+.home-container{
+
+    min-height:100vh;
+
+    padding:35px;
+
+    zoom:0.9;
 }
 
-/* Floating buttons */
-.dashboard-icon,
-.logout-btn {
-    position: fixed;
-    right: 30px;
-    width: 65px;
-    height: 65px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    color: white;
-    font-size: 24px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
-    transition: .3s;
-    z-index: 1000;
-}
-
-.dashboard-icon {
-    top: 25px;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-}
-
-.logout-btn {
-    top: 105px;
-    background: linear-gradient(135deg, #ff5f6d, #ff2d55);
-}
-
-.dashboard-icon:hover,
-.logout-btn:hover {
-    transform: translateY(-5px) scale(1.08);
-}
-
-
-/* Welcome Card */
-.welcome-card {
-    max-width: 900px;
-    height:100;
-    margin: auto;
-    border-radius: 40px;
-    background:
-        linear-gradient(135deg,
-            rgba(255, 255, 255, .95),
-            rgba(248, 250, 252, .9));
-
-    box-shadow:
-        0 25px 60px rgba(37, 99, 235, .10),
-        0 8px 20px rgba(0, 0, 0, .06);
-
-    text-align: center;
-
-    border: 1px solid rgba(255, 255, 255, .8);
-
-    position: relative;
-
-    overflow: hidden;
-    padding: 55px 70px;
-}
-.welcome-card h1{
-    font-size: 2.3rem;
-    font-weight: 600;
-    color: #172554;
-    letter-spacing: -1px;
-    margin-bottom: 30px;
-}
-.welcome-card h2{
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-
-    font-size: 1.3rem;
-    font-weight: 700;
-
-    color: #2563eb;
-
-    background: rgba(59,130,246,.08);
-
-    padding: 16px 35px;
-
-    border-radius: 50px;
-
-    margin-bottom: 30px;
-}
-.welcome-card p{
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 18px;
-}
-.welcome-card span{
-    font-size: 1.1rem;
-    color: #64748b;
-}
-.welcome-card hr{
-    border: none;
-
-    height: 1px;
-
-    background:
-        linear-gradient(
-            to right,
-            transparent,
-            #dbeafe,
-            transparent
-        );
-
-    margin: 40px 0;
-}
+/* ================= WELCOME BANNER ================= */
 
 .welcome-card{
-    transition: .4s;
+    position: relative;
+
+    max-width: 1250px;   
+    min-height: 360px;
+
+    margin: auto;
+
+    padding: 50px 70px;
+
+    border-radius: 35px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,.95),
+        rgba(248,250,252,.92)
+    );
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.08);
+
+    transition: .3s;
 }
 
 .welcome-card:hover{
-    transform: translateY(-8px);
+    transform: translateY(-5px);
 
     box-shadow:
-        0 35px 70px rgba(37,99,235,.15);
+    0 25px 60px rgba(37,99,235,.12);
 }
 
-/* Birthday Card */
-.birthday-card {
-    margin: 40px auto;
-    max-width: 900px;
-    background: linear-gradient(135deg, #ff9966, #ff5e62);
+/* Name */
+.welcome-card h1{
+    font-size: 2rem;
+
+    color:#172554;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:35px;
+}
+
+/* Good Morning pill */
+.welcome-card h2{
+    width:fit-content;
+
+    margin:0 auto 40px;
+
+    padding:14px 35px;
+
+    border-radius:50px;
+
+    background:#edf4ff;
+
+    color:#2563eb;
+
+    font-size:1.15rem;
+}
+
+/* Divider */
+.welcome-card hr{
+    border:none;
+
+    height:1px;
+
+    background:
+    linear-gradient(
+        to right,
+        transparent,
+        #dbeafe,
+        transparent
+    );
+
+    margin:40px 0;
+}
+
+/* Welcome section LEFT aligned */
+.welcome-card p{
+
+    font-size:2rem;
+
+    font-weight:700;
+
+    color:#0f172a;
+
+    text-align:left;
+
+    margin-bottom:15px;
+}
+
+.welcome-card span{
+
+    display:block;
+
+    text-align:left;
+
+    font-size:1.2rem;
+
+    color:#64748b;
+}
+
+
+
+/* Greeting Card */
+/* ================= ACTION BUTTONS ================= */
+
+.dashboard-icon,
+.logout-btn{
+    position: absolute;
+
+    width: 50px;
+    height: 50px;
+
+    border: none;
+    border-radius: 16px;
+
     color: white;
-    padding: 30px;
-    border-radius: 25px;
-    font-size: 1.2rem;
-    box-shadow: 0 10px 35px rgba(255, 94, 98, .4);
-    line-height: 1.8;
+    font-size: 18px;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transition: .3s;
+}
+.dashboard-icon,
+.logout-btn{
+
+    position:absolute;
+
+    right:40px;
+
+    width:55px;
+    height:55px;
+
+    border:none;
+
+    border-radius:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:20px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+/* Dashboard */
+
+.dashboard-icon{
+
+    top:35px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #3b82f6,
+        #2563eb
+    );
+
+    box-shadow:
+    0 8px 20px rgba(59,130,246,.25);
+}
+
+/* Logout */
+
+.logout-btn{
+
+    top:105px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #ff5f6d,
+        #ff2d55
+    );
+
+    box-shadow:
+    0 8px 20px rgba(255,45,85,.25);
+}
+
+.dashboard-icon:hover,
+.logout-btn:hover{
+
+    transform:translateY(-4px);
+}
+/* ================= BIRTHDAY CARD ================= */
+/* ================= BIRTHDAY NOTIFICATION ================= */
+
+.birthday-card{
+
+    position:absolute;
+
+    right:140px;
+
+    top:40px;
+
+    width:300px;
+
+    padding:18px 22px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #ff9966,
+        #ff5e62
+    );
+
+    color:white;
+
+    font-size:.95rem;
+
+    line-height:1.6;
+
+    box-shadow:
+    0 12px 30px rgba(255,94,98,.25);
+
+    border-left:5px solid rgba(255,255,255,.4);
+
+}
+
+.birthday-card i{
+
+    margin-right:10px;
+
+    font-size:18px;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+    .welcome-card{
+
+        padding:35px 25px;
+
+        min-height:auto;
+    }
+
+    .welcome-card h1{
+
+        font-size:2rem;
+    }
+
+    .welcome-card p{
+
+        font-size:1.5rem;
+    }
+
+    .dashboard-icon{
+
+        right:95px;
+
+        width:50px;
+        height:50px;
+    }
+
+    .logout-btn{
+
+        right:25px;
+
+        width:50px;
+        height:50px;
+    }
+
 }
 
 /* Company Card */
 .company-card {
-    margin-top: 50px;
-    padding: 50px;
+    margin-top: 40px;
+    padding: 40px;
     border-radius: 30px;
     background: white;
     box-shadow:
@@ -182,7 +345,7 @@ body {
     gap: 10px;
 
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 400;
 
     box-shadow:
         0 10px 25px rgba(37, 99, 235, .3);
@@ -207,13 +370,13 @@ body {
 }
 
 .company-title i {
-    font-size: 34px;
+    font-size: 30px;
     color: #38bdf8;
 }
 
 .company-title h2 {
     margin: 0;
-    font-size: 3rem;
+    font-size: 1.5rem;
     color: #0f172a;
     font-weight: 700;
 }

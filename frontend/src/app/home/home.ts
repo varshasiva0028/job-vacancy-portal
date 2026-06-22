@@ -31,21 +31,21 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
 
     // username
-const username = localStorage.getItem('name');
+    const username = localStorage.getItem('name');
 
-if (username) {
+    if (username) {
 
-  const formattedName = username
-    .toLowerCase()
-    .split(' ')
-    .map(word =>
-      word.charAt(0).toUpperCase() + word.slice(1)
-    )
-    .join(' ');
+      const formattedName = username
+        .toLowerCase()
+        .split(' ')
+        .map(word =>
+          word.charAt(0).toUpperCase() + word.slice(1)
+        )
+        .join(' ');
 
-  this.userName.set(formattedName);
+      this.userName.set(formattedName);
 
-}
+    }
     // Greeting message
     const hour = new Date().getHours();
 
@@ -89,10 +89,8 @@ if (username) {
         birthDate.getDate() === today.getDate() &&
         birthDate.getMonth() === today.getMonth()
       ) {
-
         this.birthdayMessage.set(
-
-          `🎉 Happy Birthday ${this.userName()}! 🎂
+          `🎉 Happy Birthday ${this.userName()}!\n🎂 
 Wishing you happiness, good health, and success always.
 Have a wonderful day! 🎈✨`
 

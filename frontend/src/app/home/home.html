@@ -1,48 +1,43 @@
 <div class="home-container">
 
-  <!-- Dashboard -->
-  <button
-    class="dashboard-icon"
-    (click)="goToDashboard()">
+  <div class="welcome-card">
 
-    <i class="fa-solid fa-user"></i>
+      <button
+        class="dashboard-icon"
+        (click)="goToDashboard()">
 
-  </button>
+        <i class="fa-solid fa-user"></i>
 
-  <!-- Logout -->
-  <button
-    class="logout-btn"
-    (click)="logout()">
+      </button>
 
-    <i class="fa-solid fa-right-from-bracket"></i>
+      <button
+        class="logout-btn"
+        (click)="logout()">
 
-  </button>
-  <!--Welcome Card-->
-<div class="welcome-card">
+        <i class="fa-solid fa-right-from-bracket"></i>
 
-    <h1>
-        Hi {{ userName() }} 👋
-    </h1>
+      </button>
 
-    <h2>
-         {{ greeting() }}
-    </h2>
+      <h1>
+          Hi {{ userName() }} 👋
+      </h1>
 
-    <hr>
+      <h2>
+          {{ greeting() }}
+      </h2>
 
-    <p>
-        Welcome back to Job Portal
-    </p>
+      <hr>
 
-    <span>
-        Your career journey starts here 🚀
-    </span>
+      <p>
+          Welcome back to Job Portal
+      </p>
 
-</div>
+      <span>
+          Your career journey starts here 🚀
+      </span>
 
-
-  <!-- Birthday Card -->
-  <div
+      <!-- Birthday Card --> 
+  <div 
     class="birthday-card"
     *ngIf="birthdayMessage()">
 
@@ -51,6 +46,9 @@
     {{ birthdayMessage() }}
 
   </div>
+
+  </div>
+
 
 
   <!-- Companies Card -->
