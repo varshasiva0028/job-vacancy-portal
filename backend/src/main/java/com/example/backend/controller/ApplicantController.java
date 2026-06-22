@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -174,6 +175,7 @@ public class ApplicantController {
             applicant.setResumePath(resumeFileName);
             applicant.setPhotoPath(photoFileName);
             applicant.setMarksheetPath(marksheetFileName);
+            applicant.setUpdatedAt(LocalDateTime.now());
 
             service.save(applicant);
 
@@ -332,6 +334,7 @@ public class ApplicantController {
             applicant.setGender(gender.trim());
             applicant.setLanguages(languages.trim());
             applicant.setCompanies(companies.trim());
+
 // Handle file uploads and updates
             String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
 

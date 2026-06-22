@@ -74,13 +74,37 @@ export class AdminComponent implements OnInit {
     speak: boolean;
     all: boolean;
   }> = [];
-  languagesList = [
-  'Tamil',
-  'English',
-  'Telugu',
-  'Kannada',
-  'Hindi',
-  'Malayalam'
+languagesList = [
+  {
+    label: 'Indian Languages',
+    options: [
+      'Tamil',
+      'Telugu',
+      'Hindi',
+      'Malayalam',
+      'Kannada',
+      'Bengali',
+      'Marathi',
+      'Gujarati',
+      'Punjabi',
+      'Odia'
+    ]
+  },
+  {
+    label: 'Foreign Languages',
+    options: [
+      'English',
+      'French',
+      'German',
+      'Spanish',
+      'Japanese',
+      'Chinese',
+      'Korean',
+      'Russian',
+      'Italian',
+      'Arabic'
+    ]
+  }
 ];
 
   applicants: any[] = [];

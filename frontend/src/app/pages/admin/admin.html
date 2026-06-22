@@ -330,14 +330,60 @@
 
       <!-- Qualification -->
       <select [(ngModel)]="selectedQualification">
-        <option value="">All Qualifications</option>
-        <option value="BE">BE</option>
-        <option value="BTech">BTech</option>
-        <option value="BCA">BCA</option>
-        <option value="MCA">MCA</option>
-        <option value="MBA">MBA</option>
-      </select>
 
+        <option value="">
+          All Qualifications
+        </option>
+
+        <optgroup label="UG">
+
+          <option value="BE">
+            B.E
+          </option>
+
+          <option value="BTech">
+            B.Tech
+          </option>
+
+          <option value="BSc">
+            B.Sc
+          </option>
+
+          <option value="BCA">
+            BCA
+          </option>
+
+          <option value="BCom">
+            B.Com
+          </option>
+
+        </optgroup>
+
+        <optgroup label="PG">
+
+          <option value="ME">
+            M.E
+          </option>
+
+          <option value="MTech">
+            M.Tech
+          </option>
+
+          <option value="MSc">
+            M.Sc
+          </option>
+
+          <option value="MCA">
+            MCA
+          </option>
+
+          <option value="MCom">
+            M.Com
+          </option>
+
+        </optgroup>
+
+      </select>
       <!-- Gender -->
       <select [(ngModel)]="selectedGender">
         <option value="">All Genders</option>
@@ -347,10 +393,41 @@
 
       <!-- Language -->
       <select [(ngModel)]="selectedLanguage">
-        <option value="">All Languages</option>
-        <option *ngFor="let lang of languagesList">
-          {{lang}}
+
+        <option value="">
+          All Languages
         </option>
+
+        <optgroup label="Indian Languages">
+
+          <option value="Tamil">Tamil</option>
+          <option value="Telugu">Telugu</option>
+          <option value="Hindi">Hindi</option>
+          <option value="Malayalam">Malayalam</option>
+          <option value="Kannada">Kannada</option>
+          <option value="Bengali">Bengali</option>
+          <option value="Marathi">Marathi</option>
+          <option value="Gujarati">Gujarati</option>
+          <option value="Punjabi">Punjabi</option>
+          <option value="Odia">Odia</option>
+
+        </optgroup>
+
+        <optgroup label="Foreign Languages">
+
+          <option value="English">English</option>
+          <option value="French">French</option>
+          <option value="German">German</option>
+          <option value="Spanish">Spanish</option>
+          <option value="Japanese">Japanese</option>
+          <option value="Chinese">Chinese</option>
+          <option value="Korean">Korean</option>
+          <option value="Russian">Russian</option>
+          <option value="Italian">Italian</option>
+          <option value="Arabic">Arabic</option>
+
+        </optgroup>
+
       </select>
 
       <!-- Company -->
@@ -368,85 +445,87 @@
 
 
 
-  <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0">
+    <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0">
 
 
-    <div class="applicant-card" *ngFor="let a of filteredApplicants | filter: searchText">
-      <div class="profile-section">
+      <div class="applicant-card" *ngFor="let a of filteredApplicants | filter: searchText">
+        <div class="profile-section">
 
-        <img *ngIf="a.photoPath" [src]="'http://localhost:8081/uploads/' + a.photoPath" class="profile-photo">
+          <img *ngIf="a.photoPath" [src]="'http://localhost:8081/uploads/' + a.photoPath" class="profile-photo">
 
-        <div *ngIf="!a.photoPath" class="profile-avatar">
+          <div *ngIf="!a.photoPath" class="profile-avatar">
 
-          {{ a.name?.charAt(0)?.toUpperCase() }}
+            {{ a.name?.charAt(0)?.toUpperCase() }}
+
+          </div>
+
+          <!-- EDIT -->
+          <button (click)="openEditModal(a)" class="profile-edit-btn" title="Edit">
+
+            <i class="fas fa-pencil-alt"></i>
+
+          </button>
+
+          <!-- DELETE -->
+          <button (click)="deleteApplicant(a.id)" class="profile-delete-btn" title="Delete">
+
+            <i class="fas fa-trash"></i>
+
+          </button>
 
         </div>
 
-        <!-- EDIT -->
-        <button (click)="openEditModal(a)" class="profile-edit-btn" title="Edit">
+        <h3>{{ a.name | titlecase }}</h3>
 
-          <i class="fas fa-pencil-alt"></i>
+        <p><strong>ID:</strong> {{ a.id }}</p>
 
-        </button>
+        <p><strong>Email:</strong> {{ a.email }}</p>
 
-        <!-- DELETE -->
-        <button (click)="deleteApplicant(a.id)" class="profile-delete-btn" title="Delete">
+        <p><strong>Phone:</strong> {{ a.phone }}</p>
 
-          <i class="fas fa-trash"></i>
+        <p><strong>Qualification:</strong> {{ a.qualification }}</p>
 
-        </button>
+        <p>
+          <strong>DOB:</strong>
+          {{ a.dob | date:'dd-MM-yyyy' }}
+        </p>
+
+        <p><strong>Gender:</strong> {{ a.gender }}</p>
+
+        <p>
+          <strong>Language Known:</strong>
+          {{ getLanguageSummary(a.languages) || a.languages }}
+        </p>
+
+        <p>
+          <strong>Company Name:</strong>
+          {{ a.companies }}
+        </p>
+
+        <p>
+          <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">
+
+            Resume
+
+          </a>
+        </p>
+
+        <p>
+          <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">
+
+            Marksheet
+
+          </a>
+        </p>
+
+       <p class="updated-time">
+    <i class="fa-solid fa-clock"></i>
+    Last Updated:
+    {{ a.updatedAt | date:'dd-MM-yyyy hh:mm:ss a' }}
+</p>
 
       </div>
-
-      <h3>{{ a.name | titlecase }}</h3>
-
-      <p><strong>ID:</strong> {{ a.id }}</p>
-
-      <p><strong>Email:</strong> {{ a.email }}</p>
-
-      <p><strong>Phone:</strong> {{ a.phone }}</p>
-
-      <p><strong>Qualification:</strong> {{ a.qualification }}</p>
-
-      <p>
-        <strong>DOB:</strong>
-        {{ a.dob | date:'dd-MM-yyyy' }}
-      </p>
-
-      <p><strong>Gender:</strong> {{ a.gender }}</p>
-
-      <p>
-        <strong>Language Known:</strong>
-        {{ getLanguageSummary(a.languages) || a.languages }}
-      </p>
-
-      <p>
-        <strong>Company Name:</strong>
-        {{ a.companies }}
-      </p>
-
-      <p>
-        <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">
-
-          Resume
-
-        </a>
-      </p>
-
-      <p>
-        <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">
-
-          Marksheet
-
-        </a>
-      </p>
-
-      <p>
-        {{ a.createdAt | date:'medium' }}
-      </p>
-
     </div>
-  </div>
   </div>
   <dialog id="editDialog" class="edit-dialog">
     <button class="dialog-close-btn" (click)="closeEditModal()">
