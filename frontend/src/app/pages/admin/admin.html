@@ -34,14 +34,22 @@
 
   </div>
 
-  <p class="summary-text">
-    Total Registered Applicants:
-    <strong>{{ applicants.length }}</strong>
-    <span *ngIf="searchText" class="filtered-badge">
-      | Matching:
-      <strong>{{ (applicants | filter: searchText).length }}</strong>
-    </span>
-  </p>
+<div class="dashboard-info">
+
+    <div class="summary-box">
+        <i class="fa-solid fa-users"></i>
+
+        Total Applicants :
+        <strong>{{ applicants.length }}</strong>
+
+        <span *ngIf="searchText">
+            &nbsp; | Matching :
+            <strong>{{ (applicants | filter: searchText).length }}</strong>
+        </span>
+
+    </div>
+
+</div>
 
   <ng-template #languageEditor>
 
@@ -51,7 +59,7 @@
       <div class="field-row">
 
         <label class="field-label">
-          Languages Known
+          Languages 
         </label>
 
         <div class="language-dropdown">
@@ -266,7 +274,7 @@
         <th>Qualification</th>
         <th>DOB</th>
         <th>Gender</th>
-        <th>Language Known</th>
+        <th>Language </th>
         <th>Company Name</th>
         <th>Resume</th>
         <th>Marksheet</th>
@@ -439,10 +447,28 @@
       </select>
 
       <!-- DOB -->
-      <input type="date" [(ngModel)]="selectedDob">
 
-    </div>
+<div class="date-range-title">
+  <i class="fa-solid fa-calendar-days"></i>
+  Date Range
+</div>
 
+<label class="date-label">
+  From
+</label>
+
+<input
+  type="date"
+  [(ngModel)]="selectedFromDate">
+
+<label class="date-label">
+  To
+</label>
+
+<input
+  type="date"
+  [(ngModel)]="selectedToDate">
+  </div>
 
 
     <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0">
@@ -475,58 +501,125 @@
 
         </div>
 
-        <h3>{{ a.name | titlecase }}</h3>
+        <div class="id-badge">
 
-        <p><strong>ID:</strong> {{ a.id }}</p>
+          #{{ a.id.toString().padStart(3,'0') }}
 
-        <p><strong>Email:</strong> {{ a.email }}</p>
+        </div>
 
-        <p><strong>Phone:</strong> {{ a.phone }}</p>
+        <h3 class="applicant-name">
 
-        <p><strong>Qualification:</strong> {{ a.qualification }}</p>
+          {{ a.name | titlecase }}
 
-        <p>
-          <strong>DOB:</strong>
-          {{ a.dob | date:'dd-MM-yyyy' }}
+        </h3>
+
+        <p class="email-text">
+
+          {{ a.email }}
+
         </p>
+        <div class="info-grid">
 
-        <p><strong>Gender:</strong> {{ a.gender }}</p>
+          <div class="info-box">
+            <div class="label">
+              <i class="fa-solid fa-phone"></i>
+              Phone
+            </div>
+            <div class="value">
+              {{a.phone}}
+            </div>
+          </div>
 
-        <p>
-          <strong>Language Known:</strong>
-          {{ getLanguageSummary(a.languages) || a.languages }}
+          <div class="info-box">
+            <div class="label">
+              <i class="fa-solid fa-graduation-cap"></i>
+              Qualification
+            </div>
+            <div class="value">
+              {{a.qualification}}
+            </div>
+          </div>
+
+          <div class="info-box">
+            <div class="label">
+              <i class="fa-solid fa-calendar"></i>
+              DOB
+            </div>
+            <div class="value">
+              {{a.dob | date:'dd-MM-yyyy'}}
+            </div>
+          </div>
+
+          <div class="info-box">
+            <div class="label">
+              <i class="fa-solid fa-user"></i>
+              Gender
+            </div>
+            <div class="value">
+              {{a.gender}}
+            </div>
+          </div>
+
+        </div>
+
+       <div class="details-section">
+
+  <div class="detail-block">
+    <div class="detail-title">
+      <i class="fa-solid fa-language"></i>
+      Languages
+    </div>
+
+    <div class="detail-content">
+      {{ getLanguageSummary(a.languages) || a.languages }}
+    </div>
+  </div>
+
+  <div class="detail-block">
+    <div class="detail-title">
+      <i class="fa-solid fa-building"></i>
+      Company Name
+    </div>
+
+    <div class="detail-content">
+      {{ a.companies }}
+    </div>
+  </div>
+
+</div>
+
+        <div class="document-buttons">
+
+  <a
+    [href]="'http://localhost:8081/uploads/' + a.resumePath"
+    target="_blank"
+    class="document-link">
+
+    <i class="fa-solid fa-file-lines"></i>
+    Resume
+
+  </a>
+
+  <a
+    [href]="'http://localhost:8081/uploads/' + a.marksheetPath"
+    target="_blank"
+    class="document-link">
+
+    <i class="fa-solid fa-graduation-cap"></i>
+    Marksheet
+
+  </a>
+
+</div>
+
+        <p class="updated-time">
+          <i class="fa-solid fa-clock"></i>
+          Last Updated:
+          {{ a.updatedAt | date:'dd-MM-yyyy hh:mm:ss a' }}
         </p>
-
-        <p>
-          <strong>Company Name:</strong>
-          {{ a.companies }}
-        </p>
-
-        <p>
-          <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">
-
-            Resume
-
-          </a>
-        </p>
-
-        <p>
-          <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">
-
-            Marksheet
-
-          </a>
-        </p>
-
-       <p class="updated-time">
-    <i class="fa-solid fa-clock"></i>
-    Last Updated:
-    {{ a.updatedAt | date:'dd-MM-yyyy hh:mm:ss a' }}
-</p>
 
       </div>
     </div>
-  </div>
   <dialog id="editDialog" class="edit-dialog">
     <button class="dialog-close-btn" (click)="closeEditModal()">
 

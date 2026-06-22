@@ -74,38 +74,38 @@ export class AdminComponent implements OnInit {
     speak: boolean;
     all: boolean;
   }> = [];
-languagesList = [
-  {
-    label: 'Indian Languages',
-    options: [
-      'Tamil',
-      'Telugu',
-      'Hindi',
-      'Malayalam',
-      'Kannada',
-      'Bengali',
-      'Marathi',
-      'Gujarati',
-      'Punjabi',
-      'Odia'
-    ]
-  },
-  {
-    label: 'Foreign Languages',
-    options: [
-      'English',
-      'French',
-      'German',
-      'Spanish',
-      'Japanese',
-      'Chinese',
-      'Korean',
-      'Russian',
-      'Italian',
-      'Arabic'
-    ]
-  }
-];
+  languagesList = [
+    {
+      label: 'Indian Languages',
+      options: [
+        'Tamil',
+        'Telugu',
+        'Hindi',
+        'Malayalam',
+        'Kannada',
+        'Bengali',
+        'Marathi',
+        'Gujarati',
+        'Punjabi',
+        'Odia'
+      ]
+    },
+    {
+      label: 'Foreign Languages',
+      options: [
+        'English',
+        'French',
+        'German',
+        'Spanish',
+        'Japanese',
+        'Chinese',
+        'Korean',
+        'Russian',
+        'Italian',
+        'Arabic'
+      ]
+    }
+  ];
 
   applicants: any[] = [];
   searchText: string = '';
@@ -114,7 +114,8 @@ languagesList = [
   selectedGender = '';
   selectedLanguage = '';
   selectedCompany = '';
-  selectedDob = '';
+  selectedFromDate = '';
+  selectedToDate = '';
 
   toggleView(): void {
     this.viewMode =
@@ -613,32 +614,39 @@ languagesList = [
   }
   get filteredApplicants() {
 
-  return this.applicants.filter(a =>
+    return this.applicants.filter(a =>
 
-    (!this.selectedQualification ||
-      a.qualification === this.selectedQualification)
+      (!this.selectedQualification ||
+        a.qualification === this.selectedQualification)
 
-    &&
+      &&
 
-    (!this.selectedGender ||
-      a.gender === this.selectedGender)
+      (!this.selectedGender ||
+        a.gender === this.selectedGender)
 
-    &&
+      &&
 
-    (!this.selectedLanguage ||
-      this.getLanguageSummary(a.languages)?.includes(this.selectedLanguage))
+      (!this.selectedLanguage ||
+        this.getLanguageSummary(a.languages)?.includes(this.selectedLanguage))
 
-    &&
+      &&
 
-    (!this.selectedCompany ||
-      a.companies?.includes(this.selectedCompany))
+      (!this.selectedCompany ||
+        a.companies?.includes(this.selectedCompany))
+&&
 
-    &&
+(
+  !this.selectedFromDate ||
+  new Date(a.dob) >= new Date(this.selectedFromDate)
+)
 
-    (!this.selectedDob ||
-      a.dob === this.selectedDob)
+&&
 
-  );
+(
+  !this.selectedToDate ||
+  new Date(a.dob) <= new Date(this.selectedToDate)
+)
+    );
 
-}
+  }
 }
