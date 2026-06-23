@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ElementRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-apply',
@@ -83,6 +84,7 @@ export class ApplyComponent {
 
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
+  photoPreviews: string[] = [];
   photoFiles: File[] = [];
   resumeFileName: string = '';
   marksheetFileName: string = '';
@@ -90,7 +92,20 @@ export class ApplyComponent {
 
   submitted = false;
   loading = false;
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) { }
+  @HostListener('document:dragover', ['$event'])
+onDocumentDragOver(event: DragEvent): void {
+
+  event.preventDefault();
+
+}
+
+@HostListener('document:drop', ['$event'])
+onDocumentDrop(event: DragEvent): void {
+
+  event.preventDefault();
+
+}
   onResumeSelected(event: any): void {
 
     const file = event.target.files[0];
@@ -145,25 +160,117 @@ export class ApplyComponent {
     }
   }
 
-  onPhotoSelect(event: any): void {
+onPhotoSelect(event: any): void {
 
-    const files: FileList = event.target.files;
+  const file = event.target.files[0];
 
-    if (files.length < 1 || files.length > 3) {
-      alert("Please select 1 to 3 photos only");
-      event.target.value = '';
+  if (!file) {
+    return;
+  }
+
+  if (this.photoFiles.length >= 3) {
+
+    alert("Maximum 3 photos allowed");
+
+    event.target.value = '';
+
+    return;
+  }
+
+  if (!file.type.startsWith('image/')) {
+
+    alert("Only images are allowed");
+
+    event.target.value = '';
+
+    return;
+  }
+
+  this.photoFiles.push(file);
+
+  this.photoFileNames.push(file.name);
+
+  const reader = new FileReader();
+
+  reader.onload = (e: any) => {
+
+    this.photoPreviews.push(e.target.result);
+
+  };
+
+  reader.readAsDataURL(file);
+
+  event.target.value = '';
+  this.cdr.detectChanges();
+}
+
+ addPhotos(files: FileList): void {
+
+  for (let i = 0; i < files.length; i++) {
+
+    if (this.photoFiles.length >= 3) {
+
+      alert("Maximum 3 photos allowed");
+
+      break;
+    }
+
+    const file = files[i];
+
+    if (!file.type.startsWith('image/')) {
+
+      alert(`${file.name} is not an image`);
+
+      continue;
+    }
+
+    this.photoFiles.push(file);
+
+    this.photoFileNames.push(file.name);
+
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+
+      this.photoPreviews = [
+        ...this.photoPreviews,
+        e.target.result
+      ];
+
+    };
+
+    reader.readAsDataURL(file);
+
+  }
+
+}
+  onDragOver(event: DragEvent): void {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+  }
+  onDrop(event: DragEvent): void {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!event.dataTransfer?.files) {
+
       return;
-    }
-
-    this.photoFiles = [];
-    this.photoFileNames = [];
-
-    for (let i = 0; i < files.length; i++) {
-
-      this.photoFiles.push(files[i]);
-      this.photoFileNames.push(files[i].name);
 
     }
+
+    this.addPhotos(event.dataTransfer.files);
+
+  }
+  removePhoto(index: number): void {
+
+    this.photoFiles.splice(index, 1);
+
+    this.photoPreviews.splice(index, 1);
+
+    this.photoFileNames.splice(index, 1);
 
   }
   createLanguageSkill(name: string) {
@@ -380,9 +487,10 @@ export class ApplyComponent {
         this.selectedLanguageNames = [];
         this.selectedLanguages = [];
         this.resumeFile = null;
-        this.marksheetFile = null;
         this.photoFiles = [];
-        this.photoFileNames = []; form.resetForm();
+        this.photoFileNames = [];
+        this.photoPreviews = [];
+        this.marksheetFile = null;
       },
       error: (err) => {
         console.error(err);

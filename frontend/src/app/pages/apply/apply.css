@@ -983,3 +983,95 @@ progress {
 }
 
 }
+.drop-zone {
+
+    border: 2px dashed #4b7bec;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    background: #fafafa;
+
+}
+.photo-gallery{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:20px;
+
+}
+
+.photo-thumb{
+
+    position:relative;
+
+}
+
+.photo-thumb img{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:15px;
+
+    object-fit:cover;
+
+    border:2px solid #e5e7eb;
+
+}
+
+.mini-add-btn{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:15px;
+
+    border:2px dashed #2563eb;
+
+    background:white;
+
+    color:#2563eb;
+
+    font-size:32px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.mini-add-btn:hover{
+
+    background:#eff6ff;
+
+}
+
+.remove-btn {
+
+    position: absolute;
+
+    top: -6px;
+    right: -6px;
+
+    width: 20px;
+    height: 20px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: red;
+
+    color: white;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+}
