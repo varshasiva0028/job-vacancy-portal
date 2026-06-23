@@ -53,7 +53,7 @@ public class ApplicantController {
             @RequestParam("languages") String languages,
             @RequestParam("companies") String companies,
             @RequestParam(value = "resume", required = false) MultipartFile resume,
-            @RequestParam(value = "photo", required = false) MultipartFile photo,
+            @RequestParam("photos") MultipartFile[] photos,
             @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
         // Extract the JWT token from the Authorization header
         String token = authHeader.replace("Bearer ", "");
@@ -102,8 +102,12 @@ public class ApplicantController {
                 return ResponseEntity.badRequest().body("Resume file is missing");
             }
 
-            if (photo == null || photo.isEmpty()) {
-                return ResponseEntity.badRequest().body("Photo file is missing");
+            if (photos == null || photos.length == 0) {
+                return ResponseEntity.badRequest().body("Atleast one Photo is Required");
+            }
+
+            if (photos.length > 3) {
+                return ResponseEntity.badRequest().body("Maximum 3 Photos");
             }
 
             if (marksheet == null || marksheet.isEmpty()) {
@@ -150,15 +154,30 @@ public class ApplicantController {
             String uniqueId = UUID.randomUUID().toString();
 
             String resumeFileName = uniqueId + "_resume_" + resume.getOriginalFilename();
-            String photoFileName = uniqueId + "_photo_" + photo.getOriginalFilename();
             String marksheetFileName = uniqueId + "_marksheet_" + marksheet.getOriginalFilename();
 
             Path resumePath = Paths.get(uploadDir, resumeFileName);
-            Path photoPath = Paths.get(uploadDir, photoFileName);
             Path marksheetPath = Paths.get(uploadDir, marksheetFileName);
 
             Files.copy(resume.getInputStream(), resumePath, StandardCopyOption.REPLACE_EXISTING);
-            Files.copy(photo.getInputStream(), photoPath, StandardCopyOption.REPLACE_EXISTING);
+            StringBuilder photoNames = new StringBuilder();
+
+            for (MultipartFile img : photos) {
+
+                String photoFileName
+                        = uniqueId + "_photo_" + img.getOriginalFilename();
+
+                Path photoPath
+                        = Paths.get(uploadDir, photoFileName);
+
+                Files.copy(
+                        img.getInputStream(),
+                        photoPath,
+                        StandardCopyOption.REPLACE_EXISTING);
+
+                photoNames.append(photoFileName).append(",");
+            }
+            System.out.println("Photos received = " + photos.length);
             Files.copy(marksheet.getInputStream(), marksheetPath, StandardCopyOption.REPLACE_EXISTING);
 
             Applicant applicant = new Applicant();
@@ -173,7 +192,7 @@ public class ApplicantController {
             applicant.setLanguages(languages.trim());
             applicant.setCompanies(companies.trim());
             applicant.setResumePath(resumeFileName);
-            applicant.setPhotoPath(photoFileName);
+            applicant.setPhotoPaths(photoNames.toString());
             applicant.setMarksheetPath(marksheetFileName);
             applicant.setUpdatedAt(LocalDateTime.now());
 
@@ -279,7 +298,7 @@ public class ApplicantController {
             @RequestParam("languages") String languages,
             @RequestParam("companies") String companies,
             @RequestParam(value = "resume", required = false) MultipartFile resume,
-            @RequestParam(value = "photo", required = false) MultipartFile photo,
+            @RequestParam(value = "photos", required = false) MultipartFile[] photos,
             @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
 
         try {
@@ -365,24 +384,44 @@ public class ApplicantController {
                 applicant.setResumePath(resumeFileName);
             }
 
-            if (photo != null && !photo.isEmpty()) {
-
+            if (photos != null && photos.length > 0) {
                 try {
-                    if (applicant.getPhotoPath() != null) {
-                        Files.deleteIfExists(Paths.get(uploadDir, applicant.getPhotoPath()));
+                    if (applicant.getPhotoPaths() != null) {
+
+                        String[] oldPhotos
+                                = applicant.getPhotoPaths().split(",");
+
+                        for (String oldPhoto : oldPhotos) {
+
+                            if (!oldPhoto.isBlank()) {
+
+                                Files.deleteIfExists(
+                                        Paths.get(uploadDir, oldPhoto));
+                            }
+                        }
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+                StringBuilder photoNames = new StringBuilder();
 
-                String photoFileName = uniqueId + "_photo_" + photo.getOriginalFilename();
-                Path photoPath = Paths.get(uploadDir, photoFileName);
+                for (MultipartFile img : photos) {
 
-                Files.copy(photo.getInputStream(),
-                        photoPath,
-                        StandardCopyOption.REPLACE_EXISTING);
+                    String photoFileName
+                            = uniqueId + "_photo_" + img.getOriginalFilename();
 
-                applicant.setPhotoPath(photoFileName);
+                    Path photoPath
+                            = Paths.get(uploadDir, photoFileName);
+
+                    Files.copy(
+                            img.getInputStream(),
+                            photoPath,
+                            StandardCopyOption.REPLACE_EXISTING);
+
+                    photoNames.append(photoFileName).append(",");
+                }
+
+                applicant.setPhotoPaths(photoNames.toString());
             }
 
             if (marksheet != null && !marksheet.isEmpty()) {

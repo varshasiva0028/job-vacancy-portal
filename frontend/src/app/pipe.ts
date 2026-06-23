@@ -20,6 +20,7 @@ export class FilterPipe implements PipeTransform {
         if (val === null || val === undefined) {
           return false;
         }
+        console.log(Object.values(item))
         return String(val).toLowerCase().includes(lowerSearchText);
       });
     });

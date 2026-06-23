@@ -83,11 +83,10 @@ export class ApplyComponent {
 
   resumeFile: File | null = null;
   marksheetFile: File | null = null;
-  photoFile: File | null = null;
-
+  photoFiles: File[] = [];
   resumeFileName: string = '';
   marksheetFileName: string = '';
-  photoFileName: string = '';
+  photoFileNames: string[] = [];
 
   submitted = false;
   loading = false;
@@ -146,13 +145,23 @@ export class ApplyComponent {
     }
   }
 
-  onPhotoSelect(event: any) {
+  onPhotoSelect(event: any): void {
 
-    this.photoFile = event.target.files[0];
+    const files: FileList = event.target.files;
 
-    if (this.photoFile) {
+    if (files.length < 1 || files.length > 3) {
+      alert("Please select 1 to 3 photos only");
+      event.target.value = '';
+      return;
+    }
 
-      this.photoFileName = this.photoFile.name;
+    this.photoFiles = [];
+    this.photoFileNames = [];
+
+    for (let i = 0; i < files.length; i++) {
+
+      this.photoFiles.push(files[i]);
+      this.photoFileNames.push(files[i].name);
 
     }
 
@@ -294,8 +303,12 @@ export class ApplyComponent {
       alert("Please select Date of Birth");
       return;
     }
-    if (!this.resumeFile || !this.marksheetFile || !this.photoFile) {
-      alert("Upload Resume, Photo and Marksheet");
+    if (
+      !this.resumeFile ||
+      !this.marksheetFile ||
+      this.photoFiles.length === 0
+    ) {
+      alert("Upload Resume, Marksheet and 1-3 Photos");
       return;
     }
     if (!this.applicant.gender) {
@@ -324,8 +337,9 @@ export class ApplyComponent {
     );
     formData.append('resume', this.resumeFile);
     formData.append('marksheet', this.marksheetFile);
-    formData.append('photo', this.photoFile!);
-    formData.append(
+    this.photoFiles.forEach(photo => {
+      formData.append('photos', photo);
+    }); formData.append(
       'languages',
       JSON.stringify(this.selectedLanguages)
     );
@@ -367,8 +381,8 @@ export class ApplyComponent {
         this.selectedLanguages = [];
         this.resumeFile = null;
         this.marksheetFile = null;
-        this.photoFile = null;
-        form.resetForm();
+        this.photoFiles = [];
+        this.photoFileNames = []; form.resetForm();
       },
       error: (err) => {
         console.error(err);

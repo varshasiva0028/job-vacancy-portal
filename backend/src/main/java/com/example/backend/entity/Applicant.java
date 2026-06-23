@@ -47,8 +47,8 @@ public class Applicant {
 
     private String resumePath;
 
-    private String photoPath;
-
+    @Column(columnDefinition = "TEXT")
+    private String photoPaths;
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @UpdateTimestamp
@@ -160,12 +160,12 @@ public class Applicant {
         this.resumePath = resumePath;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
+    public String getPhotoPaths() {
+        return photoPaths;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setPhotoPaths(String photoPaths) {
+        this.photoPaths = photoPaths;
     }
 
     public LocalDateTime getCreatedAt() {

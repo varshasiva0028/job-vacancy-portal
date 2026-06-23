@@ -375,8 +375,7 @@
 
         <label class="upload-area">
 
-          <input type="file" accept="image/*" class="file-input" (change)="onPhotoSelect($event)">
-
+          <input type="file" accept="image/*" multiple class="file-input" (change)="onPhotoSelect($event)">
           <span class="upload-btn">
             Upload Photo
           </span>
@@ -386,8 +385,16 @@
         </label>
 
         <p class="file-name">
-          {{ photoFileName || 'No file selected' }}
-        </p>
+
+  <span *ngIf="photoFileNames.length===0">
+    No file selected
+  </span>
+
+  <span *ngFor="let name of photoFileNames">
+    {{name}}<br>
+  </span>
+
+</p>
 
       </div>
 

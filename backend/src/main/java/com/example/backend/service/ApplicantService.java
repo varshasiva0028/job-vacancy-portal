@@ -1,11 +1,12 @@
 package com.example.backend.service;
 
-import com.example.backend.entity.Applicant;
-import com.example.backend.repository.ApplicantRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.backend.entity.Applicant;
+import com.example.backend.repository.ApplicantRepository;
 
 @Service
 public class ApplicantService {
@@ -53,9 +54,8 @@ public class ApplicantService {
         existingApplicant.setGender(updatedApplicant.getGender());
         existingApplicant.setLanguages(updatedApplicant.getLanguages());
         existingApplicant.setCompanies(updatedApplicant.getCompanies());
-
         existingApplicant.setResumePath(updatedApplicant.getResumePath());
-        existingApplicant.setPhotoPath(updatedApplicant.getPhotoPath());
+        existingApplicant.setPhotoPaths(updatedApplicant.getPhotoPaths());
         existingApplicant.setMarksheetPath(updatedApplicant.getMarksheetPath());
 
         return repo.save(existingApplicant);
