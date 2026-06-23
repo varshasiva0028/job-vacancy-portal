@@ -49,6 +49,9 @@ public class Applicant {
 
     @Column(columnDefinition = "TEXT")
     private String photoPaths;
+
+    @Column(length = 255)
+    private String profilePhoto;
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @UpdateTimestamp
@@ -166,6 +169,14 @@ public class Applicant {
 
     public void setPhotoPaths(String photoPaths) {
         this.photoPaths = photoPaths;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 
     public LocalDateTime getCreatedAt() {

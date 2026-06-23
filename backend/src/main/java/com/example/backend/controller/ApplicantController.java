@@ -10,9 +10,11 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.security.core.Authentication;
 
 import com.example.backend.entity.Applicant;
 import com.example.backend.security.JwtUtil;
@@ -192,8 +193,17 @@ public class ApplicantController {
             applicant.setLanguages(languages.trim());
             applicant.setCompanies(companies.trim());
             applicant.setResumePath(resumeFileName);
+
             applicant.setPhotoPaths(photoNames.toString());
+
+            String[] uploadedPhotos = photoNames.toString().split(",");
+
+            if (uploadedPhotos.length > 0) {
+                applicant.setProfilePhoto(uploadedPhotos[0]);
+            }
+
             applicant.setMarksheetPath(marksheetFileName);
+            applicant.setUpdatedAt(LocalDateTime.now());
             applicant.setUpdatedAt(LocalDateTime.now());
 
             service.save(applicant);
@@ -422,6 +432,11 @@ public class ApplicantController {
                 }
 
                 applicant.setPhotoPaths(photoNames.toString());
+                String[] uploadedPhotos = photoNames.toString().split(",");
+
+                if (uploadedPhotos.length > 0) {
+                    applicant.setProfilePhoto(uploadedPhotos[0]);
+                }
             }
 
             if (marksheet != null && !marksheet.isEmpty()) {
@@ -471,5 +486,23 @@ public class ApplicantController {
 
         return ResponseEntity.ok(
                 "Applicant deleted successfully");
+    }
+
+    @PutMapping("/{id}/profile-photo")
+    public ResponseEntity<String> updateProfilePhoto(
+            @PathVariable Long id,
+            @RequestBody java.util.Map<String, String> request) {
+
+        Applicant applicant = service.getApplicantById(id);
+
+        if (applicant == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        applicant.setProfilePhoto(request.get("profilePhoto"));
+
+        service.save(applicant);
+
+        return ResponseEntity.ok("Profile photo updated successfully");
     }
 }

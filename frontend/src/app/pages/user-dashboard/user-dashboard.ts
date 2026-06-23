@@ -3,13 +3,14 @@ import {
   OnInit,
   ChangeDetectorRef,
   ViewChild,
-  ElementRef,
-
+  ElementRef
 } from '@angular/core';
+
 import {
   DomSanitizer,
   SafeResourceUrl
 } from '@angular/platform-browser';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -34,10 +35,15 @@ export class UserDashboardComponent implements OnInit {
 
   languages: any[] = [];
   editLanguages: any[] = [];
+
   selectedPhoto: File | null = null;
+  showPhotoDialog = false;
+  photoList: string[] = [];
+  selectedProfilePhoto = '';
   selectedLanguageNames: string[] = [];
 
   showLanguages = false;
+
   selectedResume: File | null = null;
   selectedMarksheet: File | null = null;
 
@@ -47,38 +53,52 @@ export class UserDashboardComponent implements OnInit {
   safePreviewUrl!: SafeResourceUrl;
 
   previewTitle = '';
-
   previewUrl = '';
 
   isPdf = false;
+
   @ViewChild('previewDialog')
   previewDialog!: ElementRef<HTMLDialogElement>;
-
-
 
   languageGroups = [
     {
       label: 'Indian Languages',
       options: [
-        'Tamil', 'Telugu', 'Hindi', 'Malayalam', 'Kannada',
-        'Bengali', 'Marathi', 'Gujarati', 'Punjabi', 'Odia'
+        'Tamil',
+        'Telugu',
+        'Hindi',
+        'Malayalam',
+        'Kannada',
+        'Bengali',
+        'Marathi',
+        'Gujarati',
+        'Punjabi',
+        'Odia'
       ]
     },
     {
       label: 'Foreign Languages',
       options: [
-        'English', 'Japanese', 'French', 'German',
-        'Spanish', 'Chinese', 'Korean', 'Russian',
-        'Italian', 'Arabic'
+        'English',
+        'Japanese',
+        'French',
+        'German',
+        'Spanish',
+        'Chinese',
+        'Korean',
+        'Russian',
+        'Italian',
+        'Arabic'
       ]
     }
   ];
+
   constructor(
     private http: HttpClient,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer
-  ) { }
+  ) {}
 
   ngOnInit(): void {
 
@@ -91,88 +111,84 @@ export class UserDashboardComponent implements OnInit {
     this.http.get<any>(
       'http://localhost:8081/api/applicants/my',
       { headers }
-    )
-      .subscribe({
+    ).subscribe({
 
-        next: (response) => {
+      next: (response) => {
 
-          console.log(response);
+        console.log(response);
 
-          this.applicant = { ...response };
-          this.editApplicant = { ...response };
+        this.applicant = { ...response };
+        this.editApplicant = { ...response };
+
+        this.cdr.detectChanges();
+
+        console.log('applicant =', this.applicant);
+
+        this.languages = [];
+
+        if (response.languages) {
+
+          try {
+
+            this.languages = [...JSON.parse(response.languages)];
+
+          } catch {
+
+            this.languages = [];
+
+          }
 
           this.cdr.detectChanges();
+        }
 
-          console.log("applicant =", this.applicant);
-         
+        if (response.languages) {
 
-          
+          try {
 
-          // Languages
-          this.languages = [];
+            this.languages = JSON.parse(response.languages);
 
-          if (response.languages) {
+          } catch {
 
-            try {
-
-              this.languages = [...JSON.parse(response.languages)];
-
-            } catch {
-
-              this.languages = [];
-
-            }
-            this.cdr.detectChanges();
+            this.languages = [];
 
           }
-
-          // Languages
-          if (response.languages) {
-
-            try {
-
-              this.languages = JSON.parse(response.languages);
-
-            }
-            catch {
-
-              this.languages = [];
-
-            }
-
-          }
-
-        },
-
-        error: (err) => {
-
-          console.error(err);
 
         }
 
-      });
+      },
 
+      error: (err) => {
+
+        console.error(err);
+
+      }
+
+    });
 
   }
+
   editProfile(): void {
 
     this.editApplicant = { ...this.applicant };
 
-    this.editLanguages =
-      JSON.parse(JSON.stringify(this.languages));
+    this.editLanguages = JSON.parse(
+      JSON.stringify(this.languages)
+    );
 
-    this.selectedLanguageNames =
-      this.editLanguages.map(
-        lang => lang.name
-      );
+    this.selectedLanguageNames = this.editLanguages.map(
+      lang => lang.name
+    );
 
     this.editMode = true;
 
   }
 
   cancelEdit(): void {
+
     this.editMode = false;
+
   }
+
   createLanguageSkill(name: string) {
 
     return {
@@ -190,6 +206,7 @@ export class UserDashboardComponent implements OnInit {
     };
 
   }
+
   addLanguage(name: string): void {
 
     if (!this.editLanguages.some(
@@ -197,9 +214,7 @@ export class UserDashboardComponent implements OnInit {
     )) {
 
       this.editLanguages.push(
-
         this.createLanguageSkill(name)
-
       );
 
     }
@@ -210,31 +225,31 @@ export class UserDashboardComponent implements OnInit {
 
     }
 
-  } toggleLanguage(language: string, event: any): void {
+  }
+
+  toggleLanguage(language: string, event: any): void {
 
     if (event.target.checked) {
 
       this.addLanguage(language);
 
-    }
-
-    else {
+    } else {
 
       this.removeLanguage(language);
 
     }
 
-  } updateLanguageAllState(language: any): void {
+  }
+
+  updateLanguageAllState(language: any): void {
 
     language.all =
-
       language.read &&
-
       language.write &&
-
       language.speak;
 
   }
+
   getProgress(language: any): number {
 
     if (language.all) {
@@ -267,7 +282,6 @@ export class UserDashboardComponent implements OnInit {
 
   }
 
-
   removeLanguage(name: string): void {
 
     this.editLanguages =
@@ -281,6 +295,7 @@ export class UserDashboardComponent implements OnInit {
       );
 
   }
+
   onPhotoSelected(event: any): void {
 
     if (event.target.files.length > 0) {
@@ -317,44 +332,67 @@ export class UserDashboardComponent implements OnInit {
     }
 
   }
+
   saveChanges(): void {
+
     if (!this.editApplicant.name || !this.editApplicant.name.trim()) {
-      alert("Name is required");
+
+      alert('Name is required');
       return;
-    }
-    if (!this.editApplicant.email || !this.editApplicant.email.trim()) {
-      alert("Email is required");
-      return;
-    }
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(this.editApplicant.email.trim())) {
-      alert("Invalid Email ID");
-      return;
-    }
-    if (!this.editApplicant.qualification || !this.editApplicant.qualification.trim()) {
-      alert("Qualification is required");
-      return;
-    }
-    const textPattern = /^[A-Za-z\s]+$/;
-    if (!textPattern.test(this.editApplicant.qualification.trim())) {
-      alert("Qualification must contain only letters");
-      return;
-    }
-    if (!this.editApplicant.gender) {
-      alert("Please select Gender");
-      return;
-    }
-    if (!this.editApplicant.gender) {
-      alert("Please select Gender");
-      return;
-    }
-    if (this.editLanguages.length === 0) {
-      alert("Please select at least one Language Known");
-      return;
+
     }
 
+    if (!this.editApplicant.email || !this.editApplicant.email.trim()) {
+
+      alert('Email is required');
+      return;
+
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(this.editApplicant.email.trim())) {
+
+      alert('Invalid Email ID');
+      return;
+
+    }
+
+    if (
+      !this.editApplicant.qualification ||
+      !this.editApplicant.qualification.trim()
+    ) {
+
+      alert('Qualification is required');
+      return;
+
+    }
+
+    const textPattern = /^[A-Za-z\s]+$/;
+
+    if (!textPattern.test(this.editApplicant.qualification.trim())) {
+
+      alert('Qualification must contain only letters');
+      return;
+
+    }
+
+    if (!this.editApplicant.gender) {
+
+      alert('Please select Gender');
+      return;
+
+    }
+
+    if (this.editLanguages.length === 0) {
+
+      alert('Please select at least one Language Known');
+      return;
+
+    }
 
     const formData = new FormData();
+
     if (this.selectedPhoto) {
 
       formData.append(
@@ -363,6 +401,7 @@ export class UserDashboardComponent implements OnInit {
       );
 
     }
+
     if (this.selectedResume) {
 
       formData.append(
@@ -380,15 +419,44 @@ export class UserDashboardComponent implements OnInit {
       );
 
     }
-    formData.append('name', this.editApplicant.name.trim());
-    formData.append('email', this.editApplicant.email.trim());
-    formData.append('phone', this.applicant.phone || '');
-    formData.append('qualification', this.editApplicant.qualification.trim());
-    formData.append('dob', this.editApplicant.dob);
-    formData.append('gender', this.editApplicant.gender);
-    formData.append('languages', JSON.stringify(this.editLanguages));
+
+    formData.append(
+      'name',
+      this.editApplicant.name.trim()
+    );
+
+    formData.append(
+      'email',
+      this.editApplicant.email.trim()
+    );
+
+    formData.append(
+      'phone',
+      this.applicant.phone || ''
+    );
+
+    formData.append(
+      'qualification',
+      this.editApplicant.qualification.trim()
+    );
+
+    formData.append(
+      'dob',
+      this.editApplicant.dob
+    );
+
+    formData.append(
+      'gender',
+      this.editApplicant.gender
+    );
+
+    formData.append(
+      'languages',
+      JSON.stringify(this.editLanguages)
+    );
 
     const token = localStorage.getItem('token');
+
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
@@ -396,22 +464,35 @@ export class UserDashboardComponent implements OnInit {
     this.http.put(
       `http://localhost:8081/api/applicants/${this.applicant.id}`,
       formData,
-      { headers, responseType: 'text' }
+      {
+        headers,
+        responseType: 'text'
+      }
     ).subscribe({
+
       next: () => {
 
-        alert("Applicant Updated Successfully");
+        alert('Applicant Updated Successfully');
 
         this.editMode = false;
 
         this.ngOnInit();
 
       },
+
       error: (err) => {
+
         console.error(err);
-        alert("Update Failed: " + (err.error || err.message));
+
+        alert(
+          'Update Failed: ' +
+          (err.error || err.message)
+        );
+
       }
+
     });
+
   }
 
   toggleAll(language: any): void {
@@ -422,9 +503,7 @@ export class UserDashboardComponent implements OnInit {
       language.write = true;
       language.speak = true;
 
-    }
-
-    else {
+    } else {
 
       language.read = false;
       language.write = false;
@@ -447,7 +526,9 @@ export class UserDashboardComponent implements OnInit {
       );
 
     this.isPdf = true;
+
   }
+
   closePreview(): void {
 
     this.isPdf = false;
@@ -455,6 +536,83 @@ export class UserDashboardComponent implements OnInit {
     this.previewDialog.nativeElement.close();
 
   }
+
+  parsePhotoPaths(photoPaths: string): string[] {
+
+    if (!photoPaths) {
+
+      return [];
+
+    }
+
+    return photoPaths
+      .split(',')
+      .map(path => path.trim())
+      .filter(path => path);
+
+  }
+
+  openPhotoDialog(): void {
+
+    this.photoList =
+      this.applicant.photoPaths
+        .split(',')
+        .filter(
+          (photo: string) => photo.trim() !== ''
+        );
+
+    this.showPhotoDialog = true;
+
+  }
+
+  closePhotoDialog(): void {
+
+    this.showPhotoDialog = false;
+
+  }
+
+  saveProfilePhoto(): void {
+
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    this.http.put(
+      `http://localhost:8081/api/applicants/${this.applicant.id}/profile-photo`,
+      {
+        profilePhoto: this.selectedProfilePhoto
+      },
+      {
+        headers,
+        responseType: 'text'
+      }
+    ).subscribe({
+
+      next: () => {
+
+        this.applicant.profilePhoto =
+          this.selectedProfilePhoto;
+
+        this.closePhotoDialog();
+
+        alert('Profile picture updated successfully');
+
+      },
+
+      error: err => {
+
+        console.error(err);
+
+        alert('Update failed');
+
+      }
+
+    });
+
+  }
+
   logout(): void {
 
     localStorage.clear();

@@ -136,6 +136,10 @@ export class AdminComponent implements OnInit {
   };
   editResumeFile: File | null = null;
   editMarksheetFile: File | null = null;
+  showPhotoDialog = false;
+  photoList: string[] = [];
+  selectedApplicantId = 0;
+  selectedProfilePhoto = '';
 
   applicantId: number = 0;
 
@@ -605,6 +609,69 @@ export class AdminComponent implements OnInit {
       });
 
   }
+  openPhotoDialog(applicant: any): void {
+
+    this.selectedApplicantId = applicant.id;
+
+    this.photoList =
+      applicant.photoPaths
+        .split(',')
+        .filter((photo: string) => photo.trim() !== '');
+
+    this.showPhotoDialog = true;
+
+  }
+  closePhotoDialog(): void {
+
+    this.showPhotoDialog = false;
+
+  }
+ setProfilePhoto(photo: string): void {
+
+  const token = localStorage.getItem('token');
+
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
+
+  this.http.put(
+    `http://localhost:8081/api/applicants/${this.selectedApplicantId}/profile-photo`,
+    {
+      profilePhoto: photo
+    },
+    {
+      headers,
+      responseType: 'text'
+    }
+  ).subscribe({
+
+    next: () => {
+
+      const applicant = this.applicants.find(
+        (a: any) => a.id === this.selectedApplicantId
+      );
+
+      if (applicant) {
+        applicant.profilePhoto = photo;
+      }
+
+      this.closePhotoDialog();
+
+      this.loadApplicants();
+
+    },
+
+    error: err => {
+
+      console.error(err);
+
+      alert('Failed to update profile photo');
+
+    }
+
+  });
+
+}
   logout(): void {
 
     localStorage.clear();
@@ -633,19 +700,19 @@ export class AdminComponent implements OnInit {
 
       (!this.selectedCompany ||
         a.companies?.includes(this.selectedCompany))
-&&
+      &&
 
-(
-  !this.selectedFromDate ||
-  new Date(a.dob) >= new Date(this.selectedFromDate)
-)
+      (
+        !this.selectedFromDate ||
+        new Date(a.dob) >= new Date(this.selectedFromDate)
+      )
 
-&&
+      &&
 
-(
-  !this.selectedToDate ||
-  new Date(a.dob) <= new Date(this.selectedToDate)
-)
+      (
+        !this.selectedToDate ||
+        new Date(a.dob) <= new Date(this.selectedToDate)
+      )
     );
 
   }

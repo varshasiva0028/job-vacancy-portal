@@ -34,22 +34,22 @@
 
   </div>
 
-<div class="dashboard-info">
+  <div class="dashboard-info">
 
     <div class="summary-box">
-        <i class="fa-solid fa-users"></i>
+      <i class="fa-solid fa-users"></i>
 
-        Total Applicants :
-        <strong>{{ applicants.length }}</strong>
+      Total Applicants :
+      <strong>{{ applicants.length }}</strong>
 
-        <span *ngIf="searchText">
-            &nbsp; | Matching :
-            <strong>{{ (applicants | filter: searchText).length }}</strong>
-        </span>
+      <span *ngIf="searchText">
+        &nbsp; | Matching :
+        <strong>{{ (applicants | filter: searchText).length }}</strong>
+      </span>
 
     </div>
 
-</div>
+  </div>
 
   <ng-template #languageEditor>
 
@@ -59,7 +59,7 @@
       <div class="field-row">
 
         <label class="field-label">
-          Languages 
+          Languages
         </label>
 
         <div class="language-dropdown">
@@ -448,27 +448,23 @@
 
       <!-- DOB -->
 
-<div class="date-range-title">
-  <i class="fa-solid fa-calendar-days"></i>
-  Date Range
-</div>
+      <div class="date-range-title">
+        <i class="fa-solid fa-calendar-days"></i>
+        Date Range
+      </div>
 
-<label class="date-label">
-  From
-</label>
+      <label class="date-label">
+        From
+      </label>
 
-<input
-  type="date"
-  [(ngModel)]="selectedFromDate">
+      <input type="date" [(ngModel)]="selectedFromDate">
 
-<label class="date-label">
-  To
-</label>
+      <label class="date-label">
+        To
+      </label>
 
-<input
-  type="date"
-  [(ngModel)]="selectedToDate">
-  </div>
+      <input type="date" [(ngModel)]="selectedToDate">
+    </div>
 
 
     <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0">
@@ -477,10 +473,9 @@
       <div class="applicant-card" *ngFor="let a of filteredApplicants | filter: searchText">
         <div class="profile-section">
 
-          <img *ngIf="a.photoPath" [src]="'http://localhost:8081/uploads/' + a.photoPath" class="profile-photo">
-
-          <div *ngIf="!a.photoPath" class="profile-avatar">
-
+          <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto" class="profile-photo"
+            (click)="openPhotoDialog(a)">
+          <div *ngIf="!a.profilePhoto" class="profile-avatar">
             {{ a.name?.charAt(0)?.toUpperCase() }}
 
           </div>
@@ -562,33 +557,33 @@
 
         </div>
 
-       <div class="details-section">
+        <div class="details-section">
 
-  <div class="detail-block">
-    <div class="detail-title">
-      <i class="fa-solid fa-language"></i>
-      Languages
-    </div>
+          <div class="detail-block">
+            <div class="detail-title">
+              <i class="fa-solid fa-language"></i>
+              Languages
+            </div>
 
-    <div class="detail-content">
-      {{ getLanguageSummary(a.languages) || a.languages }}
-    </div>
-  </div>
+            <div class="detail-content">
+              {{ getLanguageSummary(a.languages) || a.languages }}
+            </div>
+          </div>
 
-  <div class="detail-block">
-    <div class="detail-title">
-      <i class="fa-solid fa-building"></i>
-      Company Name
-    </div>
+          <div class="detail-block">
+            <div class="detail-title">
+              <i class="fa-solid fa-building"></i>
+              Company Name
+            </div>
 
-    <div class="detail-content">
-      {{ a.companies }}
-    </div>
-  </div>
+            <div class="detail-content">
+              {{ a.companies }}
+            </div>
+          </div>
 
-</div>
+        </div>
 
-        
+
 
         <p class="updated-time">
           <i class="fa-solid fa-clock"></i>
@@ -598,77 +593,106 @@
 
       </div>
     </div>
-  <dialog id="editDialog" class="edit-dialog">
-    <button class="dialog-close-btn" (click)="closeEditModal()">
+    <dialog id="editDialog" class="edit-dialog">
+      <button class="dialog-close-btn" (click)="closeEditModal()">
 
-      <i class="fa-solid fa-xmark"></i>
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+      <h2>Edit Applicant</h2>
+
+      <div class="edit-input-grid">
+
+        <input type="text" [(ngModel)]="editData.name" placeholder="Name" class="edit-input">
+
+        <input type="email" [(ngModel)]="editData.email" placeholder="Email" class="edit-input">
+
+        <input type="text" [(ngModel)]="editData.phone" placeholder="Phone" class="edit-input">
+
+        <input type="text" [(ngModel)]="editData.qualification" placeholder="Qualification" class="edit-input">
+
+        <input type="date" [(ngModel)]="editData.dob" class="edit-input">
+
+      </div>
+
+      <div class="edit-section">
+        <div class="field-row">
+
+          <label class="field-label">
+            Gender
+          </label>
+
+          <div class="radio-group">
+
+            <label>
+              <input type="radio" value="Male" [(ngModel)]="editData.gender">
+              Male
+            </label>
+
+            <label>
+              <input type="radio" value="Female" [(ngModel)]="editData.gender">
+              Female
+            </label>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div class="edit-section">
+        <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
+      </div>
+      <div class="upload-container">
+        <label class="file-placeholder">
+          <input type="file" (change)="onEditResumeSelect($event)">
+          {{ editResumeFile?.name || '📄 Upload Resume' }}
+        </label>
+
+        <label class="file-placeholder">
+          <input type="file" (change)="onEditMarksheetSelect($event)">
+          {{ editMarksheetFile?.name || '🎓 Upload Marksheet' }}
+        </label>
+      </div>
+      <div class="action-cell">
+
+        <button (click)="saveEdit()" class="btn-save">
+          Save
+        </button>
+
+        <button (click)="closeEditModal()" class="btn-cancel">
+          Cancel
+        </button>
+
+      </div>
+
+    </dialog>
+    <div
+  class="photo-overlay"
+  *ngIf="showPhotoDialog">
+
+  <div class="photo-dialog">
+
+    <button
+      class="close-photo-btn"
+      (click)="closePhotoDialog()">
+
+      ✕
 
     </button>
 
-    <h2>Edit Applicant</h2>
+    <h2>Select Profile Picture</h2>
 
-    <div class="edit-input-grid">
+    <div class="photo-grid">
 
-      <input type="text" [(ngModel)]="editData.name" placeholder="Name" class="edit-input">
-
-      <input type="email" [(ngModel)]="editData.email" placeholder="Email" class="edit-input">
-
-      <input type="text" [(ngModel)]="editData.phone" placeholder="Phone" class="edit-input">
-
-      <input type="text" [(ngModel)]="editData.qualification" placeholder="Qualification" class="edit-input">
-
-      <input type="date" [(ngModel)]="editData.dob" class="edit-input">
+      <img
+        *ngFor="let photo of photoList"
+        [src]="'http://localhost:8081/uploads/' + photo"
+        class="dialog-photo"
+        (click)="setProfilePhoto(photo)">
 
     </div>
 
-    <div class="edit-section">
-      <div class="field-row">
+  </div>
 
-        <label class="field-label">
-          Gender
-        </label>
-
-        <div class="radio-group">
-
-          <label>
-            <input type="radio" value="Male" [(ngModel)]="editData.gender">
-            Male
-          </label>
-
-          <label>
-            <input type="radio" value="Female" [(ngModel)]="editData.gender">
-            Female
-          </label>
-
-        </div>
-
-      </div>
-    </div>
-
-    <div class="edit-section">
-      <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
-    </div>
-    <div class="upload-container">
-      <label class="file-placeholder">
-        <input type="file" (change)="onEditResumeSelect($event)">
-        {{ editResumeFile?.name || '📄 Upload Resume' }}
-      </label>
-
-      <label class="file-placeholder">
-        <input type="file" (change)="onEditMarksheetSelect($event)">
-        {{ editMarksheetFile?.name || '🎓 Upload Marksheet' }}
-      </label>
-    </div>
-    <div class="action-cell">
-
-      <button (click)="saveEdit()" class="btn-save">
-        Save
-      </button>
-
-      <button (click)="closeEditModal()" class="btn-cancel">
-        Cancel
-      </button>
-
-    </div>
-
-  </dialog>
+</div>
