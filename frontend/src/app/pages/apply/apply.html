@@ -77,39 +77,40 @@
 
       </div>
       <!-- Gender -->
-      <div class="gender-card">
+      <div class="gender-container">
 
-        <label class="gender-floating-label">
+  <div class="gender-card">
+
+      <label class="gender-floating-label">
           <i class="fas fa-venus-mars"></i>
           Gender
-        </label>
+      </label>
 
-        <div class="gender-options">
-
-          <label class="gender-option">
-
-            <input type="radio" name="gender" value="Male" [(ngModel)]="applicant.gender">
-
-            <i class="fas fa-mars"></i>
-
-            Male
-
-          </label>
-
+      <div class="gender-options">
 
           <label class="gender-option">
+              <input type="radio" name="gender" value="Male"
+                     [(ngModel)]="applicant.gender">
 
-            <input type="radio" name="gender" value="Female" [(ngModel)]="applicant.gender">
+              <i class="fas fa-mars"></i>
 
-            <i class="fas fa-venus"></i>
-
-            Female
-
+              Male
           </label>
 
-        </div>
+          <label class="gender-option">
+              <input type="radio" name="gender" value="Female"
+                     [(ngModel)]="applicant.gender">
+
+              <i class="fas fa-venus"></i>
+
+              Female
+          </label>
 
       </div>
+
+  </div>
+
+</div>
 
     </div>
     <!-- Languages -->
@@ -322,111 +323,141 @@
       </div>
 
     </div>
-    <div class="upload-section">
+    <div class="upload-panel">
 
-      <!-- Resume -->
-      <div class="upload-card">
+ <div class="document-row">
 
-        <i class="fas fa-file upload-icon"></i>
-        <label class="upload-area">
-          <input type="file" accept=".pdf,.doc,.docx" class="file-input" (change)="onResumeSelected($event)">
-          <span class="upload-btn">
-            Upload Resume
-          </span>
+    <!-- Resume -->
+    <div class="document-card">
 
-          <small>Click to browse files</small>
+        <div class="upload-left">
 
-        </label>
+            <i class="fas fa-file"></i>
 
-        <p class="file-name">
-          {{ resumeFileName || 'No file selected' }}
-        </p>
-
-      </div>
-
-
-      <!-- Marksheet -->
-      <div class="upload-card">
-
-        <i class="fas fa-file-alt upload-icon"></i>
-
-        <label class="upload-area">
-
-          <input type="file" accept=".pdf,.doc,.docx" class="file-input" (change)="onMarksheetSelected($event)">
-          <span class="upload-btn">
-            Upload Marksheet
-          </span>
-
-          <small>Click to browse files</small>
-
-        </label>
-
-        <p class="file-name">
-          {{ marksheetFileName || 'No file selected' }}
-        </p>
-
-      </div>
-
-
-      <!-- Photo -->
-      <div class="upload-card">
-
-        <div class="drop-zone" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
-
-          <i class="fas fa-image upload-icon"></i>
-
-          <h3>Drag & Drop Photos</h3>
-
-          <p>or click below to browse</p>
-
-          <!-- Hidden Input -->
-          <input #photoInput type="file" accept="image/*" hidden (change)="onPhotoSelect($event)">
-          <!-- Button -->
-          <button type="button" class="upload-btn" (click)="photoInput.click()">
-
-            {{ photoFiles.length === 0
-            ? 'Choose Photos'
-            : '+ Add More Photos (' + (3-photoFiles.length) + ' left)' }}
-
-          </button>
-
-          <small>
-            Upload 1–3 images
-          </small>
+            <span>Resume</span>
 
         </div>
 
-        <!-- Preview -->
-       <div class="photo-gallery" *ngIf="photoPreviews.length">
+        <div class="upload-file-name">
 
-  <div class="photo-thumb"
-       *ngFor="let preview of photoPreviews; let i=index">
+            {{ resumeFileName || 'No file selected' }}
 
-    <img [src]="preview">
+        </div>
 
-    <button
-      type="button"
-      class="remove-btn"
-      (click)="removePhoto(i)">
-      ✖
-    </button>
+        <label class="change-btn">
 
-  </div>
+            Upload
 
-  <button
-    type="button"
-    class="mini-add-btn"
-    *ngIf="photoFiles.length < 3"
-    (click)="photoInput.click()">
+            <input
+                hidden
+                type="file"
+                accept=".pdf,.doc,.docx"
+                (change)="onResumeSelected($event)">
 
-    +
-  </button>
+        </label>
+
+    </div>
+
+
+    <!-- Marksheet -->
+    <div class="document-card">
+
+        <div class="upload-left">
+
+            <i class="fas fa-file-alt"></i>
+
+            <span>Marksheet</span>
+
+        </div>
+
+        <div class="upload-file-name">
+
+            {{ marksheetFileName || 'No file selected' }}
+
+        </div>
+
+        <label class="change-btn">
+
+            Upload
+
+            <input
+                hidden
+                type="file"
+                accept=".pdf,.doc,.docx"
+                (change)="onMarksheetSelected($event)">
+
+        </label>
+
+    </div>
 
 </div>
 
-      </div>
+
+  <!-- Photos -->
+ <div class="photo-row"
+     (dragover)="onDragOver($event)"
+     (drop)="onDrop($event)">
+
+    <div class="photo-title">
+        <i class="fas fa-image"></i>
+        <span>Photos</span>
+    </div>
+
+    <div class="photo-drop-area">
+
+        <p class="drag-text">
+            Drag & Drop images here
+        </p>
+
+        <p class="browse-text">
+            or click below to browse
+        </p>
+
+        <button
+            class="big-add-btn"
+            type="button"
+            *ngIf="photoFiles.length < 3"
+            (click)="photoInput.click()">
+
+            <i class="fas fa-plus"></i>
+
+            Add Photos
+
+        </button>
+
+        <input
+            #photoInput
+            hidden
+            type="file"
+            accept="image/*"
+            (change)="onPhotoSelect($event)">
 
     </div>
+
+
+    <div class="photo-gallery">
+
+        <div
+            class="photo-thumb"
+            *ngFor="let preview of photoPreviews; let i=index">
+
+            <img [src]="preview">
+
+            <button
+                class="remove-btn"
+                type="button"
+                (click)="removePhoto(i)">
+
+                ×
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
     <!-- Submit -->
     <button type="submit" class="btn-primary" [disabled]="loading">
 

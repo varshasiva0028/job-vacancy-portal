@@ -201,7 +201,6 @@ onPhotoSelect(event: any): void {
   reader.readAsDataURL(file);
 
   event.target.value = '';
-  this.cdr.detectChanges();
 }
 
  addPhotos(files: FileList): void {
@@ -236,6 +235,8 @@ onPhotoSelect(event: any): void {
         ...this.photoPreviews,
         e.target.result
       ];
+        this.cdr.detectChanges();
+
 
     };
 
