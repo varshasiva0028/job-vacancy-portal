@@ -588,7 +588,7 @@
         <p class="updated-time">
           <i class="fa-solid fa-clock"></i>
           Last Updated:
-          {{ a.updatedAt | date:'dd-MM-yyyy hh:mm:ss a' }}
+          {{ getTimeAgo(a.updatedAt) }}
         </p>
 
       </div>
@@ -667,32 +667,25 @@
       </div>
 
     </dialog>
-    <div
-  class="photo-overlay"
-  *ngIf="showPhotoDialog">
+    <div class="photo-overlay" *ngIf="showPhotoDialog">
 
-  <div class="photo-dialog">
+      <div class="photo-dialog">
 
-    <button
-      class="close-photo-btn"
-      (click)="closePhotoDialog()">
+        <button class="close-photo-btn" (click)="closePhotoDialog()">
 
-      ✕
+          ✕
 
-    </button>
+        </button>
 
-    <h2>Select Profile Picture</h2>
+        <h2>Select Profile Picture</h2>
 
-    <div class="photo-grid">
+        <div class="photo-grid">
 
-      <img
-        *ngFor="let photo of photoList"
-        [src]="'http://localhost:8081/uploads/' + photo"
-        class="dialog-photo"
-        (click)="setProfilePhoto(photo)">
+          <img *ngFor="let photo of photoList" [src]="'http://localhost:8081/uploads/' + photo" class="dialog-photo"
+            (click)="setProfilePhoto(photo)">
+
+        </div>
+
+      </div>
 
     </div>
-
-  </div>
-
-</div>

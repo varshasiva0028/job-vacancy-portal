@@ -79,38 +79,36 @@
       <!-- Gender -->
       <div class="gender-container">
 
-  <div class="gender-card">
+        <div class="gender-card">
 
-      <label class="gender-floating-label">
-          <i class="fas fa-venus-mars"></i>
-          Gender
-      </label>
+          <label class="gender-floating-label">
+            <i class="fas fa-venus-mars"></i>
+            Gender
+          </label>
 
-      <div class="gender-options">
+          <div class="gender-options">
 
-          <label class="gender-option">
-              <input type="radio" name="gender" value="Male"
-                     [(ngModel)]="applicant.gender">
+            <label class="gender-option">
+              <input type="radio" name="gender" value="Male" [(ngModel)]="applicant.gender">
 
               <i class="fas fa-mars"></i>
 
               Male
-          </label>
+            </label>
 
-          <label class="gender-option">
-              <input type="radio" name="gender" value="Female"
-                     [(ngModel)]="applicant.gender">
+            <label class="gender-option">
+              <input type="radio" name="gender" value="Female" [(ngModel)]="applicant.gender">
 
               <i class="fas fa-venus"></i>
 
               Female
-          </label>
+            </label>
+
+          </div>
+
+        </div>
 
       </div>
-
-  </div>
-
-</div>
 
     </div>
     <!-- Languages -->
@@ -325,139 +323,111 @@
     </div>
     <div class="upload-panel">
 
- <div class="document-row">
+      <div class="document-row">
 
-    <!-- Resume -->
-    <div class="document-card">
+        <!-- Resume -->
+        <div class="document-card">
 
-        <div class="upload-left">
+          <div class="upload-left">
 
             <i class="fas fa-file"></i>
 
             <span>Resume</span>
 
-        </div>
+          </div>
 
-        <div class="upload-file-name">
+          <div class="upload-file-name">
 
             {{ resumeFileName || 'No file selected' }}
 
-        </div>
+          </div>
 
-        <label class="change-btn">
+          <label class="change-btn">
 
             Upload
 
-            <input
-                hidden
-                type="file"
-                accept=".pdf,.doc,.docx"
-                (change)="onResumeSelected($event)">
+            <input hidden type="file" accept=".pdf,.doc,.docx" (change)="onResumeSelected($event)">
 
-        </label>
+          </label>
 
-    </div>
+        </div>
 
 
-    <!-- Marksheet -->
-    <div class="document-card">
+        <!-- Marksheet -->
+        <div class="document-card">
 
-        <div class="upload-left">
+          <div class="upload-left">
 
             <i class="fas fa-file-alt"></i>
 
             <span>Marksheet</span>
 
-        </div>
+          </div>
 
-        <div class="upload-file-name">
+          <div class="upload-file-name">
 
             {{ marksheetFileName || 'No file selected' }}
 
-        </div>
+          </div>
 
-        <label class="change-btn">
+          <label class="change-btn">
 
             Upload
 
-            <input
-                hidden
-                type="file"
-                accept=".pdf,.doc,.docx"
-                (change)="onMarksheetSelected($event)">
+            <input hidden type="file" accept=".pdf,.doc,.docx" (change)="onMarksheetSelected($event)">
 
-        </label>
-
-    </div>
-
-</div>
-
-
-  <!-- Photos -->
- <div class="photo-row"
-     (dragover)="onDragOver($event)"
-     (drop)="onDrop($event)">
-
-    <div class="photo-title">
-        <i class="fas fa-image"></i>
-        <span>Photos</span>
-    </div>
-
-    <div class="photo-drop-area">
-
-        <p class="drag-text">
-            Drag & Drop images here
-        </p>
-
-        <p class="browse-text">
-            or click below to browse
-        </p>
-
-        <button
-            class="big-add-btn"
-            type="button"
-            *ngIf="photoFiles.length < 3"
-            (click)="photoInput.click()">
-
-            <i class="fas fa-plus"></i>
-
-            Add Photos
-
-        </button>
-
-        <input
-            #photoInput
-            hidden
-            type="file"
-            accept="image/*"
-            (change)="onPhotoSelect($event)">
-
-    </div>
-
-
-    <div class="photo-gallery">
-
-        <div
-            class="photo-thumb"
-            *ngFor="let preview of photoPreviews; let i=index">
-
-            <img [src]="preview">
-
-            <button
-                class="remove-btn"
-                type="button"
-                (click)="removePhoto(i)">
-
-                ×
-
-            </button>
+          </label>
 
         </div>
 
-    </div>
+      </div>
 
-</div>
-</div>
+
+      <!-- Photos -->
+      <div class="photo-title">
+        <i class="fas fa-image"></i>
+        <span>Photos</span>
+      </div>
+
+      <div class="photo-row" (dragover)="onDragOver($event)" (drop)="onDrop($event)" (click)="photoInput.click()">
+
+        <div class="photo-drop-area">
+          <i class="fas fa-cloud-upload-alt upload-icon"></i>
+
+          <p class="drag-text">
+            Drag & Drop images here
+          </p>
+
+          <p class="browse-text">
+            Click anywhere to browse images
+          </p>
+          <p class="photo-limit-text">
+            Maximum 3 photos allowed
+          </p>
+
+          <input #photoInput hidden type="file" accept="image/*" (change)="onPhotoSelect($event)">
+
+        </div>
+
+
+        <div class="photo-gallery">
+
+          <div class="photo-thumb" *ngFor="let preview of photoPreviews; let i=index">
+
+            <img [src]="preview">
+
+            <button class="remove-btn" type="button" (click)="removePhoto(i)">
+
+              ×
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
     <!-- Submit -->
     <button type="submit" class="btn-primary" [disabled]="loading">
 

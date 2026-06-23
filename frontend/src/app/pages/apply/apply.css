@@ -983,18 +983,14 @@ progress {
 
 /* ===== Photos ===== */
 
-.photo-gallery {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    flex-wrap: wrap;
-
+.photo-gallery{
+    margin-top:-5px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
 }
-
 
 /* ===== Photo Thumbnail ===== */
 
@@ -1004,22 +1000,12 @@ progress {
 
 }
 
-.photo-thumb img {
-
-    width: 85px;
-
-    height: 85px;
-
-    object-fit: cover;
-
-    border-radius: 18px;
-
-    border: 2px solid #eef2ff;
-
-    transition: .3s;
-
+.photo-thumb img{
+    width:75px;
+    height:75px;
+    object-fit:cover;
+    border-radius:15px;
 }
-
 .photo-thumb img:hover {
 
     transform: scale(1.05);
@@ -1156,19 +1142,6 @@ progress {
 
 }
 
-.photo-row{
-
-    padding:35px;
-
-    border:2px dashed #2563eb;
-
-    border-radius:25px;
-
-    background:white;
-
-}
-
-
 .photo-title{
 
     display:flex;
@@ -1194,13 +1167,9 @@ progress {
 
 
 .photo-drop-area{
-
-    margin-top:25px;
-
     text-align:center;
-
+    padding:5px;
 }
-
 
 .drag-text{
 
@@ -1242,33 +1211,19 @@ progress {
 
 }
 
-
 .photo-gallery{
-
-    margin-top:30px;
-
+    margin-top:15px;
     display:flex;
-
     justify-content:center;
-
-    gap:20px;
-
+    gap:15px;
     flex-wrap:wrap;
-
 }
-
-
 .photo-thumb img{
-
-    width:120px;
-
-    height:120px;
-
+    width:90px;
+    height:90px;
     object-fit:cover;
-
-    border-radius:20px;
-
-} 
+    border-radius:15px;
+}
 .row-group .input-group:first-child{
     flex: 1;
     max-width: none;
@@ -1279,4 +1234,151 @@ progress {
 }
 .row-group .gender-card{
     flex: 2;
+}
+.photo-title{
+    margin-bottom:15px;
+}
+
+.photo-row{
+    padding:15px;
+    border:2px dashed #2563eb;
+    border-radius:25px;
+    background:white;
+
+    height:300px;       
+    overflow:hidden;
+
+    cursor:pointer;
+    transition:.3s;
+}
+
+.photo-row:hover{
+    background:#f8fbff;
+    border-color:#1d4ed8;
+}
+
+
+.upload-icon{
+    font-size:45px;
+    color:#2563eb;
+    margin-bottom:8px;
+}
+
+.drag-text{
+    font-size:18px;
+    font-weight:700;
+    margin:8px 0;
+}
+
+.browse-text{
+    font-size:14px;
+    color:#64748b;
+    margin:5px 0;
+}
+.photo-limit-text{
+    margin-top:5px;
+    font-size:13px;
+    color:#64748b;
+}
+/* ================= MOBILE VIEW ================= */
+@media screen and (max-width:768px){
+
+    /* Main layout */
+    .dashboard-container{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* Search bar */
+    .search-container{
+        width:100%;
+        margin-bottom:15px;
+    }
+
+    .search-input{
+        width:100%;
+        box-sizing:border-box;
+    }
+
+    /* Filters section */
+    .sidebar{
+        width:100%;
+        background:none;
+        box-shadow:none;
+        padding:0;
+        margin:0;
+        order:2;
+    }
+
+    /* Remove Filter title */
+    .sidebar h2,
+    .sidebar .filter-heading{
+        display:none;
+    }
+
+    /* Horizontal filter row */
+    .sidebar-content{
+        display:flex;
+        gap:10px;
+        overflow-x:auto;
+        padding-bottom:10px;
+        scrollbar-width:none;
+    }
+
+    .sidebar-content::-webkit-scrollbar{
+        display:none;
+    }
+
+    .sidebar select{
+        min-width:150px;
+        flex-shrink:0;
+    }
+
+    /* Hide Date Range */
+    .date-range-section{
+        display:none;
+    }
+
+    /* Single card layout */
+    .grid-container{
+        grid-template-columns:1fr !important;
+        gap:20px;
+    }
+
+    /* Applicant cards */
+    .applicant-card{
+        width:100%;
+    }
+
+    /* Profile image */
+    .profile-photo,
+    .profile-avatar{
+        width:110px;
+        height:110px;
+    }
+
+    /* Details */
+    .details-section{
+        grid-template-columns:1fr;
+    }
+
+    /* Company and language blocks */
+    .company-section,
+    .language-section{
+        width:100%;
+    }
+
+    /* Logout button */
+    .logout-container{
+        position:fixed;
+        top:10px;
+        right:10px;
+        z-index:1000;
+    }
+
+    .btn-logout{
+        padding:10px 15px;
+        font-size:14px;
+    }
+
 }
