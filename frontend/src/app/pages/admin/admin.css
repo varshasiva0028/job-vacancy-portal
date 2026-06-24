@@ -1611,11 +1611,11 @@ body {
 
   /* Hide title */
   .filter-container::before,
-  .date-range-title,
-  .date-label{
+  .date-range-title
+  {
     display:none;
   }
-
+  
   /* Filter pills */
   .filter-container select,
   .filter-container input{
@@ -1638,10 +1638,8 @@ body {
   }
 
   .summary-box{
-    width:100%;
-    padding:14px 20px;
-    text-align:center;
-    margin-bottom:15px;
+    text-align: center;
+    padding:6px 24px
   }
 
   .summary-box strong{
@@ -1689,11 +1687,10 @@ body {
   .info-grid{
     grid-template-columns:1fr 1fr;
   }
+  
 
 }
 @media screen and (max-width:430px){
-
-  /* Search + List/Grid in one row */
   .search-container{
       display:flex !important;
       flex-direction:row !important;
@@ -1703,16 +1700,13 @@ body {
       width:100%;
   }
 
-  /* Search bar takes 80% */
   .search-box{
       width:80% !important;
       max-width:80% !important;
       flex:none;
   }
 
-  /* Icon group takes 20% */
   .view-toggle-group{
-      width:20% !important;
       margin:0 !important;
 
       display:flex !important;
@@ -1721,10 +1715,41 @@ body {
       position:static !important;
   }
 
-  /* Smaller buttons */
   .view-btn{
       width:32px;
       height:32px;
       padding:0;
+  }
+}
+@media screen and (max-width:430px){
+
+  /* Hide everything except name and qualification */
+  .email-text,
+  .details-section,
+  .updated-time,
+  .id-badge,
+  .profile-edit-btn,
+  .profile-delete-btn,
+  .info-grid .info-box:nth-child(1), 
+  .info-grid .info-box:nth-child(3), 
+  .info-grid .info-box:nth-child(4)  
+  {
+      display: none !important;
+  }
+
+  .info-grid{
+      display: flex !important;
+      justify-content: center;
+  }
+
+  .info-grid .info-box:nth-child(2){
+      width: 100%;
+      max-width: 180px;
+  }
+
+  .applicant-name{
+      font-size: 2rem;
+      margin-bottom: 12px;
+      text-align: center;
   }
 }

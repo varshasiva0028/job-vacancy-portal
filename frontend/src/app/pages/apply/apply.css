@@ -1382,3 +1382,45 @@ progress {
     }
 
 }
+/* ===== Mobile View ===== */
+@media screen and (max-width:430px){
+
+  .photo-row{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .photo-gallery{
+    order:1;
+
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  .photo-drop-area{
+    order:2;
+  }
+
+  .drag-text,
+  .browse-text,
+  .photo-limit-text,
+  .upload-icon{
+    display:none;
+  }
+
+  .photo-drop-area{
+    border:none;
+    padding:0;
+    min-height:auto;
+    background:none;
+  }
+
+  .photo-thumb img{
+    width:100px;
+    height:100px;
+    object-fit:cover;
+    border-radius:15px;
+  }
+}
