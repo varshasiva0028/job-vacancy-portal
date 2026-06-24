@@ -14,14 +14,24 @@
     <div class="search-box">
       <i class="fas fa-search search-icon"></i>
 
-      <input type="text" [(ngModel)]="searchText" placeholder="Search anything (name, email, phone, qualification...)"
-        class="search-bar">
-         <button *ngIf="searchText" (click)="searchText = ''" class="clear-search-btn">
-      ×
-    </button>
+      <input type="text" [(ngModel)]="searchText" (input)="onSearchInput()" (keyup.enter)="searchByName()"
+        placeholder="Search by name..." class="search-bar">
+      <div class="suggestion-box" *ngIf="searchText && searchSuggestions.length">
+
+        <div class="suggestion-item" *ngFor="let s of searchSuggestions" (click)="selectSuggestion(s.name)">
+
+          <i class="fa-solid fa-user"></i>
+          {{ s.name }}
+
+        </div>
+
+      </div>
+      <button *ngIf="searchText" (click)="searchText = ''" class="clear-search-btn">
+        ×
+      </button>
     </div>
 
-   
+
 
     <div class="view-toggle-group">
       <button class="view-btn" [class.active]="viewMode === 'list'" (click)="viewMode='list'">
@@ -284,7 +294,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let a of applicants | filter: searchText">
+      <tr *ngFor="let a of applicants | filter: searchKeyword">
         <td>{{ a.id }}</td>
         <td class="bold-text">{{ a.name | titlecase }}</td>
         <td>{{ a.email }}</td>
@@ -468,10 +478,11 @@
     </div>
 
 
-    <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0">
+    <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0"
+      [class.search-mode]="searchKeyword">
 
-
-      <div class="applicant-card" *ngFor="let a of filteredApplicants | filter: searchText">
+      <div class="applicant-card" [class.search-mode]="searchKeyword"
+        *ngFor="let a of filteredApplicants | filter: searchKeyword">
         <div class="profile-section">
 
           <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto" class="profile-photo"

@@ -109,6 +109,8 @@ export class AdminComponent implements OnInit {
 
   applicants: any[] = [];
   searchText: string = '';
+  showSuggestions = true;
+searchKeyword = '';   // actual search performed after Enter
   viewMode: 'list' | 'grid' = 'list';
   selectedQualification = '';
   selectedGender = '';
@@ -140,8 +142,39 @@ export class AdminComponent implements OnInit {
   photoList: string[] = [];
   selectedApplicantId = 0;
   selectedProfilePhoto = '';
+  
 
   applicantId: number = 0;
+  
+
+get searchSuggestions(): any[] {
+
+  if (!this.searchText.trim() || !this.showSuggestions) {
+    return [];
+  }
+
+  return this.applicants
+    .filter(a =>
+      a.name?.toLowerCase().startsWith(
+        this.searchText.toLowerCase()
+      )
+    )
+    .slice(0, 5);
+}
+searchByName() {
+  this.searchKeyword = this.searchText;
+  this.showSuggestions = false; // hide suggestions
+}
+
+selectSuggestion(name: string) {
+  this.searchText = name;
+  this.searchKeyword = name;
+  this.showSuggestions = false; // hide suggestions
+}
+
+onSearchInput() {
+  this.showSuggestions = true; // show again when typing
+}
 
   constructor(
     private http: HttpClient,

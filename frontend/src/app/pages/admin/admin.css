@@ -1748,76 +1748,210 @@ body {
       padding:0;
   }
 }
-@media screen and (max-width:430px){
-
-  /* make card compact */
-  .applicant-card{
-    min-height:auto !important;
-    padding:15px !important;
-    display:flex;
-    align-items:center;
-    gap:15px;
-  }
-
-  /* profile image/avatar */
-  .profile-section{
-    width:80px;
-    flex-shrink:0;
-    margin:0 !important;
-  }
-
-  .profile-photo,
-  .profile-avatar{
-    width:70px !important;
-    height:70px !important;
-    font-size:28px !important;
-  }
-
-  /* hide unwanted stuff */
-  .id-badge,
-  .email-text,
-  .updated-time,
-  .details-section{
-    display:none !important;
-  }
-
-  /* hide all info boxes */
-  .info-box{
-    display:none !important;
-  }
-
-  /* show only qualification box (2nd box) */
-  .info-box:nth-child(2){
-    display:block !important;
-    background:none !important;
-    box-shadow:none !important;
-    padding:0 !important;
-    min-height:auto !important;
-  }
-
-  /* hide "Qualification" label */
-  .info-box:nth-child(2) .label{
-    display:none !important;
-  }
-
-  /* show only degree */
- .info-box:nth-child(2) .value{
-    display:inline-block;
-    padding:3px 8px;
-
-    background:#f3f4f6;
-    color:#6b7280;
-
-    font-size:12px;
-    font-weight:600;
-
-    border-radius:8px;
+.search-box{
+    position: relative;
 }
 
-  /* name */
-  .applicant-name{
-    font-size:18px !important;
-    margin-bottom:4px !important;
+.suggestion-box{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.15);
+    margin-top: 8px;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.suggestion-item{
+    padding: 12px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: .2s;
+}
+
+.suggestion-item:hover{
+    background: #f5f7ff;
+}
+@media screen and (max-width:430px){
+
+  /* ===== TWO CARDS PER ROW ===== */
+  .grid-container.search-mode{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:12px !important;
   }
+
+  /* ===== CARD ===== */
+  .applicant-card.search-mode{
+    min-height:190px !important;
+    padding:0 !important;
+
+    overflow:hidden;
+    position:relative;
+
+    border-radius:18px;
+
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ===== HIDE ===== */
+  .applicant-card.search-mode .email-text,
+  .applicant-card.search-mode .updated-time,
+  .applicant-card.search-mode .details-section,
+  .applicant-card.search-mode .id-badge{
+      display:none !important;
+  }
+
+  /* ===== PROFILE AREA (TOP HALF) ===== */
+  .applicant-card.search-mode .profile-section{
+      width:100% !important;
+      height:110px !important;
+
+      background:#f8fafc;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      margin:0 !important;
+
+      border-bottom:1px solid #e5e7eb;
+  }
+
+  /* ===== IMAGE OCCUPIES WHOLE TOP ===== */
+  .applicant-card.search-mode .profile-photo{
+      width:100% !important;
+      height:100% !important;
+
+      border-radius:0 !important;
+
+      object-fit:cover;
+  }
+
+  /* ===== AVATAR (NO PHOTO) ===== */
+  .applicant-card.search-mode .profile-avatar{
+      width:100% !important;
+      height:100% !important;
+
+      border-radius:0 !important;
+
+      font-size:48px !important;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+  }
+
+  /* ===== NAME ===== */
+  .applicant-card.search-mode .applicant-name{
+      text-align:center;
+      font-size:14px !important;
+
+      margin-top:14px !important;
+      margin-bottom:8px !important;
+  }
+
+  /* ===== QUALIFICATION ONLY ===== */
+  .applicant-card.search-mode .info-grid{
+      display:flex !important;
+      justify-content:center;
+  }
+
+  .applicant-card.search-mode .info-box{
+      display:none !important;
+  }
+
+  .applicant-card.search-mode .info-box:nth-child(2){
+      display:block !important;
+      background:none !important;
+      box-shadow:none !important;
+      padding:0 !important;
+  }
+
+  .applicant-card.search-mode .info-box:nth-child(2) .label{
+      display:none !important;
+  }
+
+  .applicant-card.search-mode .info-box:nth-child(2) .value{
+      display:inline-block;
+      padding:4px 12px;
+
+      background:#f3f4f6;
+      color:#64748b;
+
+      font-size:11px;
+      font-weight:600;
+
+      border-radius:20px;
+  }
+
+  /* ===== BUTTONS ===== */
+  .applicant-card.search-mode .profile-edit-btn{
+      width:28px;
+      height:28px;
+
+      top:8px;
+      left:8px;
+
+      z-index:10;
+  }
+
+  .applicant-card.search-mode .profile-delete-btn{
+      width:28px;
+      height:28px;
+
+      top:8px;
+      right:8px;
+
+      z-index:10;
+  }
+  /* remove blue border around profile image */
+.applicant-card.search-mode .profile-photo{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+.applicant-card.search-mode .profile-edit-btn,
+.applicant-card.search-mode .profile-delete-btn{
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+/* Name */
+.applicant-card.search-mode .applicant-name{
+    font-size:14px !important;
+    margin:10px 0 4px 0 !important;   /* smaller bottom margin */
+    line-height:1.2;
+    text-align:center;
+}
+
+/* Qualification container */
+.applicant-card.search-mode .info-grid{
+    display:flex !important;
+    justify-content:center;
+    margin-top:0 !important;          /* remove extra top gap */
+}
+
+/* Qualification badge */
+.applicant-card.search-mode .info-box:nth-child(2) .value{
+    display:inline-block;
+    margin-top:0 !important;          /* remove gap above badge */
+    padding:4px 10px;
+
+    background:#f3f4f6;
+    color:#64748b;
+
+    font-size:11px;
+    font-weight:600;
+
+    border-radius:20px;
+}
 
 }
