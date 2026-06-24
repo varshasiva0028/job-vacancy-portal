@@ -162,7 +162,34 @@ body {
   color: #343a40;
 }
 
+.search-box{
+    position: relative;
+}
 
+.clear-search-btn{
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 24px;
+    height: 24px;
+
+    border: none;
+    background: transparent;
+
+    color: #777;
+    font-size: 18px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-bar{
+    padding-right: 40px;
+}
 
 .view-toggle-group {
   position: absolute;
@@ -1723,33 +1750,74 @@ body {
 }
 @media screen and (max-width:430px){
 
-  /* Hide everything except name and qualification */
-  .email-text,
-  .details-section,
-  .updated-time,
+  /* make card compact */
+  .applicant-card{
+    min-height:auto !important;
+    padding:15px !important;
+    display:flex;
+    align-items:center;
+    gap:15px;
+  }
+
+  /* profile image/avatar */
+  .profile-section{
+    width:80px;
+    flex-shrink:0;
+    margin:0 !important;
+  }
+
+  .profile-photo,
+  .profile-avatar{
+    width:70px !important;
+    height:70px !important;
+    font-size:28px !important;
+  }
+
+  /* hide unwanted stuff */
   .id-badge,
-  .profile-edit-btn,
-  .profile-delete-btn,
-  .info-grid .info-box:nth-child(1), 
-  .info-grid .info-box:nth-child(3), 
-  .info-grid .info-box:nth-child(4)  
-  {
-      display: none !important;
+  .email-text,
+  .updated-time,
+  .details-section{
+    display:none !important;
   }
 
-  .info-grid{
-      display: flex !important;
-      justify-content: center;
+  /* hide all info boxes */
+  .info-box{
+    display:none !important;
   }
 
-  .info-grid .info-box:nth-child(2){
-      width: 100%;
-      max-width: 180px;
+  /* show only qualification box (2nd box) */
+  .info-box:nth-child(2){
+    display:block !important;
+    background:none !important;
+    box-shadow:none !important;
+    padding:0 !important;
+    min-height:auto !important;
   }
 
+  /* hide "Qualification" label */
+  .info-box:nth-child(2) .label{
+    display:none !important;
+  }
+
+  /* show only degree */
+ .info-box:nth-child(2) .value{
+    display:inline-block;
+    padding:3px 8px;
+
+    background:#f3f4f6;
+    color:#6b7280;
+
+    font-size:12px;
+    font-weight:600;
+
+    border-radius:8px;
+}
+
+  /* name */
   .applicant-name{
-      font-size: 2rem;
-      margin-bottom: 12px;
-      text-align: center;
+    font-size:18px !important;
+    margin-bottom:4px !important;
   }
+
 }
