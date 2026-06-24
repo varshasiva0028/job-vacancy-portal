@@ -62,8 +62,8 @@ body {
   padding: 18px 35px;
   border-radius: 20px;
   box-shadow: 0 5px 18px rgba(0, 0, 0, .08);
-
   margin-bottom: 45px;
+  font-size: small;
 }
 
 .summary-box i {
@@ -1942,7 +1942,7 @@ body {
 /* Qualification badge */
 .applicant-card.search-mode .info-box:nth-child(2) .value{
     display:inline-block;
-    margin-top:0 !important;          /* remove gap above badge */
+    margin-top:0 !important;          
     padding:4px 10px;
 
     background:#f3f4f6;
@@ -1955,3 +1955,224 @@ body {
 }
 
 }
+
+.edit-dialog{
+    width:850px;
+    max-width:90vw;
+    height:80vh;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    border:none;
+    border-radius:25px;
+
+    position:relative;
+}
+
+.dialog-header{
+    position: sticky;
+    top: -58px;
+    z-index: 1000;
+
+    background: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px 30px;
+
+    border-bottom: none;   
+    margin-bottom: 20px;
+}
+/* Title */
+.dialog-header h2{
+    margin: 0;
+    font-size: 38px;
+    font-weight: 700;
+    color: #1e3a5f;
+}
+
+/* Close button */
+.dialog-close-btn{
+    position: absolute;
+    right: 20px;
+
+    width: 50px;
+    height: 50px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f3f4f6;
+    cursor: pointer;
+
+    font-size: 22px;
+    color: #64748b;
+
+    transition: .2s;
+}
+
+.dialog-close-btn:hover{
+    background: #f10404;
+    color: #f7f5f5;
+}
+@media screen and (max-width:430px){
+
+  /* ===== POPUP ===== */
+
+  .edit-dialog{
+    width:85vw !important;
+    max-width:85vw !important;
+    height:75vh !important;
+
+    border-radius:25px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding:0 !important;
+  }
+
+  /* ===== HEADER ===== */
+
+  .dialog-header{
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    background:#fff;
+    padding:18px 15px;
+
+    border-bottom:none;
+  }
+
+  .dialog-header h2{
+    font-size:20px !important;
+    margin:0;
+  }
+
+  .dialog-close-btn{
+    width:38px !important;
+    height:38px !important;
+
+    top:12px !important;
+    right:12px !important;
+  }
+
+  .dialog-close-btn:hover{
+    background:#f10404;
+    color:#fff;
+  }
+
+  /* ===== INPUTS : ONE FIELD PER ROW ===== */
+
+  .edit-input-grid{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:12px;
+
+    padding:0 15px !important;
+  }
+
+  .edit-input{
+    width:100% !important;
+    box-sizing:border-box;
+  }
+
+  /* ===== GENDER ===== */
+
+  .field-row{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:10px;
+
+    padding:0 15px;
+  }
+
+  .radio-group{
+    display:flex;
+    gap:20px;
+  }
+
+  /* ===== LANGUAGE CARDS ===== */
+
+  .language-grid{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:15px;
+
+    padding:0 15px;
+  }
+
+  .language-card{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  .progress-bar{
+    width:100% !important;
+  }
+
+  /* ===== COMPANY ===== */
+
+  .company-row{
+    display:flex !important;
+    flex-direction:column;
+    gap:12px;
+
+    padding:0 15px;
+  }
+
+  .company-row select{
+    width:100% !important;
+  }
+
+  /* ===== FILE UPLOADS ===== */
+
+  .upload-container{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:12px;
+
+    padding:0 15px;
+  }
+
+  .file-placeholder{
+    width:100% !important;
+    box-sizing:border-box;
+  }
+
+  /* ===== BUTTONS ===== */
+  .action-cell{
+    display:flex !important;
+    flex-direction:row !important;   /* side by side */
+    justify-content:center !important;
+    align-items:center !important;
+    gap:12px !important;
+    margin-top:20px !important;
+  }
+
+  .btn-save,
+  .btn-cancel{
+    width:70px !important;
+    height:30px !important;
+    font-size:14px !important;
+    border-radius:20px !important;
+    margin-bottom: 10px;
+  }
+ .field-row{
+    display:flex !important;
+    align-items:center !important;
+    gap:8px !important;      /* bring label closer */
+}
+
+.field-label{
+    margin-right:8px !important;
+}
+
+.radio-group{
+    display:flex !important;
+    gap:12px !important;     
+}
+}
+

@@ -1,0 +1,165 @@
+<div class="details-page" *ngIf="applicant">
+
+    <!-- Header -->
+    <div class="details-header">
+
+        <button class="back-btn" routerLink="/admin">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back
+
+        </button>
+
+        <h2>
+
+            Applicant Details
+
+        </h2>
+
+    </div>
+
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+
+        <img *ngIf="applicant.profilePhoto" [src]="'http://localhost:8081/uploads/' + applicant.profilePhoto"
+            class="profile-photo">
+
+        <div *ngIf="!applicant.profilePhoto" class="profile-avatar">
+
+            {{ applicant.name?.charAt(0)?.toUpperCase() }}
+
+        </div>
+
+        <h1>
+
+            {{ applicant.name }}
+
+        </h1>
+
+        <div class="qualification-badge">
+
+            {{ applicant.qualification }}
+
+        </div>
+
+    </div>
+
+
+    <!-- Information -->
+    <div class="details-grid">
+
+        <div class="detail-card">
+
+            <span>Email</span>
+
+            <p>{{ applicant.email }}</p>
+
+        </div>
+
+        <div class="detail-card">
+
+            <span>Phone</span>
+
+            <p>{{ applicant.phone }}</p>
+
+        </div>
+
+        <div class="detail-card">
+
+            <span>Date Of Birth</span>
+
+            <p>{{ applicant.dob | date:'dd-MM-yyyy' }}</p>
+
+        </div>
+
+        <div class="detail-card">
+
+            <span>Gender</span>
+
+            <p>{{ applicant.gender }}</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Languages -->
+    <div class="section-card">
+
+        <h3>
+
+            <i class="fa-solid fa-language"></i>
+
+            Languages
+
+        </h3>
+
+        <div class="tag-container">
+
+            <span class="tag" *ngFor="let lang of getLanguages()">
+
+                {{ lang }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Companies -->
+    <div class="section-card">
+
+        <h3>
+
+            <i class="fa-solid fa-building"></i>
+
+            Preferred Companies
+
+        </h3>
+
+        <div class="tag-container">
+
+            <span class="tag" *ngFor="let company of getCompanies()">
+
+                {{ company }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- Documents -->
+    <div class="section-card">
+
+        <h3>
+
+            <i class="fa-solid fa-file"></i>
+
+            Documents
+
+        </h3>
+
+        <div class="document-buttons">
+
+            <a [href]="'http://localhost:8081/uploads/' + applicant.resumePath" target="_blank" class="doc-btn">
+
+                Resume
+
+            </a>
+
+            <a [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath" target="_blank" class="doc-btn">
+
+                Marksheet
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

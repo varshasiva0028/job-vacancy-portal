@@ -5,6 +5,7 @@ import { authGuard } from './auth.guard';
 import { guestGuard } from './guest.guard';
 import { adminGuard } from './pages/admin/admin.guard';
 import { AdminComponent } from './pages/admin/admin';
+import { ApplicantDetailsComponent } from './applicant-details/applicant-details';
 import { UserDashboardComponent } from './pages/user-dashboard/user-dashboard';
 import { HomeComponent } from './home/home';
 
@@ -38,6 +39,10 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminComponent,
     canActivate: [authGuard, adminGuard]
+  },
+   {
+    path: 'applicant/:id',
+    component: ApplicantDetailsComponent
   },
 
   {

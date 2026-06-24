@@ -175,6 +175,11 @@ selectSuggestion(name: string) {
 onSearchInput() {
   this.showSuggestions = true; // show again when typing
 }
+clearSearch() {
+  this.searchText = '';
+  this.searchKeyword = '';
+  this.showSuggestions = false;
+}
 
   constructor(
     private http: HttpClient,
@@ -728,6 +733,19 @@ getTimeAgo(date: string): string {
   }
 
   return `${days} day${days > 1 ? 's' : ''} ago`;
+}
+viewApplication(a: any) {
+
+  const results = this.filteredApplicants.filter(app =>
+    app.name.toLowerCase().includes(this.searchKeyword.toLowerCase())
+  );
+
+  if (results.length === 1) {
+
+    this.router.navigate(['/applicant', a.id]);
+
+  }
+
 }
   logout(): void {
 
