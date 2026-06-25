@@ -112,7 +112,8 @@ export class AdminComponent implements OnInit {
   applicants: any[] = [];
   searchText: string = '';
   showSuggestions = true;
-  searchKeyword = '';   // actual search performed after Enter
+  searchKeyword = '';
+  searchMode = false;   // actual search performed after Enter
   viewMode: 'list' | 'grid' = 'list';
   selectedQualification = '';
   selectedGender = '';
@@ -174,25 +175,32 @@ export class AdminComponent implements OnInit {
       )
       .slice(0, 5);
   }
-  searchByName() {
-    this.searchKeyword = this.searchText;
-    this.showSuggestions = false; // hide suggestions
-  }
+ searchByName() {
+  this.searchKeyword = this.searchText;
+  this.searchMode = this.searchKeyword.trim().length > 0;
+  this.showSuggestions = false;
+}
+clearSearch() {
+  this.searchText = '';
+  this.searchKeyword = '';
+  this.searchMode = false;
+  this.showSuggestions = false;
+}
 
-  selectSuggestion(name: string) {
-    this.searchText = name;
-    this.searchKeyword = name;
-    this.showSuggestions = false; // hide suggestions
-  }
+selectSuggestion(name: string) {
+
+  this.searchText = name;
+  this.searchKeyword = name;
+  this.searchMode = true;
+  this.showSuggestions = false;
+
+}
+  
 
   onSearchInput() {
     this.showSuggestions = true; // show again when typing
   }
-  clearSearch() {
-    this.searchText = '';
-    this.searchKeyword = '';
-    this.showSuggestions = false;
-  }
+ 
 
   constructor(
     private http: HttpClient,

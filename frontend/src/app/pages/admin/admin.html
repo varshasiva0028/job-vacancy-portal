@@ -481,134 +481,163 @@
     <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0"
       [class.search-mode]="searchKeyword">
 
-      <div class="applicant-card" [class.search-mode]="searchKeyword"
-        [style.cursor]="searchKeyword ? 'pointer' : 'default'"
-        *ngFor="let a of filteredApplicants | filter: searchKeyword" (click)="selectApplicant(a)">
-        <div class="profile-section">
+      <div class="applicant-card" [class.search-mode]="searchMode" [style.cursor]="searchMode ? 'pointer' : 'default'"
+        *ngFor="let a of filteredApplicants | filter: searchKeyword" (click)="searchMode && selectApplicant(a)">
+        <!-- NORMAL CARD -->
+        <div *ngIf="!searchKeyword">
 
-          <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto" class="profile-photo"
-            (click)="openPhotoDialog(a); $event.stopPropagation()">
+          <div class="profile-section">
 
-          <div *ngIf="!a.profilePhoto" class="profile-avatar">
+            <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto" class="profile-photo"
+              (click)="openPhotoDialog(a); $event.stopPropagation()">
 
-            {{ a.name?.charAt(0)?.toUpperCase() }}
+            <div *ngIf="!a.profilePhoto" class="profile-avatar">
+
+              {{ a.name?.charAt(0)?.toUpperCase() }}
+
+            </div>
 
           </div>
+
+          <!-- EDIT -->
+          <button (click)="openEditModal(a); $event.stopPropagation()" class="profile-edit-btn">
+            <i class="fas fa-pencil-alt"></i>
+
+          </button>
+
+          <!-- DELETE -->
+          <button (click)="deleteApplicant(a.id); $event.stopPropagation()" class="profile-delete-btn">
+            <i class="fas fa-trash"></i>
+
+          </button>
+
+
+
+          <div class="id-badge">
+
+            #{{ a.id.toString().padStart(3,'0') }}
+
+          </div>
+
+
+          <h3 class="applicant-name">
+
+            {{ a.name | titlecase }}
+
+          </h3>
+
+          <p class="email-text">
+
+            {{ a.email }}
+
+          </p>
+          <div class="info-grid">
+
+            <div class="info-box">
+              <div class="label">
+                <i class="fa-solid fa-phone"></i>
+                Phone
+              </div>
+              <div class="value">
+                {{a.phone}}
+              </div>
+            </div>
+
+            <div class="info-box">
+              <div class="label">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Qualification
+              </div>
+              <div class="value">
+                {{a.qualification}}
+              </div>
+            </div>
+
+            <div class="info-box">
+              <div class="label">
+                <i class="fa-solid fa-calendar"></i>
+                DOB
+              </div>
+              <div class="value">
+                {{a.dob | date:'dd-MM-yyyy'}}
+              </div>
+            </div>
+
+            <div class="info-box">
+              <div class="label">
+                <i class="fa-solid fa-user"></i>
+                Gender
+              </div>
+              <div class="value">
+                {{a.gender}}
+              </div>
+            </div>
+
+          </div>
+
+          <div class="details-section">
+
+            <div class="detail-block">
+              <div class="detail-title">
+                <i class="fa-solid fa-language"></i>
+                Languages
+              </div>
+
+              <div class="detail-content">
+                {{ getLanguageSummary(a.languages) || a.languages }}
+              </div>
+            </div>
+
+            <div class="detail-block">
+              <div class="detail-title">
+                <i class="fa-solid fa-building"></i>
+                Company Name
+              </div>
+
+              <div class="detail-content">
+                {{ a.companies }}
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <p class="updated-time">
+            <i class="fa-solid fa-clock"></i>
+            Last Updated:
+            {{ getTimeAgo(a.updatedAt) }}
+          </p>
 
         </div>
+        <!-- SEARCH CARD -->
 
-        <!-- EDIT -->
-        <button (click)="openEditModal(a); $event.stopPropagation()" class="profile-edit-btn">
-          <i class="fas fa-pencil-alt"></i>
+        <div *ngIf="searchKeyword" class="search-card">
 
-        </button>
+          <!-- Edit -->
+          <button class="profile-edit-btn" (click)="openEditModal(a); $event.stopPropagation()">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
 
-        <!-- DELETE -->
-        <button (click)="deleteApplicant(a.id); $event.stopPropagation()" class="profile-delete-btn">
-          <i class="fas fa-trash"></i>
+          <!-- Delete -->
+          <button class="profile-delete-btn" (click)="deleteApplicant(a.id); $event.stopPropagation()">
+            <i class="fas fa-trash"></i>
+          </button>
 
-        </button>
+          <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto" class="search-photo">
 
+          <div *ngIf="!a.profilePhoto" class="search-avatar">
+            {{ a.name.charAt(0).toUpperCase() }}
+          </div>
 
-
-        <div class="id-badge">
-
-          #{{ a.id.toString().padStart(3,'0') }}
+          <h3>{{ a.name | titlecase }}</h3>
+          <p>{{ a.qualification }}</p>
 
         </div>
-
-
-        <h3 class="applicant-name">
-
-          {{ a.name | titlecase }}
-
-        </h3>
-
-        <p class="email-text">
-
-          {{ a.email }}
-
-        </p>
-        <div class="info-grid">
-
-          <div class="info-box">
-            <div class="label">
-              <i class="fa-solid fa-phone"></i>
-              Phone
-            </div>
-            <div class="value">
-              {{a.phone}}
-            </div>
-          </div>
-
-          <div class="info-box">
-            <div class="label">
-              <i class="fa-solid fa-graduation-cap"></i>
-              Qualification
-            </div>
-            <div class="value">
-              {{a.qualification}}
-            </div>
-          </div>
-
-          <div class="info-box">
-            <div class="label">
-              <i class="fa-solid fa-calendar"></i>
-              DOB
-            </div>
-            <div class="value">
-              {{a.dob | date:'dd-MM-yyyy'}}
-            </div>
-          </div>
-
-          <div class="info-box">
-            <div class="label">
-              <i class="fa-solid fa-user"></i>
-              Gender
-            </div>
-            <div class="value">
-              {{a.gender}}
-            </div>
-          </div>
-
-        </div>
-
-        <div class="details-section">
-
-          <div class="detail-block">
-            <div class="detail-title">
-              <i class="fa-solid fa-language"></i>
-              Languages
-            </div>
-
-            <div class="detail-content">
-              {{ getLanguageSummary(a.languages) || a.languages }}
-            </div>
-          </div>
-
-          <div class="detail-block">
-            <div class="detail-title">
-              <i class="fa-solid fa-building"></i>
-              Company Name
-            </div>
-
-            <div class="detail-content">
-              {{ a.companies }}
-            </div>
-          </div>
-
-        </div>
-
-
-
-        <p class="updated-time">
-          <i class="fa-solid fa-clock"></i>
-          Last Updated:
-          {{ getTimeAgo(a.updatedAt) }}
-        </p>
-
       </div>
+
     </div>
+
     <dialog id="editDialog" class="edit-dialog">
       <div class="dialog-header">
         <button class="dialog-close-btn" (click)="closeEditModal()">
