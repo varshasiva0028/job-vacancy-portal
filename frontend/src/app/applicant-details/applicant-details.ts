@@ -1,51 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-applicant-details',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
+  imports: [CommonModule],
   templateUrl: './applicant-details.html',
-  styleUrl: './applicant-details.css'
+  styleUrls: ['./applicant-details.css']
 })
-export class ApplicantDetailsComponent implements OnInit {
+export class ApplicantDetailsComponent {
 
-  applicant: any;
+  @Input() applicant: any;
 
-  constructor(
-    private route: ActivatedRoute,
-    private http: HttpClient
-  ) {}
+  @Output() back = new EventEmitter<void>();
 
-  ngOnInit(): void {
+  constructor(){
+    // alert(this.applicant+'ab');
+  }
 
-    const id = this.route.snapshot.paramMap.get('id');
-
-    this.http
-      .get<any>(`http://localhost:8081/api/applicants/${id}`)
-      .subscribe({
-
-        next: (data) => {
-
-          this.applicant = data;
-
-          console.log(this.applicant);
-
-        },
-
-        error: (err) => {
-
-          console.error("Failed to load applicant", err);
-
-        }
-
-      });
-
+  goBack(): void {
+    this.back.emit();
   }
 
   getLanguages(): string[] {
@@ -54,11 +28,15 @@ export class ApplicantDetailsComponent implements OnInit {
       return [];
     }
 
-    return this.applicant.languages
-      .split(',')
-      .map((lang: string) => lang.trim())
-      .filter((lang: string) => lang);
-
+    try {
+      const languages = JSON.parse(this.applicant.languages);
+      return languages.map((lang: any) => lang.name);
+    } catch {
+      return this.applicant.languages
+        .split(',')
+        .map((lang: string) => lang.trim())
+        .filter((lang: string) => lang);
+    }
   }
 
   getCompanies(): string[] {
@@ -67,11 +45,14 @@ export class ApplicantDetailsComponent implements OnInit {
       return [];
     }
 
-    return this.applicant.companies
-      .split(',')
-      .map((company: string) => company.trim())
-      .filter((company: string) => company);
-
+    try {
+      return JSON.parse(this.applicant.companies);
+    } catch {
+      return this.applicant.companies
+        .split(',')
+        .map((company: string) => company.trim())
+        .filter((company: string) => company);
+    }
   }
 
   getPhotos(): string[] {
@@ -82,8 +63,7 @@ export class ApplicantDetailsComponent implements OnInit {
 
     return this.applicant.photoPaths
       .split(',')
+      .map((photo: string) => photo.trim())
       .filter((photo: string) => photo);
-
   }
-
 }

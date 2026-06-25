@@ -63,76 +63,76 @@ export class LoginComponent {
 
         next: (response) => {
 
-  localStorage.setItem('token', response.token);
-  localStorage.setItem('role', response.role);
-  localStorage.setItem('username', email);
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('role', response.role);
+          localStorage.setItem('username', email);
 
-  const headers = {
-    Authorization: `Bearer ${response.token}`
-  };
+          const headers = {
+            Authorization: `Bearer ${response.token}`
+          };
 
-  this.http.get<any>(
-    'http://localhost:8081/api/applicants/my',
-    { headers }
-  )
-  .subscribe({
+          this.http.get<any>(
+            'http://localhost:8081/api/applicants/my',
+            { headers }
+          )
+            .subscribe({
 
-    next: (applicant: any) => {
+              next: (applicant: any) => {
 
-      localStorage.setItem(
-        'companies',
-        applicant.companies || '[]'
-      );
+                localStorage.setItem(
+                  'companies',
+                  applicant.companies || '[]'
+                );
 
-      localStorage.setItem(
-        'dob',
-        applicant.dob || ''
-      );
+                localStorage.setItem(
+                  'dob',
+                  applicant.dob || ''
+                );
 
-      localStorage.setItem(
-        'name',
-        applicant.name || ''
-      );
+                localStorage.setItem(
+                  'name',
+                  applicant.name || ''
+                );
 
-      alert('Login Successful');
+                alert('Login Successful');
 
-      if (response.role === 'ADMIN') {
+                if (response.role === 'ADMIN') {
 
-        this.router.navigate(['/admin']);
+                  this.router.navigate(['/admin']);
 
-      } else {
+                } else {
 
-        this.router.navigate(['/home']);
+                  this.router.navigate(['/home']);
 
-      }
+                }
 
-    },
+              },
 
-    error: (err: any) => {
+              error: (err: any) => {
 
-      console.log(err);
+                console.log(err);
 
-      if (response.role === 'ADMIN') {
+                if (response.role === 'ADMIN') {
 
-        this.router.navigate(['/admin']);
+                  this.router.navigate(['/admin']);
 
-      }
-      else if (err.status === 404) {
+                }
+                else if (err.status === 404) {
 
-        this.router.navigate(['/apply']);
+                  this.router.navigate(['/apply']);
 
-      }
-      else {
+                }
+                else {
 
-        alert('Unable to load applicant');
+                  alert('Unable to load applicant');
 
-      }
+                }
 
-    }
+              }
 
-  });
+            });
 
-},
+        },
         error: (error: any) => {
 
           this.loginError =

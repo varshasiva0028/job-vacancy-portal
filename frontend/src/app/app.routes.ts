@@ -40,11 +40,6 @@ export const routes: Routes = [
     component: AdminComponent,
     canActivate: [authGuard, adminGuard]
   },
-   {
-    path: 'applicant/:id',
-    component: ApplicantDetailsComponent
-  },
-
   {
     path: '**',
     redirectTo: ''

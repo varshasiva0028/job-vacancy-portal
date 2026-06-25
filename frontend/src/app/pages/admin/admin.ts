@@ -4,17 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterPipe } from '../../pipe';
+import { ApplicantDetailsComponent } from '../../applicant-details/applicant-details';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe,],
+  imports: [CommonModule, FormsModule, FilterPipe, ApplicantDetailsComponent],
   styleUrls: ['./admin.css'],
   templateUrl: './admin.html'
 })
 export class AdminComponent implements OnInit {
   username = '';
   role = '';
+  applicantvisible = false;
   //available languages
   languageGroups = [
     {
@@ -110,7 +112,7 @@ export class AdminComponent implements OnInit {
   applicants: any[] = [];
   searchText: string = '';
   showSuggestions = true;
-searchKeyword = '';   // actual search performed after Enter
+  searchKeyword = '';   // actual search performed after Enter
   viewMode: 'list' | 'grid' = 'list';
   selectedQualification = '';
   selectedGender = '';
@@ -142,44 +144,55 @@ searchKeyword = '';   // actual search performed after Enter
   photoList: string[] = [];
   selectedApplicantId = 0;
   selectedProfilePhoto = '';
-  
+  selectedApplicant: any;
+
 
   applicantId: number = 0;
-  
+  selectApplicant(applicant: any): void {
 
-get searchSuggestions(): any[] {
+    console.log("Selected Applicant:", applicant);
+    this.applicantvisible = true;
+    this.selectedApplicant = applicant;
+    console.log(this.selectedApplicant);
+    alert(this.selectedApplicant.name);
 
-  if (!this.searchText.trim() || !this.showSuggestions) {
-    return [];
   }
 
-  return this.applicants
-    .filter(a =>
-      a.name?.toLowerCase().startsWith(
-        this.searchText.toLowerCase()
+
+
+  get searchSuggestions(): any[] {
+
+    if (!this.searchText.trim() || !this.showSuggestions) {
+      return [];
+    }
+
+    return this.applicants
+      .filter(a =>
+        a.name?.toLowerCase().startsWith(
+          this.searchText.toLowerCase()
+        )
       )
-    )
-    .slice(0, 5);
-}
-searchByName() {
-  this.searchKeyword = this.searchText;
-  this.showSuggestions = false; // hide suggestions
-}
+      .slice(0, 5);
+  }
+  searchByName() {
+    this.searchKeyword = this.searchText;
+    this.showSuggestions = false; // hide suggestions
+  }
 
-selectSuggestion(name: string) {
-  this.searchText = name;
-  this.searchKeyword = name;
-  this.showSuggestions = false; // hide suggestions
-}
+  selectSuggestion(name: string) {
+    this.searchText = name;
+    this.searchKeyword = name;
+    this.showSuggestions = false; // hide suggestions
+  }
 
-onSearchInput() {
-  this.showSuggestions = true; // show again when typing
-}
-clearSearch() {
-  this.searchText = '';
-  this.searchKeyword = '';
-  this.showSuggestions = false;
-}
+  onSearchInput() {
+    this.showSuggestions = true; // show again when typing
+  }
+  clearSearch() {
+    this.searchText = '';
+    this.searchKeyword = '';
+    this.showSuggestions = false;
+  }
 
   constructor(
     private http: HttpClient,
@@ -664,89 +677,76 @@ clearSearch() {
     this.showPhotoDialog = false;
 
   }
- setProfilePhoto(photo: string): void {
+  setProfilePhoto(photo: string): void {
 
-  const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`
-  });
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
 
-  this.http.put(
-    `http://localhost:8081/api/applicants/${this.selectedApplicantId}/profile-photo`,
-    {
-      profilePhoto: photo
-    },
-    {
-      headers,
-      responseType: 'text'
-    }
-  ).subscribe({
+    this.http.put(
+      `http://localhost:8081/api/applicants/${this.selectedApplicantId}/profile-photo`,
+      {
+        profilePhoto: photo
+      },
+      {
+        headers,
+        responseType: 'text'
+      }
+    ).subscribe({
 
-    next: () => {
+      next: () => {
 
-      const applicant = this.applicants.find(
-        (a: any) => a.id === this.selectedApplicantId
-      );
+        const applicant = this.applicants.find(
+          (a: any) => a.id === this.selectedApplicantId
+        );
 
-      if (applicant) {
-        applicant.profilePhoto = photo;
+        if (applicant) {
+          applicant.profilePhoto = photo;
+        }
+
+        this.closePhotoDialog();
+
+        this.loadApplicants();
+
+      },
+
+      error: err => {
+
+        console.error(err);
+
+        alert('Failed to update profile photo');
+
       }
 
-      this.closePhotoDialog();
+    });
 
-      this.loadApplicants();
+  }
+  getTimeAgo(date: string): string {
 
-    },
+    const now = new Date().getTime();
+    const updated = new Date(date).getTime();
 
-    error: err => {
+    const seconds = Math.floor((now - updated) / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
 
-      console.error(err);
-
-      alert('Failed to update profile photo');
-
+    if (seconds < 60) {
+      return 'Just now';
     }
 
-  });
+    if (minutes < 60) {
+      return `${minutes} min ago`;
+    }
 
-}
-getTimeAgo(date: string): string {
+    if (hours < 24) {
+      return `${hours} hr ago`;
+    }
 
-  const now = new Date().getTime();
-  const updated = new Date(date).getTime();
-
-  const seconds = Math.floor((now - updated) / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-
-  if (seconds < 60) {
-    return 'Just now';
+    return `${days} day${days > 1 ? 's' : ''} ago`;
   }
-
-  if (minutes < 60) {
-    return `${minutes} min ago`;
-  }
-
-  if (hours < 24) {
-    return `${hours} hr ago`;
-  }
-
-  return `${days} day${days > 1 ? 's' : ''} ago`;
-}
-viewApplication(a: any) {
-
-  const results = this.filteredApplicants.filter(app =>
-    app.name.toLowerCase().includes(this.searchKeyword.toLowerCase())
-  );
-
-  if (results.length === 1) {
-
-    this.router.navigate(['/applicant', a.id]);
-
-  }
-
-}
   logout(): void {
 
     localStorage.clear();
