@@ -1,4 +1,4 @@
-<div class="details-page" >
+<div class="details-page">
     <!-- Header -->
     <div class="details-header">
 
@@ -14,20 +14,20 @@
     <!-- Profile -->
     <div class="profile-card">
 
-        <img
-            *ngIf="applicant.profilePhoto"
-            [src]="'http://localhost:8081/uploads/' + applicant.profilePhoto"
+        <img *ngIf="applicant.profilePhoto" [src]="'http://localhost:8081/uploads/' + applicant.profilePhoto"
             class="profile-photo">
 
-        <div
-            *ngIf="!applicant.profilePhoto"
-            class="profile-avatar">
+        <div *ngIf="!applicant.profilePhoto" class="profile-avatar">
 
             {{ applicant.name?.charAt(0)?.toUpperCase() }}
 
         </div>
 
-        <h1>{{ applicant.name }}</h1>
+        <h1>{{ applicant.name | titlecase }}</h1>
+
+        <div class="profile-id">
+            #{{ applicant.id.toString().padStart(3,'0') }}
+        </div>
 
         <div class="qualification-badge">
             {{ applicant.qualification }}
@@ -70,9 +70,7 @@
 
         <div class="tag-container">
 
-            <span
-                class="tag"
-                *ngFor="let lang of getLanguages()">
+            <span class="tag" *ngFor="let lang of getLanguages()">
 
                 {{ lang }}
 
@@ -92,9 +90,7 @@
 
         <div class="tag-container">
 
-            <span
-                class="tag"
-                *ngFor="let company of getCompanies()">
+            <span class="tag" *ngFor="let company of getCompanies()">
 
                 {{ company }}
 
@@ -114,21 +110,15 @@
 
         <div class="document-buttons">
 
-            <a
-                *ngIf="applicant.resumePath"
-                [href]="'http://localhost:8081/uploads/' + applicant.resumePath"
-                target="_blank"
-                class="doc-btn">
+            <a *ngIf="applicant.resumePath" [href]="'http://localhost:8081/uploads/' + applicant.resumePath"
+                target="_blank" class="doc-btn">
 
                 Resume
 
             </a>
 
-            <a
-                *ngIf="applicant.marksheetPath"
-                [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath"
-                target="_blank"
-                class="doc-btn">
+            <a *ngIf="applicant.marksheetPath" [href]="'http://localhost:8081/uploads/' + applicant.marksheetPath"
+                target="_blank" class="doc-btn">
 
                 Marksheet
 
@@ -139,9 +129,7 @@
     </div>
 
     <!-- Photos -->
-    <div
-        class="section-card"
-        *ngIf="getPhotos().length">
+    <div class="section-card" *ngIf="getPhotos().length">
 
         <h3>
             <i class="fa-solid fa-image"></i>
@@ -150,9 +138,7 @@
 
         <div class="photo-grid">
 
-            <img
-                *ngFor="let photo of getPhotos()"
-                [src]="'http://localhost:8081/uploads/' + photo"
+            <img *ngFor="let photo of getPhotos()" [src]="'http://localhost:8081/uploads/' + photo"
                 class="profile-photo">
 
         </div>

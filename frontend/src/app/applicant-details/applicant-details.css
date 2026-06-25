@@ -6,19 +6,29 @@
 }
 
 .details-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:25px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+    width: 100%;
 }
 
 .back-btn{
-    border:none;
-    background:#2563eb;
-    color:white;
-    padding:12px 20px;
-    border-radius:12px;
-    cursor:pointer;
+    position: absolute;
+    left: -100px;
+    border: none;
+    background: #2563eb;
+    color: #fff;
+
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.details-header h2{
+    margin: 0;
+    text-align: center;
 }
 
 .profile-card{
@@ -54,6 +64,16 @@
 .profile-card h1{
     margin-top:20px;
     color:#1e293b;
+}
+.profile-id{
+    display:inline-block;
+    margin:10px 0;
+    padding:6px 18px;
+    border-radius:20px;
+    background:#eef4ff;
+    color:#2563eb;
+    font-weight:700;
+    font-size:15px;
 }
 
 .qualification-badge{
@@ -121,4 +141,109 @@
     color:white;
     padding:12px 25px;
     border-radius:12px;
+}
+@media (max-width:430px){
+
+/* Header */
+
+.details-header{
+    padding:0 12px;
+}
+
+.back-btn{
+    left:-30px;
+    padding:8px 14px;
+    font-size:13px;
+}
+
+.details-header h2{
+    font-size:18px;
+}
+
+
+/* Profile Card */
+
+.profile-card{
+    padding:22px 16px !important;
+    border-radius:18px;
+}
+
+.profile-photo,
+.profile-avatar{
+    width:110px !important;
+    height:110px !important;
+    font-size:46px !important;
+}
+
+.profile-name{
+    font-size:22px !important;
+    margin-top:14px;
+}
+
+.profile-badges{
+    gap:8px;
+}
+
+.profile-badges span{
+    font-size:12px;
+    padding:6px 14px;
+}
+
+
+/* Details Grid */
+
+.details-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+
+/* Each Field */
+
+.detail-card{
+    padding:16px 14px;
+    border-radius:16px;
+}
+
+.detail-card .label{
+    font-size:13px;
+}
+
+.detail-card .value{
+    font-size:15px;
+    word-break:break-word;
+}
+
+
+/* Resume / Marksheet Buttons */
+
+.document-section{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.document-btn{
+    width:100%;
+    padding:12px;
+    font-size:14px;
+}
+
+
+/* Languages & Companies */
+
+.language-list,
+.company-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.language-chip,
+.company-chip{
+    font-size:12px;
+    padding:5px 10px;
+}
+
 }
