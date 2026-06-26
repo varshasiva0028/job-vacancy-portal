@@ -4,9 +4,8 @@
 
         <button class="back-btn" (click)="goBack()">
             <i class="fa-solid fa-arrow-left"></i>
-            Back
+            <span>Back</span>
         </button>
-
         <h2>Applicant Details</h2>
 
     </div>
@@ -23,14 +22,17 @@
 
         </div>
 
-        <h1>{{ applicant.name | titlecase }}</h1>
-
         <div class="profile-id">
             #{{ applicant.id.toString().padStart(3,'0') }}
         </div>
+        <div class="profile-info">
+            <span class="profile-name">
+                {{ applicant.name | titlecase }}
+            </span>
 
-        <div class="qualification-badge">
-            {{ applicant.qualification }}
+            <span class="qualification-badge">
+                {{ applicant.qualification }}
+            </span>
         </div>
 
     </div>

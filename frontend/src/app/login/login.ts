@@ -60,12 +60,20 @@ export class LoginComponent {
       formData
     )
       .subscribe({
-
         next: (response) => {
 
           localStorage.setItem('token', response.token);
           localStorage.setItem('role', response.role);
           localStorage.setItem('username', email);
+
+          // ADMIN does not need applicant details
+          if (response.role === 'ADMIN') {
+
+            alert('Login Successful');
+
+            this.router.navigateByUrl('/admin', { replaceUrl: true });
+            return;
+          }
 
           const headers = {
             Authorization: `Bearer ${response.token}`
@@ -98,12 +106,10 @@ export class LoginComponent {
 
                 if (response.role === 'ADMIN') {
 
-                  this.router.navigate(['/admin']);
-
+                  this.router.navigateByUrl('/admin', { replaceUrl: true });
                 } else {
 
-                  this.router.navigate(['/home']);
-
+                  this.router.navigateByUrl('/home', { replaceUrl: true });
                 }
 
               },
@@ -114,13 +120,11 @@ export class LoginComponent {
 
                 if (response.role === 'ADMIN') {
 
-                  this.router.navigate(['/admin']);
-
+                  this.router.navigateByUrl('/admin', { replaceUrl: true });
                 }
                 else if (err.status === 404) {
 
-                  this.router.navigate(['/apply']);
-
+                  this.router.navigateByUrl('/apply', { replaceUrl: true });
                 }
                 else {
 

@@ -112,8 +112,9 @@ Have a wonderful day! 🎈✨`
 
     localStorage.clear();
 
-    this.router.navigate(['/']);
-
+    this.router.navigateByUrl('/', {
+      replaceUrl: true
+    });
   }
 
 }

@@ -121,6 +121,7 @@ export class AdminComponent implements OnInit {
   selectedCompany = '';
   selectedFromDate = '';
   selectedToDate = '';
+  showFilters = false;
 
   toggleView(): void {
     this.viewMode =
@@ -155,8 +156,6 @@ export class AdminComponent implements OnInit {
     this.applicantvisible = true;
     this.selectedApplicant = applicant;
     console.log(this.selectedApplicant);
-    alert(this.selectedApplicant.name);
-
   }
 
 
@@ -175,32 +174,32 @@ export class AdminComponent implements OnInit {
       )
       .slice(0, 5);
   }
- searchByName() {
-  this.searchKeyword = this.searchText;
-  this.searchMode = this.searchKeyword.trim().length > 0;
-  this.showSuggestions = false;
-}
-clearSearch() {
-  this.searchText = '';
-  this.searchKeyword = '';
-  this.searchMode = false;
-  this.showSuggestions = false;
-}
+  searchByName() {
+    this.searchKeyword = this.searchText;
+    this.searchMode = this.searchKeyword.trim().length > 0;
+    this.showSuggestions = false;
+  }
+  clearSearch() {
+    this.searchText = '';
+    this.searchKeyword = '';
+    this.searchMode = false;
+    this.showSuggestions = false;
+  }
 
-selectSuggestion(name: string) {
+  selectSuggestion(name: string) {
 
-  this.searchText = name;
-  this.searchKeyword = name;
-  this.searchMode = true;
-  this.showSuggestions = false;
+    this.searchText = name;
+    this.searchKeyword = name;
+    this.searchMode = true;
+    this.showSuggestions = false;
 
-}
-  
+  }
+
 
   onSearchInput() {
     this.showSuggestions = true; // show again when typing
   }
- 
+
 
   constructor(
     private http: HttpClient,
@@ -757,9 +756,16 @@ selectSuggestion(name: string) {
   }
   logout(): void {
 
-    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
+    localStorage.removeItem('companies');
+    localStorage.removeItem('dob');
+    localStorage.removeItem('name');
 
-    this.router.navigate(['/']);
+    this.router.navigateByUrl('/', {
+      replaceUrl: true
+    });
 
   }
   get filteredApplicants() {

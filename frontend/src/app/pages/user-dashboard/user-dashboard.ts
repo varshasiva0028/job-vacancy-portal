@@ -98,7 +98,7 @@ export class UserDashboardComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -617,8 +617,9 @@ export class UserDashboardComponent implements OnInit {
 
     localStorage.clear();
 
-    this.router.navigate(['/']);
-
+    this.router.navigateByUrl('/', {
+      replaceUrl: true
+    });
   }
 
 }

@@ -15,15 +15,32 @@
 }
 
 .back-btn{
-    position: absolute;
-    left: -100px;
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
     border: none;
     background: #2563eb;
     color: #fff;
 
     padding: 12px 20px;
     border-radius: 12px;
+
     cursor: pointer;
+
+    box-shadow: 0 8px 20px rgba(37,99,235,.25);
+    transition: .25s;
+}
+
+.back-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
 }
 
 .details-header h2{
@@ -38,6 +55,30 @@
     text-align:center;
     box-shadow:0 10px 30px rgba(0,0,0,.08);
     margin-bottom:25px;
+}
+.profile-info{
+    width:fit-content;
+    margin:18px auto 0;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile-name{
+    margin:0;
+    font-size:30px;
+    font-weight:550;
+    color:#1e293b;
+}
+
+.qualification-badge{
+    background:none;
+    padding:0;
+    border-radius:0;
+
+    color:#64748b;
+    font-size:16px;
+    font-weight:500;
 }
 
 .profile-photo{
@@ -74,15 +115,6 @@
     color:#2563eb;
     font-weight:700;
     font-size:15px;
-}
-
-.qualification-badge{
-    display:inline-block;
-    padding:8px 18px;
-    background:#eff6ff;
-    color:#2563eb;
-    border-radius:25px;
-    font-weight:600;
 }
 
 .details-grid{
@@ -149,12 +181,19 @@
 .details-header{
     padding:0 12px;
 }
-
-.back-btn{
-    left:-30px;
-    padding:8px 14px;
-    font-size:13px;
+.profile-card h1{
+    font-size: 20px;
+    font-weight: 550px;
 }
+p{
+    font-size:15px;
+}
+h3{
+    font-size: 18px;
+    font-weight:500px;
+}
+
+
 
 .details-header h2{
     font-size:18px;
@@ -162,60 +201,95 @@
 
 
 /* Profile Card */
-
 .profile-card{
-    padding:22px 16px !important;
-    border-radius:18px;
+    background:#fff;
+    border-radius:25px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    margin-bottom:25px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
-
-.profile-photo,
-.profile-avatar{
-    width:110px !important;
-    height:110px !important;
-    font-size:46px !important;
-}
-
-.profile-name{
-    font-size:22px !important;
-    margin-top:14px;
-}
-
-.profile-badges{
-    gap:8px;
-}
-
-.profile-badges span{
-    font-size:12px;
-    padding:6px 14px;
-}
-
-
-/* Details Grid */
-
-.details-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
+.profile-info{
+    max-width:100%;
+    justify-content:center;
     gap:12px;
 }
 
+.profile-name{
+    font-size:20px;
+}
 
-/* Each Field */
+.qualification-badge{
+    font-size:14px;
+}
+
+/* Photo */
+.profile-photo,
+.profile-avatar{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.profile-avatar{
+    background:#2563eb;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:55px;
+    font-weight:700;
+}
+
+/* ID below photo */
+.profile-id{
+    margin-top:18px;
+
+    display:inline-block;
+
+    padding:8px 20px;
+
+    background:#eef4ff;
+
+    color:#2563eb;
+
+    border-radius:20px;
+
+    font-weight:700;
+}
+
+@media (max-width:430px){
+
+.details-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.details-grid .detail-card:first-child{
+    grid-column:1/-1;
+}
 
 .detail-card{
-    padding:16px 14px;
-    border-radius:16px;
+    padding:12px 10px;
 }
 
-.detail-card .label{
+.detail-card span{
+    font-size:11px;
+}
+
+.detail-card p{
     font-size:13px;
-}
-
-.detail-card .value{
-    font-size:15px;
+    line-height:1.4;
     word-break:break-word;
+    overflow-wrap:anywhere;
 }
 
-
+}
 /* Resume / Marksheet Buttons */
 
 .document-section{
@@ -244,6 +318,33 @@
 .company-chip{
     font-size:12px;
     padding:5px 10px;
+}
+
+}
+@media (max-width:430px){
+
+.back-btn{
+    left:15px;
+    bottom:15px;
+
+    width:48px;
+    height:48px;
+    padding:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:50%;
+}
+
+.back-btn span{
+    display:none;
+}
+
+.back-btn i{
+    margin:0;
+    font-size:12px;
 }
 
 }

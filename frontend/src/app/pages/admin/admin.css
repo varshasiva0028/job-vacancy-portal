@@ -2193,3 +2193,69 @@ body {
 }
 
 }
+@media (max-width:430px){
+.logout-btn{
+    width:32px !important;
+    height:38px !important;
+    padding:0 !important;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:0 !important;  
+}
+
+.logout-btn i{
+    font-size:18px !important;
+    margin:0 !important;
+}
+
+.dashboard-container h1,
+.dashboard-container .dashboard-title{
+    justify-content: center;
+    align-items: center;
+    text-align:center;
+    margin:0 auto !important;
+}
+}
+.action-cell{
+    position: sticky;
+    bottom: -60px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    padding: 18px 22px;
+
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+
+    z-index: 100;
+}
+
+.btn-save,
+.btn-cancel{
+    width: 130px;
+    height: 42px;
+
+    border: none;
+    border-radius: 25px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.btn-save{
+    background:#22c55e;
+    color:#fff;
+}
+
+.btn-cancel{
+    background:#6b7280;
+    color:#fff;
+}
