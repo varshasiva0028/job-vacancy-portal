@@ -5,18 +5,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FilterPipe } from '../../pipe';
 import { ApplicantDetailsComponent } from '../../applicant-details/applicant-details';
-
+import { AdminAnalyticsComponent } from '../admin-analytics/admin-analytics';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe, ApplicantDetailsComponent],
-  styleUrls: ['./admin.css'],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FilterPipe,
+    ApplicantDetailsComponent,
+    AdminAnalyticsComponent
+  ],
+   styleUrls: ['./admin.css'],
   templateUrl: './admin.html'
 })
 export class AdminComponent implements OnInit {
   username = '';
   role = '';
   applicantvisible = false;
+  showAnalytics = false;
   //available languages
   languageGroups = [
     {
@@ -158,7 +165,16 @@ export class AdminComponent implements OnInit {
     console.log(this.selectedApplicant);
   }
 
+openAnalytics(): void {
 
+  this.showAnalytics = true;
+
+}
+closeAnalytics(): void {
+
+  this.showAnalytics = false;
+
+}
 
   get searchSuggestions(): any[] {
 
