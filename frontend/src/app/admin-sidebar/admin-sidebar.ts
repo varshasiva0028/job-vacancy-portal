@@ -10,6 +10,9 @@ import { CommonModule } from '@angular/common';
 })
 export class AdminSidebarComponent {
 
+  // Sidebar state
+  isSidebarOpen = true;
+
   @Input() currentPage: 'dashboard' | 'analytics' = 'analytics';
 
   @Output() dashboard = new EventEmitter<void>();
@@ -19,5 +22,9 @@ export class AdminSidebarComponent {
   @Output() filters = new EventEmitter<void>();
 
   @Output() logout = new EventEmitter<void>();
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 
 }

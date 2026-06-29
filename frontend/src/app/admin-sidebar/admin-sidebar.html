@@ -1,44 +1,61 @@
-<div class="sidebar">
+<div class="sidebar" [class.collapsed]="!isSidebarOpen">
 
-    <div class="sidebar-logo">
-        <i class="fa-solid fa-user-shield"></i>
-        <h2>Admin</h2>
+    <!-- Header -->
+    <div class="sidebar-header">
+
+        <div class="sidebar-logo">
+
+            <i class="fa-solid fa-user-shield"></i>
+
+            <h2 *ngIf="isSidebarOpen">Admin</h2>
+
+        </div>
+
+        <button
+            class="sidebar-toggle"
+            (click)="isSidebarOpen = !isSidebarOpen">
+
+            <i
+                class="fa-solid"
+                [ngClass]="isSidebarOpen
+                    ? 'fa-angle-left'
+                    : 'fa-angle-right'">
+            </i>
+
+        </button>
+
     </div>
 
-   <!-- Dashboard is open -->
-<button
-    *ngIf="currentPage === 'dashboard'"
-    class="nav-btn"
-    (click)="analytics.emit()">
+    <!-- Navigation -->
+    <div class="sidebar-menu">
 
-    <i class="fa-solid fa-chart-column"></i>
+        <!-- Dashboard -->
+        <button
+            class="nav-btn"
+            [class.active]="currentPage === 'analytics'"
+            (click)="analytics.emit()">
 
-    Analytics
+            <i class="fa-solid fa-table-columns"></i>
 
-</button>
+            <span *ngIf="isSidebarOpen">Dashboard</span>
 
-<!-- Analytics is open -->
-<button
-    *ngIf="currentPage === 'analytics'"
-    class="nav-btn"
-    (click)="dashboard.emit()">
+        </button>
 
-    <i class="fa-solid fa-user"></i>
+        <!-- User -->
+        <button
+            class="nav-btn"
+            [class.active]="currentPage === 'dashboard'"
+            (click)="dashboard.emit()">
 
-    User
+            <i class="fa-solid fa-user"></i>
 
-</button>
+            <span *ngIf="isSidebarOpen">User</span>
 
-    <button
-        class="nav-btn"
-        (click)="filters.emit()">
+        </button>
 
-        <i class="fa-solid fa-filter"></i>
+    </div>
 
-        Filters
-
-    </button>
-
+    <!-- Logout -->
     <div class="sidebar-bottom">
 
         <button
@@ -47,7 +64,7 @@
 
             <i class="fa-solid fa-right-from-bracket"></i>
 
-            Logout
+            <span *ngIf="isSidebarOpen">Logout</span>
 
         </button>
 

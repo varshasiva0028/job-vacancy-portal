@@ -1,7 +1,7 @@
 <div class="admin-layout" *ngIf="!applicantvisible">
 
   <app-admin-sidebar [currentPage]="showAnalytics ? 'analytics' : 'dashboard'" (dashboard)="closeAnalytics()"
-    (analytics)="openAnalytics()" (filters)="showFilters = !showFilters" (logout)="logout()">
+    (analytics)="openAnalytics()" (logout)="logout()">
   </app-admin-sidebar>
 
   <div class="admin-content">
@@ -11,8 +11,6 @@
       <div style="text-align:right; margin-bottom:20px;">
         <div class="admin-header">
           <h2>Users Info</h2>
-
-         
         </div>
 
       </div>
@@ -351,6 +349,15 @@
       </table>
       <div class="main-content">
         <div class="left-panel" *ngIf="viewMode === 'grid'">
+
+    <button
+        class="filter-btn"
+        (click)="showFilters = !showFilters">
+
+        <i class="fa-solid fa-filter"></i>
+        Filters
+
+    </button>
           <!-- FILTERS (GRID VIEW ONLY) -->
           <div class="filter-container" *ngIf="viewMode === 'grid' && showFilters">
             <!-- Qualification -->
@@ -751,12 +758,10 @@
     </div>
     <app-applicant-details *ngIf="applicantvisible" [applicant]="selectedApplicant" (back)="applicantvisible=false">
     </app-applicant-details>
-  <!-- Analytics -->
-<app-admin-analytics
-    *ngIf="showAnalytics"
-    [applicants]="applicants">
-</app-admin-analytics>
+    <!-- Analytics -->
+    <app-admin-analytics *ngIf="showAnalytics" [applicants]="applicants">
+    </app-admin-analytics>
 
-    </div>
+  </div>
 
 </div>

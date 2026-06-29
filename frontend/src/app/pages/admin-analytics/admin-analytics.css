@@ -266,186 +266,299 @@
 
 }
 
-/* ===========================
-   Small Mobile
-=========================== */
-@media (max-width:430px) {
+/* ==========================================
+   Mobile
+========================================== */
 
-    .floating-back {
+@media screen and (max-width:768px){
 
-        left: 20px;
+    .analytics-page{
+        padding:16px;
+    }
 
-        bottom: 20px;
+    .analytics-header{
+        margin-bottom:20px;
+    }
 
-        width: 52px;
+    .analytics-header h2{
+        font-size:28px;
+    }
 
-        height: 52px;
+    /* Cards */
 
-        padding: 0;
+    .summary-grid{
 
-        justify-content: center;
+        grid-template-columns:1fr;
 
-        border-radius: 50%;
-
-        font-size: 0;
+        gap:14px;
 
     }
 
-    .floating-back i {
+    .summary-card{
 
-        font-size: 20px;
+        padding:16px;
+
+        gap:14px;
+
+        border-radius:16px;
+
+    }
+
+    .summary-icon{
+
+        width:46px;
+
+        height:46px;
+
+        font-size:20px;
+
+    }
+
+    .summary-content h3{
+
+        font-size:14px;
+
+    }
+
+    .summary-content h1{
+
+        font-size:24px;
+
+    }
+
+    /* Charts */
+
+    .chart-grid{
+
+        grid-template-columns:1fr;
+
+        gap:18px;
+
+        margin-top:18px;
+
+    }
+
+    .chart-card{
+
+        margin-top:0;
+
+        min-height:320px;
+
+        padding:16px;
+
+        border-radius:16px;
+
+    }
+
+    .chart-header{
+
+        margin-bottom:14px;
+
+    }
+
+    .chart-header h3{
+
+        font-size:18px;
+
+    }
+
+    .chart-card canvas{
+
+        height:240px !important;
+
+    }
+
+    /* Language Chart */
+
+    .language-chart-row{
+
+        margin-top:18px;
+
+    }
+
+    .language-chart-row .chart-card{
+
+        min-height:320px;
+
+    }
+
+    .language-chart-row canvas{
+
+        height:240px !important;
+
+    }
+
+    /* Gender */
+
+    .gender-row{
+
+        padding:14px;
+
+        font-size:15px;
+
+    }
+
+    .gender-row strong{
+
+        font-size:20px;
 
     }
 
 }
 
-@media (max-width:430px) {
 
-    .analytics-page {
+/* ==========================================
+   Small Phones
+========================================== */
 
-        padding: 15px;
+@media screen and (max-width:480px){
 
-    }
+    .analytics-page{
 
-    .analytics-header {
-
-        flex-direction: row;
-
-        align-items: center;
-
-        gap: 12px;
+        padding:12px;
 
     }
 
-    .gender-row {
+    .analytics-header h2{
 
-        padding: 14px 16px;
-
-        font-size: 16px;
+        font-size:24px;
 
     }
 
-    .gender-row strong {
+    .summary-card{
 
-        font-size: 22px;
+        padding:14px;
 
-    }
-
-    .floating-back {
-
-        position: fixed;
-
-        bottom: 30px;
-
-        left: 30px;
-
-        z-index: 9999;
-
-        box-shadow: 0 12px 30px rgba(37, 99, 235, .35);
+        gap:12px;
 
     }
 
-    .floating-back:hover {
+    .summary-icon{
 
-        transform: translateY(-3px);
+        width:42px;
 
-    }
+        height:42px;
 
-    .back-btn {
-
-        position: fixed !important;
-
-        bottom: 20px;
-
-        left: 20px;
-
-        width: 50px;
-
-        height: 50px;
-
-        padding: 0;
-
-        display: flex;
-
-        justify-content: center;
-
-        align-items: center;
-
-        border-radius: 50%;
-
-        font-size: 0;
-
-        z-index: 9999;
-
-        box-shadow: 0 8px 20px rgba(37, 99, 235, .35);
+        font-size:18px;
 
     }
 
-    .back-btn i {
+    .summary-content h3{
 
-        font-size: 20px;
-
-    }
-
-    .back-btn:hover {
-
-        transform: translateY(-3px);
+        font-size:13px;
 
     }
 
-    .analytics-header h2 {
+    .summary-content h1{
 
-        font-size: 22px;
-
-    }
-
-    .summary-card {
-
-        padding: 16px;
-
-        gap: 12px;
+        font-size:22px;
 
     }
 
-    .summary-icon {
+    .chart-card{
 
-        width: 48px;
+        padding:14px;
 
-        height: 48px;
-
-        font-size: 20px;
+        min-height:280px;
 
     }
 
-    .summary-content h3 {
+    .chart-header h3{
 
-        font-size: 13px;
-
-    }
-
-    .summary-content h1 {
-
-        font-size: 26px;
+        font-size:16px;
 
     }
 
-    .chart-card {
+    .chart-card canvas{
 
-        min-height: 300px;
-
-        padding: 16px;
+        height:200px !important;
 
     }
 
-    .chart-header h3 {
+    .language-chart-row .chart-card{
 
-        font-size: 20px;
+        min-height:280px;
 
     }
 
-    .chart-card canvas {
+    .language-chart-row canvas{
 
-        height: 210px !important;
+        height:200px !important;
+
+    }
+
+}
+/* ==========================================
+   Mobile Layout Fix
+========================================== */
+
+@media (max-width:768px){
+
+    .analytics-page{
+
+        padding:16px;
+
+        width:100%;
+
+        box-sizing:border-box;
+
+    }
+
+    .analytics-content{
+
+        width:100%;
+
+        max-width:100%;
+
+        overflow:hidden;
+
+    }
+
+    .summary-grid{
+
+        display:grid;
+
+        grid-template-columns:1fr;
+
+        gap:14px;
+
+    }
+
+    .chart-grid{
+
+        display:grid;
+
+        grid-template-columns:1fr;
+
+        gap:18px;
+
+    }
+
+    .language-chart-row{
+
+        width:100%;
+
+    }
+
+    .chart-card{
+
+        width:100%;
+
+        min-width:0;
+
+        margin-top:18px;
+
+        padding:16px;
+
+        box-sizing:border-box;
+
+    }
+
+    .chart-card canvas{
+
+        width:100% !important;
+
+        height:220px !important;
 
     }
 

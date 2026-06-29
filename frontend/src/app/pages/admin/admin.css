@@ -41,14 +41,15 @@ body {
 
   font-weight: 550;
 }
+.dashboard-container{
 
-.dashboard-container {
+    width:100%;
 
-  width: max-content;
+    max-width:1400px;
 
-  min-width: 1300px;
+    min-width:0;
 
-  margin: auto;
+    margin:0 auto;
 
 }
 
@@ -1414,26 +1415,6 @@ body {
     0 20px 40px rgba(59, 130, 246, .12);
 }
 
-
-/* FILTER TITLE */
-.filter-container::before {
-
-  content: "🔍 Filters";
-
-  font-size: 28px;
-
-  font-weight: 700;
-
-  color: #0f172a;
-
-  margin-bottom: 10px;
-
-  padding-bottom: 15px;
-
-  border-bottom: 1px solid #edf2f7;
-}
-
-
 /* DROPDOWNS */
 
 .filter-container select,
@@ -2430,3 +2411,122 @@ body {
     margin-left:240px;   
     min-height:100vh;
 }
+html,
+body{
+
+    overflow-x:hidden;
+
+}
+/* ==========================================
+   Filter Button
+========================================== */
+
+.filter-btn{
+
+    height:46px;
+
+    min-width:120px;
+
+    padding:0 22px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:12px;
+
+    background:#ffffff;
+
+    color:#475569;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:all .25s ease;
+
+    box-shadow:0 6px 16px rgba(0,0,0,.05);
+
+}
+
+.filter-btn i{
+
+    font-size:16px;
+
+    color:#475569;
+
+}
+
+/* Hover */
+
+.filter-btn:hover{
+
+    background:#f8fafc;
+
+    color:#2563eb;
+
+    border-color:#c7d2fe;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 24px rgba(37,99,235,.12);
+
+}
+
+.filter-btn:hover i{
+
+    color:#2563eb;
+
+}
+
+/* Active */
+
+.filter-btn.active{
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    color:#ffffff;
+
+    border:none;
+
+    box-shadow:0 10px 24px rgba(37,99,235,.28);
+
+}
+
+.filter-btn.active i{
+
+    color:#ffffff;
+
+}
+
+.filter-btn:focus{
+
+    outline:none;
+
+}
+.left-panel{
+
+    width:280px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.filter-btn{
+
+    width:100%;
+
+}
+
