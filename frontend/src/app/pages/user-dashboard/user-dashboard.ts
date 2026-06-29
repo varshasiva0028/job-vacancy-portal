@@ -166,6 +166,11 @@ export class UserDashboardComponent implements OnInit {
     });
 
   }
+goBack(): void {
+
+  this.router.navigate(['/home']);
+
+}
 
   editProfile(): void {
 

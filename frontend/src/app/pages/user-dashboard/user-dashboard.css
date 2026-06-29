@@ -1122,3 +1122,74 @@ iframe{
 .close-edit-btn:hover{
     background: #dc2626;
 }
+/* ==========================================
+   Floating Back Button
+========================================== */
+
+.floating-back{
+
+    position:fixed;
+
+    left:30px;
+
+    bottom:30px;
+
+    z-index:1000;
+
+}
+
+.back-btn{
+
+    width:100px;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#2563eb;
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+    box-shadow:0 10px 22px rgba(37,99,235,.25);
+
+}
+
+.back-btn i{
+
+    font-size:18px;
+
+}
+
+.back-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-3px);
+
+    box-shadow:0 14px 30px rgba(37,99,235,.35);
+
+}
+
+.back-btn:active{
+
+    transform:translateY(0);
+
+}

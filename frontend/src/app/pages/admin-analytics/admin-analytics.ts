@@ -318,7 +318,7 @@ export class AdminAnalyticsComponent
 
           responsive: true,
 
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
 
           plugins: {
 
@@ -404,7 +404,7 @@ export class AdminAnalyticsComponent
 
           responsive: true,
 
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
 
           cutout: '60%',
 
@@ -508,7 +508,7 @@ export class AdminAnalyticsComponent
 
           responsive: true,
 
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
 
           plugins: {
 

@@ -194,15 +194,15 @@
 /* ===========================
    Charts
 =========================== */
-.chart-grid{
+.chart-grid {
 
-    display:grid;
+    display: grid;
 
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
 
-    gap:25px;
+    gap: 25px;
 
-    margin-top:25px;
+    margin-top: 25px;
 
 
 }
@@ -270,137 +270,137 @@
    Mobile
 ========================================== */
 
-@media screen and (max-width:768px){
+@media screen and (max-width:768px) {
 
-    .analytics-page{
-        padding:16px;
+    .analytics-page {
+        padding: 16px;
     }
 
-    .analytics-header{
-        margin-bottom:20px;
+    .analytics-header {
+        margin-bottom: 20px;
     }
 
-    .analytics-header h2{
-        font-size:28px;
+    .analytics-header h2 {
+        font-size: 28px;
     }
 
     /* Cards */
 
-    .summary-grid{
+    .summary-grid {
 
-        grid-template-columns:1fr;
+        grid-template-columns: 1fr;
 
-        gap:14px;
-
-    }
-
-    .summary-card{
-
-        padding:16px;
-
-        gap:14px;
-
-        border-radius:16px;
+        gap: 14px;
 
     }
 
-    .summary-icon{
+    .summary-card {
 
-        width:46px;
+        padding: 16px;
 
-        height:46px;
+        gap: 14px;
 
-        font-size:20px;
-
-    }
-
-    .summary-content h3{
-
-        font-size:14px;
+        border-radius: 16px;
 
     }
 
-    .summary-content h1{
+    .summary-icon {
 
-        font-size:24px;
+        width: 46px;
+
+        height: 46px;
+
+        font-size: 20px;
+
+    }
+
+    .summary-content h3 {
+
+        font-size: 14px;
+
+    }
+
+    .summary-content h1 {
+
+        font-size: 24px;
 
     }
 
     /* Charts */
 
-    .chart-grid{
+    .chart-grid {
 
-        grid-template-columns:1fr;
+        grid-template-columns: 1fr;
 
-        gap:18px;
+        gap: 18px;
 
-        margin-top:18px;
-
-    }
-
-    .chart-card{
-
-        margin-top:0;
-
-        min-height:320px;
-
-        padding:16px;
-
-        border-radius:16px;
+        margin-top: 18px;
 
     }
 
-    .chart-header{
+    .chart-card {
 
-        margin-bottom:14px;
+        margin-top: 0;
+
+        min-height: 320px;
+
+        padding: 16px;
+
+        border-radius: 16px;
 
     }
 
-    .chart-header h3{
+    .chart-header {
 
-        font-size:18px;
+        margin-bottom: 14px;
 
     }
 
-    .chart-card canvas{
+    .chart-header h3 {
 
-        height:240px !important;
+        font-size: 18px;
+
+    }
+
+    .chart-card canvas {
+
+        height: 240px !important;
 
     }
 
     /* Language Chart */
 
-    .language-chart-row{
+    .language-chart-row {
 
-        margin-top:18px;
-
-    }
-
-    .language-chart-row .chart-card{
-
-        min-height:320px;
+        margin-top: 18px;
 
     }
 
-    .language-chart-row canvas{
+    .language-chart-row .chart-card {
 
-        height:240px !important;
+        min-height: 320px;
+
+    }
+
+    .language-chart-row canvas {
+
+        height: 240px !important;
 
     }
 
     /* Gender */
 
-    .gender-row{
+    .gender-row {
 
-        padding:14px;
+        padding: 14px;
 
-        font-size:15px;
+        font-size: 15px;
 
     }
 
-    .gender-row strong{
+    .gender-row strong {
 
-        font-size:20px;
+        font-size: 20px;
 
     }
 
@@ -411,156 +411,154 @@
    Small Phones
 ========================================== */
 
-@media screen and (max-width:480px){
+@media screen and (max-width:480px) {
 
-    .analytics-page{
+    .analytics-page {
 
-        padding:12px;
-
-    }
-
-    .analytics-header h2{
-
-        font-size:24px;
+        padding: 12px;
 
     }
 
-    .summary-card{
+    .analytics-header h2 {
 
-        padding:14px;
-
-        gap:12px;
+        font-size: 24px;
 
     }
 
-    .summary-icon{
+    .summary-card {
 
-        width:42px;
+        padding: 14px;
 
-        height:42px;
-
-        font-size:18px;
+        gap: 12px;
 
     }
 
-    .summary-content h3{
+    .summary-icon {
 
-        font-size:13px;
+        width: 42px;
 
-    }
+        height: 42px;
 
-    .summary-content h1{
-
-        font-size:22px;
+        font-size: 18px;
 
     }
 
-    .chart-card{
+    .summary-content h3 {
 
-        padding:14px;
-
-        min-height:280px;
+        font-size: 13px;
 
     }
 
-    .chart-header h3{
+    .summary-content h1 {
 
-        font-size:16px;
-
-    }
-
-    .chart-card canvas{
-
-        height:200px !important;
+        font-size: 22px;
 
     }
 
-    .language-chart-row .chart-card{
+    .chart-card {
 
-        min-height:280px;
+        padding: 14px;
+
+        min-height: 280px;
 
     }
 
-    .language-chart-row canvas{
+    .chart-header h3 {
 
-        height:200px !important;
+        font-size: 16px;
+
+    }
+
+    .chart-card canvas {
+
+        height: 200px !important;
+
+    }
+
+    .language-chart-row .chart-card {
+
+        min-height: 280px;
+
+    }
+
+    .language-chart-row canvas {
+
+        height: 200px !important;
 
     }
 
 }
+
 /* ==========================================
    Mobile Layout Fix
 ========================================== */
 
-@media (max-width:768px){
+@media (max-width:768px) {
 
-    .analytics-page{
+    .analytics-page {
 
-        padding:16px;
+        padding: 16px;
 
-        width:100%;
+        width: 100%;
 
-        box-sizing:border-box;
-
-    }
-
-    .analytics-content{
-
-        width:100%;
-
-        max-width:100%;
-
-        overflow:hidden;
+        box-sizing: border-box;
 
     }
 
-    .summary-grid{
+    .analytics-content {
 
-        display:grid;
+        width: 100%;
 
-        grid-template-columns:1fr;
+        max-width: 100%;
 
-        gap:14px;
-
-    }
-
-    .chart-grid{
-
-        display:grid;
-
-        grid-template-columns:1fr;
-
-        gap:18px;
+        overflow: hidden;
 
     }
 
-    .language-chart-row{
+    .summary-grid {
 
-        width:100%;
+        display: grid;
 
-    }
+        grid-template-columns: 1fr;
 
-    .chart-card{
-
-        width:100%;
-
-        min-width:0;
-
-        margin-top:18px;
-
-        padding:16px;
-
-        box-sizing:border-box;
+        gap: 14px;
 
     }
 
-    .chart-card canvas{
+    .chart-grid {
 
-        width:100% !important;
+        display: grid;
 
-        height:220px !important;
+        grid-template-columns: 1fr;
+
+        gap: 18px;
 
     }
+
+    .language-chart-row {
+
+        width: 100%;
+
+    }
+
+    .chart-card {
+
+        width: 100%;
+
+        min-width: 0;
+
+        margin-top: 18px;
+
+        padding: 16px;
+
+        box-sizing: border-box;
+
+    }
+
+    .chart-card canvas {
+        max-width: 100%;
+    }
+    
 
 }
 
