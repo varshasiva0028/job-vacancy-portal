@@ -1,0 +1,56 @@
+<div class="sidebar">
+
+    <div class="sidebar-logo">
+        <i class="fa-solid fa-user-shield"></i>
+        <h2>Admin</h2>
+    </div>
+
+   <!-- Dashboard is open -->
+<button
+    *ngIf="currentPage === 'dashboard'"
+    class="nav-btn"
+    (click)="analytics.emit()">
+
+    <i class="fa-solid fa-chart-column"></i>
+
+    Analytics
+
+</button>
+
+<!-- Analytics is open -->
+<button
+    *ngIf="currentPage === 'analytics'"
+    class="nav-btn"
+    (click)="dashboard.emit()">
+
+    <i class="fa-solid fa-user"></i>
+
+    User
+
+</button>
+
+    <button
+        class="nav-btn"
+        (click)="filters.emit()">
+
+        <i class="fa-solid fa-filter"></i>
+
+        Filters
+
+    </button>
+
+    <div class="sidebar-bottom">
+
+        <button
+            class="logout-btn"
+            (click)="logout.emit()">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </button>
+
+    </div>
+
+</div>

@@ -1,766 +1,762 @@
-<div class="dashboard-container" *ngIf="!applicantvisible && !showAnalytics">
-  <div style="text-align:right; margin-bottom:20px;">
-    <div class="admin-header">
-      <h2>User Info</h2>
+<div class="admin-layout" *ngIf="!applicantvisible">
 
-      <button class="logout-btn" (click)="logout()">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        Logout
-      </button>
-    </div>
+  <app-admin-sidebar [currentPage]="showAnalytics ? 'analytics' : 'dashboard'" (dashboard)="closeAnalytics()"
+    (analytics)="openAnalytics()" (filters)="showFilters = !showFilters" (logout)="logout()">
+  </app-admin-sidebar>
 
-  </div>
-  <div class="search-container">
-    <div class="search-box">
-      <i class="fas fa-search search-icon"></i>
+  <div class="admin-content">
 
-      <input type="text" [(ngModel)]="searchText" (input)="onSearchInput()" (keyup.enter)="searchByName()"
-        placeholder="Search by name..." class="search-bar">
-      <div class="suggestion-box" *ngIf="searchText && searchSuggestions.length">
+    <!-- Dashboard -->
+    <div class="dashboard-container" *ngIf="!showAnalytics">
+      <div style="text-align:right; margin-bottom:20px;">
+        <div class="admin-header">
+          <h2>Users Info</h2>
 
-        <div class="suggestion-item" *ngFor="let s of searchSuggestions" (click)="selectSuggestion(s.name)">
-
-          <i class="fa-solid fa-user"></i>
-          {{ s.name }}
-
+         
         </div>
 
       </div>
-      <button *ngIf="searchText" (click)="clearSearch()" class="clear-search-btn">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    </div>
+      <div class="search-container">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
 
+          <input type="text" [(ngModel)]="searchText" (input)="onSearchInput()" (keyup.enter)="searchByName()"
+            placeholder="Search by name..." class="search-bar">
+          <div class="suggestion-box" *ngIf="searchText && searchSuggestions.length">
 
+            <div class="suggestion-item" *ngFor="let s of searchSuggestions" (click)="selectSuggestion(s.name)">
 
-    <div class="view-toggle-group">
-      <button class="view-btn" [class.active]="viewMode === 'list'" (click)="viewMode='list'">
-        <i class="fas fa-list"></i>
-      </button>
+              <i class="fa-solid fa-user"></i>
+              {{ s.name }}
 
-      <button class="view-btn" [class.active]="viewMode === 'grid'" (click)="viewMode='grid'">
-        <i class="fas fa-th-large"></i>
-      </button>
-    </div>
-
-  </div>
-
-  <div class="dashboard-info">
-
-    <div class="summary-box">
-      <i class="fa-solid fa-users"></i>
-
-      Total Applicants :
-      <strong>{{ applicants.length }}</strong>
-
-      <span *ngIf="searchText">
-        &nbsp; | Matching :
-        <strong>{{ (applicants | filter: searchText).length }}</strong>
-      </span>
-
-    </div>
-
-  </div>
-
-  <ng-template #languageEditor>
-
-    <!-- Languages -->
-    <div class="edit-section">
-
-      <div class="field-row">
-
-        <label class="field-label">
-          Languages
-        </label>
-
-        <div class="language-dropdown">
-
-          <div class="language-header">
-
-            <button type="button" class="language-btn" (click)="showLanguages=!showLanguages">
-
-              <span class="language-text">
-                {{
-                selectedLanguageNames.length
-                ? selectedLanguageNames.join(', ')
-                : 'Select Languages'
-                }}
-              </span>
-
-              <span class="language-arrow">
-                ▼
-              </span>
-
-            </button>
-
-            <button *ngIf="showLanguages" type="button" class="language-done-btn" (click)="showLanguages=false">
-
-              Done
-
-            </button>
+            </div>
 
           </div>
+          <button *ngIf="searchText" (click)="clearSearch()" class="clear-search-btn">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+
+
+        <div class="view-toggle-group">
+          <button class="view-btn" [class.active]="viewMode === 'list'" (click)="viewMode='list'">
+            <i class="fas fa-list"></i>
+          </button>
+
+          <button class="view-btn" [class.active]="viewMode === 'grid'" (click)="viewMode='grid'">
+            <i class="fas fa-th-large"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <div class="dashboard-info">
+
+        <div class="summary-box">
+          <i class="fa-solid fa-users"></i>
+
+          Total Applicants :
+          <strong>{{ applicants.length }}</strong>
+
+          <span *ngIf="searchText">
+            &nbsp; | Matching :
+            <strong>{{ (applicants | filter: searchText).length }}</strong>
+          </span>
 
         </div>
 
       </div>
 
-      <!-- Language Dropdown -->
-      <div *ngIf="showLanguages" class="dropdown-content">
+      <ng-template #languageEditor>
 
-        <div *ngFor="let group of languageGroups">
+        <!-- Languages -->
+        <div class="edit-section">
 
-          <strong>{{ group.label }}</strong>
+          <div class="field-row">
 
-          <div *ngFor="let option of group.options">
-
-            <label>
-
-              <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
-                (change)="toggleLanguage(option,$event)">
-
-              {{ option }}
-
+            <label class="field-label">
+              Languages
             </label>
 
+            <div class="language-dropdown">
+
+              <div class="language-header">
+
+                <button type="button" class="language-btn" (click)="showLanguages=!showLanguages">
+
+                  <span class="language-text">
+                    {{
+                    selectedLanguageNames.length
+                    ? selectedLanguageNames.join(', ')
+                    : 'Select Languages'
+                    }}
+                  </span>
+
+                  <span class="language-arrow">
+                    ▼
+                  </span>
+
+                </button>
+
+                <button *ngIf="showLanguages" type="button" class="language-done-btn" (click)="showLanguages=false">
+
+                  Done
+
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Language Dropdown -->
+          <div *ngIf="showLanguages" class="dropdown-content">
+
+            <div *ngFor="let group of languageGroups">
+
+              <strong>{{ group.label }}</strong>
+
+              <div *ngFor="let option of group.options">
+
+                <label>
+
+                  <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
+                    (change)="toggleLanguage(option,$event)">
+
+                  {{ option }}
+
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Language Cards -->
+          <div class="language-card-list" *ngIf="selectedLanguages.length > 0">
+
+            <div class="language-card" *ngFor="let language of selectedLanguages">
+
+              <div class="language-card-header">
+
+                <h4>{{ language.name }}</h4>
+
+                <button type="button" class="trash-btn" (click)="removeLanguage(language.name)">
+
+                  <i class="fas fa-trash"></i>
+
+                </button>
+
+              </div>
+
+              <div class="skill-options">
+
+                <label>
+
+                  <input type="checkbox" [(ngModel)]="language.read" [ngModelOptions]="{standalone:true}"
+                    (change)="updateLanguageAllState(language)">
+
+                  Read
+
+                </label>
+
+                <label>
+
+                  <input type="checkbox" [(ngModel)]="language.write" [ngModelOptions]="{standalone:true}"
+                    (change)="updateLanguageAllState(language)">
+
+                  Write
+
+                </label>
+
+                <label>
+
+                  <input type="checkbox" [(ngModel)]="language.speak" [ngModelOptions]="{standalone:true}"
+                    (change)="updateLanguageAllState(language)">
+
+                  Speak
+
+                </label>
+
+                <label>
+
+                  <input type="checkbox" [(ngModel)]="language.all" [ngModelOptions]="{standalone:true}"
+                    (change)="toggleAll(language)">
+
+                  All
+
+                </label>
+
+              </div>
+
+              <div class="progress-wrapper">
+
+                <progress [value]="getProgress(language)" max="100">
+
+                </progress>
+
+                <span>
+                  {{ getProgress(language) }}%
+                </span>
+
+              </div>
+
+            </div>
+
           </div>
 
         </div>
 
-      </div>
 
-      <!-- Language Cards -->
-      <div class="language-card-list" *ngIf="selectedLanguages.length > 0">
+        <!-- Company -->
+        <div class="edit-section">
 
-        <div class="language-card" *ngFor="let language of selectedLanguages">
+          <div class="field-row">
 
-          <div class="language-card-header">
+            <label class="field-label">
+              Company Name
+            </label>
 
-            <h4>{{ language.name }}</h4>
+            <div class="company-dropdown">
 
-            <button type="button" class="trash-btn" (click)="removeLanguage(language.name)">
+              <div class="company-header">
 
-              <i class="fas fa-trash"></i>
+                <button type="button" class="company-btn" (click)="showCompanies=!showCompanies">
 
-            </button>
+                  <span class="company-text">
+
+                    {{
+                    selectedCompanies.length
+                    ? selectedCompanies.join(', ')
+                    : 'Select Company'
+                    }}
+
+                  </span>
+
+                  <span class="company-arrow">
+                    ▼
+                  </span>
+
+                </button>
+
+                <button *ngIf="showCompanies" type="button" class="company-done-btn" (click)="showCompanies=false">
+
+                  Done
+
+                </button>
+
+              </div>
+
+            </div>
 
           </div>
 
-          <div class="skill-options">
+          <!-- Company Grid -->
+          <div *ngIf="showCompanies" class="company-content">
 
-            <label>
+            <div class="company-grid">
 
-              <input type="checkbox" [(ngModel)]="language.read" [ngModelOptions]="{standalone:true}"
-                (change)="updateLanguageAllState(language)">
+              <label class="company-option" *ngFor="let company of companyNames">
 
-              Read
+                <input type="checkbox" [checked]="selectedCompanies.includes(company)"
+                  (change)="toggleCompany(company,$event)">
 
-            </label>
+                {{ company }}
 
-            <label>
+              </label>
 
-              <input type="checkbox" [(ngModel)]="language.write" [ngModelOptions]="{standalone:true}"
-                (change)="updateLanguageAllState(language)">
-
-              Write
-
-            </label>
-
-            <label>
-
-              <input type="checkbox" [(ngModel)]="language.speak" [ngModelOptions]="{standalone:true}"
-                (change)="updateLanguageAllState(language)">
-
-              Speak
-
-            </label>
-
-            <label>
-
-              <input type="checkbox" [(ngModel)]="language.all" [ngModelOptions]="{standalone:true}"
-                (change)="toggleAll(language)">
-
-              All
-
-            </label>
-
-          </div>
-
-          <div class="progress-wrapper">
-
-            <progress [value]="getProgress(language)" max="100">
-
-            </progress>
-
-            <span>
-              {{ getProgress(language) }}%
-            </span>
+            </div>
 
           </div>
 
         </div>
 
-      </div>
+      </ng-template>
 
-    </div>
-
-
-    <!-- Company -->
-    <div class="edit-section">
-
-      <div class="field-row">
-
-        <label class="field-label">
-          Company Name
-        </label>
-
-        <div class="company-dropdown">
-
-          <div class="company-header">
-
-            <button type="button" class="company-btn" (click)="showCompanies=!showCompanies">
-
-              <span class="company-text">
-
-                {{
-                selectedCompanies.length
-                ? selectedCompanies.join(', ')
-                : 'Select Company'
-                }}
-
-              </span>
-
-              <span class="company-arrow">
-                ▼
-              </span>
-
-            </button>
-
-            <button *ngIf="showCompanies" type="button" class="company-done-btn" (click)="showCompanies=false">
-
-              Done
-
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- Company Grid -->
-      <div *ngIf="showCompanies" class="company-content">
-
-        <div class="company-grid">
-
-          <label class="company-option" *ngFor="let company of companyNames">
-
-            <input type="checkbox" [checked]="selectedCompanies.includes(company)"
-              (change)="toggleCompany(company,$event)">
-
-            {{ company }}
-
-          </label>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </ng-template>
-
-  <table class="basic-table" *ngIf="
+      <table class="basic-table" *ngIf="
       viewMode === 'list' &&
       applicants.length > 0 &&
       (applicants | filter: searchText).length > 0
     ">
 
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Qualification</th>
-        <th>DOB</th>
-        <th>Gender</th>
-        <th>Language </th>
-        <th>Company Name</th>
-        <th>Resume</th>
-        <th>Marksheet</th>
-        <th>Applied At</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let a of applicants | filter: searchKeyword">
-        <td>{{ a.id }}</td>
-        <td class="bold-text">{{ a.name | titlecase }}</td>
-        <td>{{ a.email }}</td>
-        <td>{{ a.phone }}</td>
-        <td>{{ a.qualification }}</td>
-        <td>
-          {{ a.dob | date:'dd-MM-yyyy' }}
-        </td>
-        <td>{{ a.gender }}</td>
-        <td>{{ getLanguageSummary(a.languages) || a.languages }}</td>
-        <td>
-          {{ a.companies }}
-        </td>
-        <td>
-          <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">
-            View Resume
-          </a>
-        </td>
-        <td>
-          <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">
-            View Marksheet
-          </a>
-        </td>
-        <td>
-          {{ a.createdAt | date:'medium' }}
-        </td>
-        <td>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Qualification</th>
+            <th>DOB</th>
+            <th>Gender</th>
+            <th>Language </th>
+            <th>Company Name</th>
+            <th>Resume</th>
+            <th>Marksheet</th>
+            <th>Applied At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of applicants | filter: searchKeyword">
+            <td>{{ a.id }}</td>
+            <td class="bold-text">{{ a.name | titlecase }}</td>
+            <td>{{ a.email }}</td>
+            <td>{{ a.phone }}</td>
+            <td>{{ a.qualification }}</td>
+            <td>
+              {{ a.dob | date:'dd-MM-yyyy' }}
+            </td>
+            <td>{{ a.gender }}</td>
+            <td>{{ getLanguageSummary(a.languages) || a.languages }}</td>
+            <td>
+              {{ a.companies }}
+            </td>
+            <td>
+              <a [href]="'http://localhost:8081/uploads/' + a.resumePath" target="_blank">
+                View Resume
+              </a>
+            </td>
+            <td>
+              <a [href]="'http://localhost:8081/uploads/' + a.marksheetPath" target="_blank">
+                View Marksheet
+              </a>
+            </td>
+            <td>
+              {{ a.createdAt | date:'medium' }}
+            </td>
+            <td>
 
-          <div class="action-buttons">
+              <div class="action-buttons">
 
-            <button (click)="openEditModal(a)" class="btn-edit">
+                <button (click)="openEditModal(a)" class="btn-edit">
 
-              <i class="fas fa-pencil-alt"></i>
+                  <i class="fas fa-pencil-alt"></i>
 
-            </button>
+                </button>
 
-            <button (click)="deleteApplicant(a.id)" class="btn-delete">
+                <button (click)="deleteApplicant(a.id)" class="btn-delete">
 
-              <i class="fas fa-trash"></i>
+                  <i class="fas fa-trash"></i>
 
-            </button>
+                </button>
 
+              </div>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="main-content">
+        <div class="left-panel" *ngIf="viewMode === 'grid'">
+          <!-- FILTERS (GRID VIEW ONLY) -->
+          <div class="filter-container" *ngIf="viewMode === 'grid' && showFilters">
+            <!-- Qualification -->
+            <select [(ngModel)]="selectedQualification">
+
+              <option value="">
+                All Qualifications
+              </option>
+
+              <optgroup label="UG">
+
+                <option value="BE">
+                  B.E
+                </option>
+
+                <option value="BTech">
+                  B.Tech
+                </option>
+
+                <option value="BSc">
+                  B.Sc
+                </option>
+
+                <option value="BCA">
+                  BCA
+                </option>
+
+                <option value="BCom">
+                  B.Com
+                </option>
+
+              </optgroup>
+
+              <optgroup label="PG">
+
+                <option value="ME">
+                  M.E
+                </option>
+
+                <option value="MTech">
+                  M.Tech
+                </option>
+
+                <option value="MSc">
+                  M.Sc
+                </option>
+
+                <option value="MCA">
+                  MCA
+                </option>
+
+                <option value="MCom">
+                  M.Com
+                </option>
+
+              </optgroup>
+
+            </select>
+            <!-- Gender -->
+            <select [(ngModel)]="selectedGender">
+              <option value="">All Genders</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+
+            <!-- Language -->
+            <select [(ngModel)]="selectedLanguage">
+
+              <option value="">
+                All Languages
+              </option>
+
+              <optgroup label="Indian Languages">
+
+                <option value="Tamil">Tamil</option>
+                <option value="Telugu">Telugu</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Malayalam">Malayalam</option>
+                <option value="Kannada">Kannada</option>
+                <option value="Bengali">Bengali</option>
+                <option value="Marathi">Marathi</option>
+                <option value="Gujarati">Gujarati</option>
+                <option value="Punjabi">Punjabi</option>
+                <option value="Odia">Odia</option>
+
+              </optgroup>
+
+              <optgroup label="Foreign Languages">
+
+                <option value="English">English</option>
+                <option value="French">French</option>
+                <option value="German">German</option>
+                <option value="Spanish">Spanish</option>
+                <option value="Japanese">Japanese</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Korean">Korean</option>
+                <option value="Russian">Russian</option>
+                <option value="Italian">Italian</option>
+                <option value="Arabic">Arabic</option>
+
+              </optgroup>
+
+            </select>
+
+            <!-- Company -->
+            <select [(ngModel)]="selectedCompany">
+              <option value="">All Companies</option>
+              <option *ngFor="let company of companyNames">
+                {{company}}
+              </option>
+            </select>
+
+            <!-- DOB -->
+
+            <div class="date-range-title">
+              <i class="fa-solid fa-calendar-days"></i>
+              Date Range
+            </div>
+
+            <label class="date-label">
+              From
+            </label>
+
+            <input type="date" [(ngModel)]="selectedFromDate">
+
+            <label class="date-label">
+              To
+            </label>
+
+            <input type="date" [(ngModel)]="selectedToDate">
           </div>
 
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="main-content">
-    <div class="left-panel" *ngIf="viewMode === 'grid'">
-      <button class="analytics-btn" (click)="openAnalytics()">
 
-        <i class="fa-solid fa-chart-column"></i>
-
-        <span>Analytics</span>
-
-      </button>
-      <button class="filter-toggle-btn" (click)="showFilters = !showFilters">
-
-        <i class="fa-solid" [class.fa-chevron-down]="!showFilters" [class.fa-chevron-up]="showFilters">
-        </i>
-
-        Filters
-
-      </button>
-      <!-- FILTERS (GRID VIEW ONLY) -->
-      <div class="filter-container" *ngIf="viewMode === 'grid' && showFilters">
-        <!-- Qualification -->
-        <select [(ngModel)]="selectedQualification">
-
-          <option value="">
-            All Qualifications
-          </option>
-
-          <optgroup label="UG">
-
-            <option value="BE">
-              B.E
-            </option>
-
-            <option value="BTech">
-              B.Tech
-            </option>
-
-            <option value="BSc">
-              B.Sc
-            </option>
-
-            <option value="BCA">
-              BCA
-            </option>
-
-            <option value="BCom">
-              B.Com
-            </option>
-
-          </optgroup>
-
-          <optgroup label="PG">
-
-            <option value="ME">
-              M.E
-            </option>
-
-            <option value="MTech">
-              M.Tech
-            </option>
-
-            <option value="MSc">
-              M.Sc
-            </option>
-
-            <option value="MCA">
-              MCA
-            </option>
-
-            <option value="MCom">
-              M.Com
-            </option>
-
-          </optgroup>
-
-        </select>
-        <!-- Gender -->
-        <select [(ngModel)]="selectedGender">
-          <option value="">All Genders</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-
-        <!-- Language -->
-        <select [(ngModel)]="selectedLanguage">
-
-          <option value="">
-            All Languages
-          </option>
-
-          <optgroup label="Indian Languages">
-
-            <option value="Tamil">Tamil</option>
-            <option value="Telugu">Telugu</option>
-            <option value="Hindi">Hindi</option>
-            <option value="Malayalam">Malayalam</option>
-            <option value="Kannada">Kannada</option>
-            <option value="Bengali">Bengali</option>
-            <option value="Marathi">Marathi</option>
-            <option value="Gujarati">Gujarati</option>
-            <option value="Punjabi">Punjabi</option>
-            <option value="Odia">Odia</option>
-
-          </optgroup>
-
-          <optgroup label="Foreign Languages">
-
-            <option value="English">English</option>
-            <option value="French">French</option>
-            <option value="German">German</option>
-            <option value="Spanish">Spanish</option>
-            <option value="Japanese">Japanese</option>
-            <option value="Chinese">Chinese</option>
-            <option value="Korean">Korean</option>
-            <option value="Russian">Russian</option>
-            <option value="Italian">Italian</option>
-            <option value="Arabic">Arabic</option>
-
-          </optgroup>
-
-        </select>
-
-        <!-- Company -->
-        <select [(ngModel)]="selectedCompany">
-          <option value="">All Companies</option>
-          <option *ngFor="let company of companyNames">
-            {{company}}
-          </option>
-        </select>
-
-        <!-- DOB -->
-
-        <div class="date-range-title">
-          <i class="fa-solid fa-calendar-days"></i>
-          Date Range
         </div>
 
-        <label class="date-label">
-          From
-        </label>
 
-        <input type="date" [(ngModel)]="selectedFromDate">
+        <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0"
+          [class.search-mode]="searchKeyword">
 
-        <label class="date-label">
-          To
-        </label>
+          <div class="applicant-card" [class.search-mode]="searchMode"
+            [style.cursor]="searchMode ? 'pointer' : 'default'"
+            *ngFor="let a of filteredApplicants | filter: searchKeyword" (click)="searchMode && selectApplicant(a)">
+            <!-- NORMAL CARD -->
+            <div *ngIf="!searchKeyword">
 
-        <input type="date" [(ngModel)]="selectedToDate">
-      </div>
+              <div class="profile-section">
+
+                <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto"
+                  class="profile-photo" (click)="openPhotoDialog(a); $event.stopPropagation()">
+
+                <div *ngIf="!a.profilePhoto" class="profile-avatar">
+
+                  {{ a.name?.charAt(0)?.toUpperCase() }}
+
+                </div>
+
+              </div>
+
+              <!-- EDIT -->
+              <button (click)="openEditModal(a); $event.stopPropagation()" class="profile-edit-btn">
+                <i class="fas fa-pencil-alt"></i>
+
+              </button>
+
+              <!-- DELETE -->
+              <button (click)="deleteApplicant(a.id); $event.stopPropagation()" class="profile-delete-btn">
+                <i class="fas fa-trash"></i>
+
+              </button>
 
 
-    </div>
+
+              <div class="id-badge">
+
+                #{{ a.id.toString().padStart(3,'0') }}
+
+              </div>
 
 
-    <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0"
-      [class.search-mode]="searchKeyword">
+              <h3 class="applicant-name">
 
-      <div class="applicant-card" [class.search-mode]="searchMode" [style.cursor]="searchMode ? 'pointer' : 'default'"
-        *ngFor="let a of filteredApplicants | filter: searchKeyword" (click)="searchMode && selectApplicant(a)">
-        <!-- NORMAL CARD -->
-        <div *ngIf="!searchKeyword">
+                {{ a.name | titlecase }}
 
-          <div class="profile-section">
+              </h3>
 
-            <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto" class="profile-photo"
-              (click)="openPhotoDialog(a); $event.stopPropagation()">
+              <p class="email-text">
 
-            <div *ngIf="!a.profilePhoto" class="profile-avatar">
+                {{ a.email }}
 
-              {{ a.name?.charAt(0)?.toUpperCase() }}
+              </p>
+              <div class="info-grid">
+
+                <div class="info-box">
+                  <div class="label">
+                    <i class="fa-solid fa-phone"></i>
+                    Phone
+                  </div>
+                  <div class="value">
+                    {{a.phone}}
+                  </div>
+                </div>
+
+                <div class="info-box">
+                  <div class="label">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Qualification
+                  </div>
+                  <div class="value">
+                    {{a.qualification}}
+                  </div>
+                </div>
+
+                <div class="info-box">
+                  <div class="label">
+                    <i class="fa-solid fa-calendar"></i>
+                    DOB
+                  </div>
+                  <div class="value">
+                    {{a.dob | date:'dd-MM-yyyy'}}
+                  </div>
+                </div>
+
+                <div class="info-box">
+                  <div class="label">
+                    <i class="fa-solid fa-user"></i>
+                    Gender
+                  </div>
+                  <div class="value">
+                    {{a.gender}}
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="details-section">
+
+                <div class="detail-block">
+                  <div class="detail-title">
+                    <i class="fa-solid fa-language"></i>
+                    Languages
+                  </div>
+
+                  <div class="detail-content">
+                    {{ getLanguageSummary(a.languages) || a.languages }}
+                  </div>
+                </div>
+
+                <div class="detail-block">
+                  <div class="detail-title">
+                    <i class="fa-solid fa-building"></i>
+                    Company Name
+                  </div>
+
+                  <div class="detail-content">
+                    {{ a.companies }}
+                  </div>
+                </div>
+
+              </div>
+
+
+
+              <p class="updated-time">
+                <i class="fa-solid fa-clock"></i>
+                Last Updated:
+                {{ getTimeAgo(a.updatedAt) }}
+              </p>
 
             </div>
+            <!-- SEARCH CARD -->
+
+            <div *ngIf="searchKeyword" class="search-card">
+
+              <!-- Edit -->
+              <button class="profile-edit-btn" (click)="openEditModal(a); $event.stopPropagation()">
+                <i class="fas fa-pencil-alt"></i>
+              </button>
+
+              <!-- Delete -->
+              <button class="profile-delete-btn" (click)="deleteApplicant(a.id); $event.stopPropagation()">
+                <i class="fas fa-trash"></i>
+              </button>
+
+              <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto"
+                class="search-photo">
+
+              <div *ngIf="!a.profilePhoto" class="search-avatar">
+                {{ a.name.charAt(0).toUpperCase() }}
+              </div>
+
+              <h3>{{ a.name | titlecase }}</h3>
+              <p>{{ a.qualification }}</p>
+
+            </div>
+          </div>
+
+        </div>
+
+        <dialog id="editDialog" class="edit-dialog">
+          <div class="dialog-header">
+            <button class="dialog-close-btn" (click)="closeEditModal()">
+
+              <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+            <h2>Edit Applicant</h2>
+          </div>
+
+
+          <div class="edit-input-grid">
+
+            <input type="text" [(ngModel)]="editData.name" placeholder="Name" class="edit-input">
+
+            <input type="email" [(ngModel)]="editData.email" placeholder="Email" class="edit-input">
+
+            <input type="text" [(ngModel)]="editData.phone" placeholder="Phone" class="edit-input">
+
+            <input type="text" [(ngModel)]="editData.qualification" placeholder="Qualification" class="edit-input">
+
+            <input type="date" [(ngModel)]="editData.dob" class="edit-input">
 
           </div>
 
-          <!-- EDIT -->
-          <button (click)="openEditModal(a); $event.stopPropagation()" class="profile-edit-btn">
-            <i class="fas fa-pencil-alt"></i>
+          <div class="edit-section">
+            <div class="field-row">
 
-          </button>
-
-          <!-- DELETE -->
-          <button (click)="deleteApplicant(a.id); $event.stopPropagation()" class="profile-delete-btn">
-            <i class="fas fa-trash"></i>
-
-          </button>
-
-
-
-          <div class="id-badge">
-
-            #{{ a.id.toString().padStart(3,'0') }}
-
-          </div>
-
-
-          <h3 class="applicant-name">
-
-            {{ a.name | titlecase }}
-
-          </h3>
-
-          <p class="email-text">
-
-            {{ a.email }}
-
-          </p>
-          <div class="info-grid">
-
-            <div class="info-box">
-              <div class="label">
-                <i class="fa-solid fa-phone"></i>
-                Phone
-              </div>
-              <div class="value">
-                {{a.phone}}
-              </div>
-            </div>
-
-            <div class="info-box">
-              <div class="label">
-                <i class="fa-solid fa-graduation-cap"></i>
-                Qualification
-              </div>
-              <div class="value">
-                {{a.qualification}}
-              </div>
-            </div>
-
-            <div class="info-box">
-              <div class="label">
-                <i class="fa-solid fa-calendar"></i>
-                DOB
-              </div>
-              <div class="value">
-                {{a.dob | date:'dd-MM-yyyy'}}
-              </div>
-            </div>
-
-            <div class="info-box">
-              <div class="label">
-                <i class="fa-solid fa-user"></i>
+              <label class="field-label">
                 Gender
-              </div>
-              <div class="value">
-                {{a.gender}}
-              </div>
-            </div>
+              </label>
 
+              <div class="radio-group">
+
+                <label>
+                  <input type="radio" value="Male" [(ngModel)]="editData.gender">
+                  Male
+                </label>
+
+                <label>
+                  <input type="radio" value="Female" [(ngModel)]="editData.gender">
+                  Female
+                </label>
+
+              </div>
+
+            </div>
           </div>
 
-          <div class="details-section">
-
-            <div class="detail-block">
-              <div class="detail-title">
-                <i class="fa-solid fa-language"></i>
-                Languages
-              </div>
-
-              <div class="detail-content">
-                {{ getLanguageSummary(a.languages) || a.languages }}
-              </div>
-            </div>
-
-            <div class="detail-block">
-              <div class="detail-title">
-                <i class="fa-solid fa-building"></i>
-                Company Name
-              </div>
-
-              <div class="detail-content">
-                {{ a.companies }}
-              </div>
-            </div>
-
+          <div class="edit-section">
+            <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
           </div>
-
-
-
-          <p class="updated-time">
-            <i class="fa-solid fa-clock"></i>
-            Last Updated:
-            {{ getTimeAgo(a.updatedAt) }}
-          </p>
-
-        </div>
-        <!-- SEARCH CARD -->
-
-        <div *ngIf="searchKeyword" class="search-card">
-
-          <!-- Edit -->
-          <button class="profile-edit-btn" (click)="openEditModal(a); $event.stopPropagation()">
-            <i class="fas fa-pencil-alt"></i>
-          </button>
-
-          <!-- Delete -->
-          <button class="profile-delete-btn" (click)="deleteApplicant(a.id); $event.stopPropagation()">
-            <i class="fas fa-trash"></i>
-          </button>
-
-          <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto" class="search-photo">
-
-          <div *ngIf="!a.profilePhoto" class="search-avatar">
-            {{ a.name.charAt(0).toUpperCase() }}
-          </div>
-
-          <h3>{{ a.name | titlecase }}</h3>
-          <p>{{ a.qualification }}</p>
-
-        </div>
-      </div>
-
-    </div>
-
-    <dialog id="editDialog" class="edit-dialog">
-      <div class="dialog-header">
-        <button class="dialog-close-btn" (click)="closeEditModal()">
-
-          <i class="fa-solid fa-xmark"></i>
-
-        </button>
-
-        <h2>Edit Applicant</h2>
-      </div>
-
-
-      <div class="edit-input-grid">
-
-        <input type="text" [(ngModel)]="editData.name" placeholder="Name" class="edit-input">
-
-        <input type="email" [(ngModel)]="editData.email" placeholder="Email" class="edit-input">
-
-        <input type="text" [(ngModel)]="editData.phone" placeholder="Phone" class="edit-input">
-
-        <input type="text" [(ngModel)]="editData.qualification" placeholder="Qualification" class="edit-input">
-
-        <input type="date" [(ngModel)]="editData.dob" class="edit-input">
-
-      </div>
-
-      <div class="edit-section">
-        <div class="field-row">
-
-          <label class="field-label">
-            Gender
-          </label>
-
-          <div class="radio-group">
-
-            <label>
-              <input type="radio" value="Male" [(ngModel)]="editData.gender">
-              Male
+          <div class="upload-container">
+            <label class="file-placeholder">
+              <input type="file" (change)="onEditResumeSelect($event)">
+              {{ editResumeFile?.name || '📄 Upload Resume' }}
             </label>
 
-            <label>
-              <input type="radio" value="Female" [(ngModel)]="editData.gender">
-              Female
+            <label class="file-placeholder">
+              <input type="file" (change)="onEditMarksheetSelect($event)">
+              {{ editMarksheetFile?.name || '🎓 Upload Marksheet' }}
             </label>
+          </div>
+          <div class="action-cell">
+
+            <button (click)="saveEdit()" class="btn-save">
+              Save
+            </button>
+
+            <button (click)="closeEditModal()" class="btn-cancel">
+              Cancel
+            </button>
 
           </div>
 
+        </dialog>
+        <div class="photo-overlay" *ngIf="showPhotoDialog">
+
+          <div class="photo-dialog">
+
+            <button class="close-photo-btn" (click)="closePhotoDialog()">
+
+              ✕
+
+            </button>
+
+            <h2>Select Profile Picture</h2>
+
+            <div class="photo-grid">
+
+              <img *ngFor="let photo of photoList" [src]="'http://localhost:8081/uploads/' + photo" class="dialog-photo"
+                (click)="setProfilePhoto(photo)">
+
+            </div>
+
+          </div>
         </div>
-      </div>
-
-      <div class="edit-section">
-        <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
-      </div>
-      <div class="upload-container">
-        <label class="file-placeholder">
-          <input type="file" (change)="onEditResumeSelect($event)">
-          {{ editResumeFile?.name || '📄 Upload Resume' }}
-        </label>
-
-        <label class="file-placeholder">
-          <input type="file" (change)="onEditMarksheetSelect($event)">
-          {{ editMarksheetFile?.name || '🎓 Upload Marksheet' }}
-        </label>
-      </div>
-      <div class="action-cell">
-
-        <button (click)="saveEdit()" class="btn-save">
-          Save
-        </button>
-
-        <button (click)="closeEditModal()" class="btn-cancel">
-          Cancel
-        </button>
-
-      </div>
-
-    </dialog>
-    <div class="photo-overlay" *ngIf="showPhotoDialog">
-
-      <div class="photo-dialog">
-
-        <button class="close-photo-btn" (click)="closePhotoDialog()">
-
-          ✕
-
-        </button>
-
-        <h2>Select Profile Picture</h2>
-
-        <div class="photo-grid">
-
-          <img *ngFor="let photo of photoList" [src]="'http://localhost:8081/uploads/' + photo" class="dialog-photo"
-            (click)="setProfilePhoto(photo)">
-
-        </div>
-
       </div>
     </div>
-  </div>
-</div>
-<app-applicant-details *ngIf="applicantvisible" [applicant]="selectedApplicant" (back)="applicantvisible=false">
-</app-applicant-details>
+    <app-applicant-details *ngIf="applicantvisible" [applicant]="selectedApplicant" (back)="applicantvisible=false">
+    </app-applicant-details>
+  <!-- Analytics -->
 <app-admin-analytics
     *ngIf="showAnalytics"
-    [applicants]="applicants"
-    (back)="closeAnalytics()"
-    (filters)="openDashboardWithFilters()">
+    [applicants]="applicants">
 </app-admin-analytics>
+
+    </div>
+
+</div>

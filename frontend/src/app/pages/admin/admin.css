@@ -2421,3 +2421,12 @@ body {
     background:#059669;
 
 }
+.admin-layout{
+    display:flex;
+}
+
+.admin-content{
+    flex:1;
+    margin-left:240px;   
+    min-height:100vh;
+}

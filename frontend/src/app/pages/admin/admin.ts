@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FilterPipe } from '../../pipe';
 import { ApplicantDetailsComponent } from '../../applicant-details/applicant-details';
 import { AdminAnalyticsComponent } from '../admin-analytics/admin-analytics';
+import { AdminSidebarComponent } from '../../admin-sidebar/admin-sidebar';  
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -14,9 +15,10 @@ import { AdminAnalyticsComponent } from '../admin-analytics/admin-analytics';
     FormsModule,
     FilterPipe,
     ApplicantDetailsComponent,
-    AdminAnalyticsComponent
+    AdminAnalyticsComponent,
+    AdminSidebarComponent
   ],
-   styleUrls: ['./admin.css'],
+  styleUrls: ['./admin.css'],
   templateUrl: './admin.html'
 })
 export class AdminComponent implements OnInit {
@@ -165,17 +167,17 @@ export class AdminComponent implements OnInit {
     console.log(this.selectedApplicant);
   }
 
-openAnalytics(): void {
+  openAnalytics(): void {
 
-  this.showAnalytics = true;
+    this.showAnalytics = true;
 
-}
-closeAnalytics(): void {
+  }
+  closeAnalytics(): void {
 
-  this.showAnalytics = false;
+    this.showAnalytics = false;
 
-}
-openDashboardWithFilters(): void {
+  }
+  openDashboardWithFilters(): void {
 
     this.showAnalytics = false;
 
@@ -183,7 +185,7 @@ openDashboardWithFilters(): void {
 
     this.showFilters = true;
 
-}
+  }
   get searchSuggestions(): any[] {
 
     if (!this.searchText.trim() || !this.showSuggestions) {
