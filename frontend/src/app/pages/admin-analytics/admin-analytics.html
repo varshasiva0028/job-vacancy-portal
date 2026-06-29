@@ -1,159 +1,164 @@
 <div class="analytics-page">
 
-
+    <!-- Header -->
     <div class="analytics-header">
-
         <h2>Analytics Dashboard</h2>
-
     </div>
 
+    <!-- Main Layout -->
+    <div class="analytics-layout">
 
+        <!-- Left Sidebar -->
+        <div class="analytics-sidebar">
 
-    <div class="summary-grid">
+            <button class="back-btn" (click)="goBack()">
+                <i class="fa-solid fa-user"></i>
+                User
+            </button>
 
-        <!-- Total Applicants -->
-        <div class="summary-card">
-
-            <div class="summary-icon">
-                <i class="fa-solid fa-users"></i>
-            </div>
-
-            <div class="summary-content">
-                <h3>Total Applicants</h3>
-                <h1>{{ totalApplicants }}</h1>
-            </div>
-
-        </div>
-
-        <!-- Companies -->
-        <div class="summary-card">
-
-            <div class="summary-icon">
-                <i class="fa-solid fa-building"></i>
-            </div>
-
-            <div class="summary-content">
-                <h3>Companies</h3>
-                <h1>{{ totalCompanies }}</h1>
-            </div>
+            <button class="filter-btn" (click)="openFilters()">
+                <i class="fa-solid fa-filter"></i>
+                Filters
+            </button>
 
         </div>
 
-        <!-- Languages -->
-        <div class="summary-card">
+        <!-- Right Content -->
+        <div class="analytics-content">
 
-            <div class="summary-icon">
-                <i class="fa-solid fa-language"></i>
+            <!-- Summary Cards -->
+            <div class="summary-grid">
+
+                <!-- Total Applicants -->
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div class="summary-content">
+                        <h3>Total Applicants</h3>
+                        <h1>{{ totalApplicants }}</h1>
+                    </div>
+
+                </div>
+
+                <!-- Companies -->
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <div class="summary-content">
+                        <h3>Companies</h3>
+                        <h1>{{ totalCompanies }}</h1>
+                    </div>
+
+                </div>
+
+                <!-- Languages -->
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+                        <i class="fa-solid fa-language"></i>
+                    </div>
+
+                    <div class="summary-content">
+                        <h3>Languages</h3>
+                        <h1>{{ totalLanguages }}</h1>
+                    </div>
+
+                </div>
+
+                <!-- Qualifications -->
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                    <div class="summary-content">
+                        <h3>Qualifications</h3>
+                        <h1>{{ totalQualifications }}</h1>
+                    </div>
+
+                </div>
+
+                <!-- Gender -->
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+                        <i class="fa-solid fa-venus-mars"></i>
+                    </div>
+
+                    <div class="summary-content">
+
+                        <h3>Gender</h3>
+
+                        <h4>
+                            Male :
+                            <span>{{ maleCount }}</span>
+                        </h4>
+
+                        <h4>
+                            Female :
+                            <span>{{ femaleCount }}</span>
+                        </h4>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="summary-content">
-                <h3>Languages</h3>
-                <h1>{{ totalLanguages }}</h1>
+            <!-- Charts -->
+            <div class="chart-grid">
+
+                <!-- Company Chart -->
+                <div class="chart-card">
+
+                    <div class="chart-header">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <h3>Applicants by Company</h3>
+                    </div>
+
+                    <canvas #companyCanvas></canvas>
+
+                </div>
+
+                <!-- Qualification Chart -->
+                <div class="chart-card">
+
+                    <div class="chart-header">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <h3>Qualification Distribution</h3>
+                    </div>
+
+                    <canvas #qualificationCanvas></canvas>
+
+                </div>
+
             </div>
 
-        </div>
+            <!-- Language Chart -->
+            <div class="language-chart-row">
 
-        <!-- Qualifications -->
-        <div class="summary-card">
+                <div class="chart-card">
 
-            <div class="summary-icon">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </div>
+                    <div class="chart-header">
+                        <i class="fa-solid fa-language"></i>
+                        <h3>Languages Used</h3>
+                    </div>
 
-            <div class="summary-content">
-                <h3>Qualifications</h3>
-                <h1>{{ totalQualifications }}</h1>
-            </div>
+                    <canvas #languageCanvas></canvas>
 
-        </div>
-
-        <!-- Gender -->
-        <div class="summary-card">
-
-            <div class="summary-icon">
-                <i class="fa-solid fa-venus-mars"></i>
-            </div>
-
-            <div class="summary-content">
-
-                <h3>Gender</h3>
-
-                <h4>
-                    Male :
-                    <span>{{ maleCount }}</span>
-                </h4>
-
-                <h4>
-                    Female :
-                    <span>{{ femaleCount }}</span>
-                </h4>
+                </div>
 
             </div>
 
         </div>
 
     </div>
-
-
-
-    <div class="chart-grid">
-
-        <!-- Company -->
-        <div class="chart-card">
-
-            <div class="chart-header">
-                <i class="fa-solid fa-chart-column"></i>
-                <h3>Applicants by Company</h3>
-            </div>
-
-            <canvas #companyCanvas></canvas>
-
-        </div>
-
-        <div class="chart-card">
-
-            <div class="chart-header">
-                <i class="fa-solid fa-chart-pie"></i>
-                <h3>Qualification Distribution</h3>
-            </div>
-
-            <canvas #qualificationCanvas></canvas>
-
-        </div>
-
-    </div>
-
-
-    <div class="language-chart-row">
-
-        <div class="chart-card">
-
-            <div class="chart-header">
-
-                <i class="fa-solid fa-language"></i>
-
-                <h3>Languages Used</h3>
-
-            </div>
-
-            <canvas #languageCanvas></canvas>
-
-        </div>
-
-    </div>
-    <!-- Floating Back Button -->
-    <div class="bottom-buttons">
-
-    <button class="back-btn" (click)="goBack()">
-        <i class="fa-solid fa-user"></i>
-        User
-    </button>
-
-    <button class="filter-btn" (click)="openFilters()">
-        <i class="fa-solid fa-filter"></i>
-        Filters
-    </button>
-
-</div>
 
 </div>

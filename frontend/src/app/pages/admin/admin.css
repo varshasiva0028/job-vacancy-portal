@@ -35,11 +35,11 @@ body {
 
   color: #1e293b;
 
-  font-size: 30px;
+  font-size: 20px;
 
   margin-bottom: 25px;
 
-  font-weight: 700;
+  font-weight: 550;
 }
 
 .dashboard-container {
@@ -996,6 +996,13 @@ body {
 .logout-btn i {
   font-size: 16px;
 }
+.admin-header h2 {
+    text-align: center;
+    width: 100%;
+    padding-right: 110px;
+    font-size: 35px;
+    font-weight: 600;
+  }
 
 .admin-header {
 
