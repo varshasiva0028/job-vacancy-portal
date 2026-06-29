@@ -30,6 +30,8 @@ export class AdminAnalyticsComponent
 
   @Output()
   back = new EventEmitter<void>();
+  @Output()
+  filters = new EventEmitter<void>();
 
   @ViewChild('companyCanvas')
   companyCanvas!: ElementRef<HTMLCanvasElement>;
@@ -55,6 +57,10 @@ export class AdminAnalyticsComponent
 
   maleCount = 0;
   femaleCount = 0;
+
+  openFilters() {
+    this.filters.emit();
+  }
 
   goBack(): void {
 
@@ -115,7 +121,7 @@ export class AdminAnalyticsComponent
     this.createLanguageChart();
 
   }
-    calculateSummary(): void {
+  calculateSummary(): void {
 
     this.totalApplicants = this.applicants.length;
 
@@ -238,101 +244,103 @@ export class AdminAnalyticsComponent
   }
   createCompanyChart(): void {
 
-  const companyMap: { [key: string]: number } = {};
+    const companyMap: { [key: string]: number } = {};
 
-  this.applicants.forEach(applicant => {
+    this.applicants.forEach(applicant => {
 
-    if (!applicant.companies) {
-      return;
-    }
+      if (!applicant.companies) {
+        return;
+      }
 
-    let companies: string[] = [];
+      let companies: string[] = [];
 
-    try {
+      try {
 
-      companies = JSON.parse(applicant.companies);
+        companies = JSON.parse(applicant.companies);
 
-    }
-    catch {
+      }
+      catch {
 
-      companies = applicant.companies.split(',');
+        companies = applicant.companies.split(',');
 
-    }
+      }
 
-    companies.forEach(company => {
+      companies.forEach(company => {
 
-      company = company.trim();
+        company = company.trim();
 
-      companyMap[company] = (companyMap[company] || 0) + 1;
+        companyMap[company] = (companyMap[company] || 0) + 1;
+
+      });
 
     });
 
-  });
+    this.companyChart = new Chart(
+      this.companyCanvas.nativeElement,
+      {
 
-  this.companyChart = new Chart(
-    this.companyCanvas.nativeElement,
-    {
+        type: 'bar',
 
-      type: 'bar',
+        data: {
 
-      data: {
+          labels: Object.keys(companyMap),
 
-        labels: Object.keys(companyMap),
+          datasets: [
 
-        datasets: [
+            {
 
-          {
+              label: 'Applicants',
 
-            label: 'Applicants',
+              data: Object.values(companyMap),
 
-            data: Object.values(companyMap),
+              backgroundColor: [
+                '#2563eb',
+                '#10b981',
+                '#f59e0b',
+                '#ef4444',
+                '#8b5cf6',
+                '#06b6d4',
+                '#ec4899',
+                '#14b8a6',
+                '#84cc16',
+                '#f97316'
+              ],
 
-            backgroundColor: [
-              '#2563eb',
-              '#10b981',
-              '#f59e0b',
-              '#ef4444',
-              '#8b5cf6',
-              '#06b6d4',
-              '#ec4899',
-              '#14b8a6',
-              '#84cc16',
-              '#f97316'
-            ],
+              borderRadius: 8
 
-            borderRadius: 8
+            }
 
-          }
-
-        ]
-
-      },
-
-      options: {
-
-        responsive: true,
-
-        maintainAspectRatio: false,
-
-        plugins: {
-
-          legend: {
-
-            display: false
-
-          }
+          ]
 
         },
 
-        scales: {
+        options: {
 
-          y: {
+          responsive: true,
 
-            beginAtZero: true,
+          maintainAspectRatio: false,
 
-            ticks: {
+          plugins: {
 
-              stepSize: 1
+            legend: {
+
+              display: false
+
+            }
+
+          },
+
+          scales: {
+
+            y: {
+
+              beginAtZero: true,
+
+              ticks: {
+
+                stepSize: 1
+
+              }
 
             }
 
@@ -342,187 +350,69 @@ export class AdminAnalyticsComponent
 
       }
 
-    }
+    );
 
-  );
+  }
+  createQualificationChart(): void {
 
-}
-createQualificationChart(): void {
+    const qualificationMap: { [key: string]: number } = {};
 
-  const qualificationMap: { [key: string]: number } = {};
+    this.applicants.forEach(applicant => {
 
-  this.applicants.forEach(applicant => {
-
-    qualificationMap[applicant.qualification] =
-      (qualificationMap[applicant.qualification] || 0) + 1;
-
-  });
-
-  this.qualificationChart = new Chart(
-
-    this.qualificationCanvas.nativeElement,
-
-    {
-
-      type: 'doughnut',
-
-      data: {
-
-        labels: Object.keys(qualificationMap),
-
-        datasets: [
-
-          {
-
-            data: Object.values(qualificationMap),
-
-            backgroundColor: [
-
-              '#2563eb',
-              '#10b981',
-              '#f59e0b',
-              '#ef4444',
-              '#8b5cf6',
-              '#06b6d4',
-              '#ec4899'
-
-            ]
-
-          }
-
-        ]
-
-      },
-
-      options: {
-
-        responsive: true,
-
-        maintainAspectRatio: false,
-
-        cutout: '60%',
-
-        plugins: {
-
-          legend: {
-
-            position: 'bottom'
-
-          }
-
-        }
-
-      }
-
-    }
-
-  );
-
-}
-createLanguageChart(): void {
-
-  const languageMap: { [key: string]: number } = {};
-
-  this.applicants.forEach(applicant => {
-
-    if (!applicant.languages) {
-      return;
-    }
-
-    let languages: any[] = [];
-
-    try {
-
-      languages = JSON.parse(applicant.languages);
-
-    }
-    catch {
-
-      languages = applicant.languages.split(',');
-
-    }
-
-    languages.forEach(language => {
-
-      let languageName = '';
-
-      if (typeof language === 'string') {
-
-        languageName = language.trim();
-
-      }
-      else if (language.name) {
-
-        languageName = language.name;
-
-      }
-
-      if (languageName) {
-
-        languageMap[languageName] =
-          (languageMap[languageName] || 0) + 1;
-
-      }
+      qualificationMap[applicant.qualification] =
+        (qualificationMap[applicant.qualification] || 0) + 1;
 
     });
 
-  });
+    this.qualificationChart = new Chart(
 
-  this.languageChart = new Chart(
+      this.qualificationCanvas.nativeElement,
 
-    this.languageCanvas.nativeElement,
+      {
 
-    {
+        type: 'doughnut',
 
-      type: 'bar',
+        data: {
 
-      data: {
+          labels: Object.keys(qualificationMap),
 
-        labels: Object.keys(languageMap),
+          datasets: [
 
-        datasets: [
+            {
 
-          {
+              data: Object.values(qualificationMap),
 
-            label: 'Applicants',
+              backgroundColor: [
 
-            data: Object.values(languageMap),
+                '#2563eb',
+                '#10b981',
+                '#f59e0b',
+                '#ef4444',
+                '#8b5cf6',
+                '#06b6d4',
+                '#ec4899'
 
-            backgroundColor: '#2563eb',
+              ]
 
-            borderRadius: 8
+            }
 
-          }
-
-        ]
-
-      },
-
-      options: {
-
-        responsive: true,
-
-        maintainAspectRatio: false,
-
-        plugins: {
-
-          legend: {
-
-            display: false
-
-          }
+          ]
 
         },
 
-        scales: {
+        options: {
 
-          y: {
+          responsive: true,
 
-            beginAtZero: true,
+          maintainAspectRatio: false,
 
-            ticks: {
+          cutout: '60%',
 
-              stepSize: 1
+          plugins: {
+
+            legend: {
+
+              position: 'bottom'
 
             }
 
@@ -532,9 +422,125 @@ createLanguageChart(): void {
 
       }
 
-    }
+    );
 
-  );
+  }
+  createLanguageChart(): void {
 
-}
+    const languageMap: { [key: string]: number } = {};
+
+    this.applicants.forEach(applicant => {
+
+      if (!applicant.languages) {
+        return;
+      }
+
+      let languages: any[] = [];
+
+      try {
+
+        languages = JSON.parse(applicant.languages);
+
+      }
+      catch {
+
+        languages = applicant.languages.split(',');
+
+      }
+
+      languages.forEach(language => {
+
+        let languageName = '';
+
+        if (typeof language === 'string') {
+
+          languageName = language.trim();
+
+        }
+        else if (language.name) {
+
+          languageName = language.name;
+
+        }
+
+        if (languageName) {
+
+          languageMap[languageName] =
+            (languageMap[languageName] || 0) + 1;
+
+        }
+
+      });
+
+    });
+
+    this.languageChart = new Chart(
+
+      this.languageCanvas.nativeElement,
+
+      {
+
+        type: 'bar',
+
+        data: {
+
+          labels: Object.keys(languageMap),
+
+          datasets: [
+
+            {
+
+              label: 'Applicants',
+
+              data: Object.values(languageMap),
+
+              backgroundColor: '#2563eb',
+
+              borderRadius: 8
+
+            }
+
+          ]
+
+        },
+
+        options: {
+
+          responsive: true,
+
+          maintainAspectRatio: false,
+
+          plugins: {
+
+            legend: {
+
+              display: false
+
+            }
+
+          },
+
+          scales: {
+
+            y: {
+
+              beginAtZero: true,
+
+              ticks: {
+
+                stepSize: 1
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    );
+
+  }
 }

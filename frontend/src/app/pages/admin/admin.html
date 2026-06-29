@@ -345,7 +345,13 @@
   </table>
   <div class="main-content">
     <div class="left-panel" *ngIf="viewMode === 'grid'">
+      <button class="analytics-btn" (click)="openAnalytics()">
 
+        <i class="fa-solid fa-chart-column"></i>
+
+        <span>Analytics</span>
+
+      </button>
       <button class="filter-toggle-btn" (click)="showFilters = !showFilters">
 
         <i class="fa-solid" [class.fa-chevron-down]="!showFilters" [class.fa-chevron-up]="showFilters">
@@ -485,13 +491,7 @@
 
         <input type="date" [(ngModel)]="selectedToDate">
       </div>
-      <button class="analytics-btn" (click)="openAnalytics()">
 
-        <i class="fa-solid fa-chart-column"></i>
-
-        <span>Analytics</span>
-
-      </button>
 
     </div>
 
@@ -761,5 +761,6 @@
 <app-admin-analytics
     *ngIf="showAnalytics"
     [applicants]="applicants"
-    (back)="closeAnalytics()">
+    (back)="closeAnalytics()"
+    (filters)="openDashboardWithFilters()">
 </app-admin-analytics>

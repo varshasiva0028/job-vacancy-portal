@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit {
   username = '';
   role = '';
   applicantvisible = false;
-  showAnalytics = false;
+  showAnalytics = true;
   //available languages
   languageGroups = [
     {
@@ -175,7 +175,15 @@ closeAnalytics(): void {
   this.showAnalytics = false;
 
 }
+openDashboardWithFilters(): void {
 
+    this.showAnalytics = false;
+
+    this.viewMode = 'grid';
+
+    this.showFilters = true;
+
+}
   get searchSuggestions(): any[] {
 
     if (!this.searchText.trim() || !this.showSuggestions) {

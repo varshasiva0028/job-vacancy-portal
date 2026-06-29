@@ -359,14 +359,71 @@ body {
   transition: .3s;
 }
 
-@media (max-width:1400px) {
+/* ================= MOBILE ================= */
+@media screen and (max-width:430px){
 
-  .grid-container {
-    grid-template-columns:
-      repeat(2, minmax(320px, 1fr));
+  .main-content{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
   }
 
+  .left-panel{
+    width:100%;
+    position:static;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .analytics-btn,
+  .filter-toggle-btn{
+    width:100%;
+    height:52px;
+    font-size:17px;
+    border-radius:14px;
+  }
+
+  .filter-container{
+    width:100%;
+    position:static;
+    margin-top:10px;
+  }
+
+  .grid-container{
+    width:100%;
+    margin:0;
+    grid-template-columns:1fr !important;
+    gap:20px;
+  }
+
+  .applicant-card{
+    width:100%;
+  }
+.main-content:has(.grid-container.search-mode) .left-panel{
+    display: none;
 }
+}
+@media (max-width:430px){
+.left-panel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 20px auto;
+    width: 100%;
+}
+
+    .filter-toggle-btn,
+    .analytics-btn{
+        width: 80px;      
+        height: 20px;      
+        padding: 0 16px;
+        font-size: 15px;
+        border-radius: 12px;
+    }
+}
+
 
 @media (max-width:992px) {
 
