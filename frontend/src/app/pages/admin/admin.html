@@ -1,7 +1,7 @@
 <div class="admin-layout" *ngIf="!applicantvisible">
 
-  <app-admin-sidebar [currentPage]="showAnalytics ? 'analytics' : 'dashboard'" (dashboard)="closeAnalytics()"
-    (analytics)="openAnalytics()" (logout)="logout()">
+  <app-admin-sidebar [currentPage]="showAnalytics ? 'analytics' : 'dashboard'" (dashboard)="toggleAnalytics(false)"
+    (analytics)="toggleAnalytics(true)" (logout)="logout()">
   </app-admin-sidebar>
 
   <div class="admin-content">
@@ -18,11 +18,11 @@
         <div class="search-box">
           <i class="fas fa-search search-icon"></i>
 
-          <input type="text" [(ngModel)]="searchText" (input)="onSearchInput()" (keyup.enter)="searchByName()"
+          <input type="text" [(ngModel)]="searchText" (input)="onSearchInput()" (keyup.enter)="setSearch(searchText)"
             placeholder="Search by name..." class="search-bar">
           <div class="suggestion-box" *ngIf="searchText && searchSuggestions.length">
 
-            <div class="suggestion-item" *ngFor="let s of searchSuggestions" (click)="selectSuggestion(s.name)">
+            <div class="suggestion-item" *ngFor="let s of searchSuggestions" (click)="setSearch(s.name)">
 
               <i class="fa-solid fa-user"></i>
               {{ s.name }}
@@ -30,7 +30,7 @@
             </div>
 
           </div>
-          <button *ngIf="searchText" (click)="clearSearch()" class="clear-search-btn">
+          <button *ngIf="searchText" (click)="setSearch()" class="clear-search-btn">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -219,67 +219,34 @@
             </label>
 
             <div class="company-dropdown">
-
               <div class="company-header">
-
                 <button type="button" class="company-btn" (click)="showCompanies=!showCompanies">
-
                   <span class="company-text">
-
-                    {{
-                    selectedCompanies.length
-                    ? selectedCompanies.join(', ')
-                    : 'Select Company'
-                    }}
-
+                    {{ selectedCompanies.length ? selectedCompanies.join(', ') : 'Select Company' }}
                   </span>
-
                   <span class="company-arrow">
                     ▼
                   </span>
-
                 </button>
-
                 <button *ngIf="showCompanies" type="button" class="company-done-btn" (click)="showCompanies=false">
-
-                  Done
-
-                </button>
-
+                  Done</button>
               </div>
-
             </div>
-
           </div>
-
           <!-- Company Grid -->
           <div *ngIf="showCompanies" class="company-content">
-
             <div class="company-grid">
-
               <label class="company-option" *ngFor="let company of companyNames">
-
                 <input type="checkbox" [checked]="selectedCompanies.includes(company)"
-                  (change)="toggleCompany(company,$event)">
-
-                {{ company }}
-
-              </label>
-
+                  (change)="toggleCompany(company,$event)">{{ company }} </label>
             </div>
-
           </div>
-
         </div>
-
       </ng-template>
-
       <table class="basic-table" *ngIf="
       viewMode === 'list' &&
       applicants.length > 0 &&
-      (applicants | filter: searchText).length > 0
-    ">
-
+      (applicants | filter: searchText).length > 0">
         <thead>
           <tr>
             <th>ID</th>
@@ -328,91 +295,57 @@
             <td>
 
               <div class="action-buttons">
-
-                <button (click)="openEditModal(a)" class="btn-edit">
-
-                  <i class="fas fa-pencil-alt"></i>
-
-                </button>
-
-                <button (click)="deleteApplicant(a.id)" class="btn-delete">
-
-                  <i class="fas fa-trash"></i>
-
-                </button>
-
+                <button (click)="openEditModal(a)" class="btn-edit"><i class="fas fa-pencil-alt"></i></button>
+                <button (click)="deleteApplicant(a.id)" class="btn-delete"><i class="fas fa-trash"></i></button>
               </div>
-
             </td>
           </tr>
         </tbody>
       </table>
       <div class="main-content">
         <div class="left-panel" *ngIf="viewMode === 'grid'">
-
-          <button class="filter-btn" (click)="showFilters = !showFilters">
-
-            <i class="fa-solid fa-filter"></i>
-            Filters
-
-          </button>
+          <button class="filter-btn" (click)="showFilters = !showFilters"> <i class="fa-solid fa-filter"></i>Filters </button>
           <!-- FILTERS (GRID VIEW ONLY) -->
           <div class="filter-container" *ngIf="viewMode === 'grid' && showFilters">
             <!-- Qualification -->
             <select [(ngModel)]="selectedQualification">
-
               <option value="">
                 All Qualifications
               </option>
-
               <optgroup label="UG">
-
                 <option value="BE">
                   B.E
                 </option>
-
                 <option value="BTech">
                   B.Tech
                 </option>
-
                 <option value="BSc">
                   B.Sc
                 </option>
-
                 <option value="BCA">
                   BCA
                 </option>
-
                 <option value="BCom">
                   B.Com
                 </option>
-
               </optgroup>
-
               <optgroup label="PG">
-
                 <option value="ME">
                   M.E
                 </option>
-
                 <option value="MTech">
                   M.Tech
                 </option>
-
                 <option value="MSc">
                   M.Sc
                 </option>
-
                 <option value="MCA">
                   MCA
                 </option>
-
                 <option value="MCom">
                   M.Com
                 </option>
-
               </optgroup>
-
             </select>
             <!-- Gender -->
             <select [(ngModel)]="selectedGender">
@@ -420,16 +353,12 @@
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
-
             <!-- Language -->
             <select [(ngModel)]="selectedLanguage">
-
               <option value="">
                 All Languages
               </option>
-
               <optgroup label="Indian Languages">
-
                 <option value="Tamil">Tamil</option>
                 <option value="Telugu">Telugu</option>
                 <option value="Hindi">Hindi</option>
@@ -440,11 +369,8 @@
                 <option value="Gujarati">Gujarati</option>
                 <option value="Punjabi">Punjabi</option>
                 <option value="Odia">Odia</option>
-
               </optgroup>
-
               <optgroup label="Foreign Languages">
-
                 <option value="English">English</option>
                 <option value="French">French</option>
                 <option value="German">German</option>
@@ -455,11 +381,8 @@
                 <option value="Russian">Russian</option>
                 <option value="Italian">Italian</option>
                 <option value="Arabic">Arabic</option>
-
               </optgroup>
-
             </select>
-
             <!-- Company -->
             <select [(ngModel)]="selectedCompany">
               <option value="">All Companies</option>
@@ -467,30 +390,17 @@
                 {{company}}
               </option>
             </select>
-
             <!-- DOB -->
-
             <div class="date-range-title">
               <i class="fa-solid fa-calendar-days"></i>
               Date Range
             </div>
-
-            <label class="date-label">
-              From
-            </label>
-
+            <label class="date-label">From</label>
             <input type="date" [(ngModel)]="selectedFromDate">
-
-            <label class="date-label">
-              To
-            </label>
-
+            <label class="date-label">To</label>
             <input type="date" [(ngModel)]="selectedToDate">
           </div>
-
-
         </div>
-
 
         <div class="grid-container" *ngIf="viewMode === 'grid' && applicants.length > 0"
           [class.search-mode]="searchKeyword">
@@ -500,98 +410,52 @@
             *ngFor="let a of filteredApplicants | filter: searchKeyword" (click)="searchMode && selectApplicant(a)">
             <!-- NORMAL CARD -->
             <div *ngIf="!searchKeyword">
-
               <div class="profile-section">
-
                 <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto"
-                  class="profile-photo" (click)="openPhotoDialog(a); $event.stopPropagation()">
-
+                  class="profile-photo" (click)="togglePhotoDialog(true); $event.stopPropagation()">
                 <div *ngIf="!a.profilePhoto" class="profile-avatar">
-
                   {{ a.name?.charAt(0)?.toUpperCase() }}
-
                 </div>
-
               </div>
 
               <!-- EDIT -->
               <button (click)="openEditModal(a); $event.stopPropagation()" class="profile-edit-btn">
-                <i class="fas fa-pencil-alt"></i>
-
-              </button>
+                <i class="fas fa-pencil-alt"></i></button>
 
               <!-- DELETE -->
               <button (click)="deleteApplicant(a.id); $event.stopPropagation()" class="profile-delete-btn">
-                <i class="fas fa-trash"></i>
-
-              </button>
-
-
+                <i class="fas fa-trash"></i></button>
 
               <div class="id-badge">
-
                 #{{ a.id.toString().padStart(3,'0') }}
-
               </div>
 
-
               <h3 class="applicant-name">
-
                 {{ a.name | titlecase }}
-
               </h3>
 
               <p class="email-text">
-
                 {{ a.email }}
-
               </p>
               <div class="info-grid">
-
-                <div class="info-box">
+                <div class="info-box" *ngFor="let item of [
+                {icon:'phone',label:'Phone',value:a.phone},
+                {icon:'graduation-cap',label:'Qualification',value:a.qualification},
+                {icon:'calendar',label:'DOB',value:(a.dob|date:'dd-MM-yyyy')},
+                {icon:'user',label:'Gender',value:a.gender}
+              ]">
                   <div class="label">
-                    <i class="fa-solid fa-phone"></i>
-                    Phone
+                    <i class="fa-solid fa-{{item.icon}}"></i>
+                    {{item.label}}
                   </div>
+
                   <div class="value">
-                    {{a.phone}}
+                    {{item.value}}
                   </div>
                 </div>
-
-                <div class="info-box">
-                  <div class="label">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                    Qualification
-                  </div>
-                  <div class="value">
-                    {{a.qualification}}
-                  </div>
-                </div>
-
-                <div class="info-box">
-                  <div class="label">
-                    <i class="fa-solid fa-calendar"></i>
-                    DOB
-                  </div>
-                  <div class="value">
-                    {{a.dob | date:'dd-MM-yyyy'}}
-                  </div>
-                </div>
-
-                <div class="info-box">
-                  <div class="label">
-                    <i class="fa-solid fa-user"></i>
-                    Gender
-                  </div>
-                  <div class="value">
-                    {{a.gender}}
-                  </div>
-                </div>
-
               </div>
 
               <div class="details-section">
-
                 <div class="detail-block">
                   <div class="detail-title">
                     <i class="fa-solid fa-language"></i>
@@ -613,94 +477,63 @@
                     {{ a.companies }}
                   </div>
                 </div>
-
               </div>
-
-
-
               <p class="updated-time">
                 <i class="fa-solid fa-clock"></i>
                 Last Updated:
                 {{ getTimeAgo(a.updatedAt) }}
               </p>
-
             </div>
             <!-- SEARCH CARD -->
-
             <div *ngIf="searchKeyword" class="search-card">
-
               <!-- Edit -->
               <button class="profile-edit-btn" (click)="openEditModal(a); $event.stopPropagation()">
-                <i class="fas fa-pencil-alt"></i>
-              </button>
-
+                <i class="fas fa-pencil-alt"></i> </button>
               <!-- Delete -->
               <button class="profile-delete-btn" (click)="deleteApplicant(a.id); $event.stopPropagation()">
-                <i class="fas fa-trash"></i>
-              </button>
-
+                <i class="fas fa-trash"></i>  </button>
               <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto"
                 class="search-photo">
-
               <div *ngIf="!a.profilePhoto" class="search-avatar">
                 {{ a.name.charAt(0).toUpperCase() }}
               </div>
-
               <h3>{{ a.name | titlecase }}</h3>
               <p>{{ a.qualification }}</p>
-
             </div>
           </div>
-
         </div>
 
         <dialog id="editDialog" class="edit-dialog">
           <div class="dialog-header">
             <button class="dialog-close-btn" (click)="closeEditModal()">
-
-              <i class="fa-solid fa-xmark"></i>
-
-            </button>
-
+              <i class="fa-solid fa-xmark"></i></button>
             <h2>Edit Applicant</h2>
           </div>
 
-
           <div class="edit-input-grid">
-
             <input type="text" [(ngModel)]="editData.name" placeholder="Name" class="edit-input">
-
             <input type="email" [(ngModel)]="editData.email" placeholder="Email" class="edit-input">
-
             <input type="text" [(ngModel)]="editData.phone" placeholder="Phone" class="edit-input">
-
             <input type="text" [(ngModel)]="editData.qualification" placeholder="Qualification" class="edit-input">
-
             <input type="date" [(ngModel)]="editData.dob" class="edit-input">
 
           </div>
 
           <div class="edit-section">
             <div class="field-row">
-
               <label class="field-label">
                 Gender
               </label>
-
               <div class="radio-group">
-
                 <label>
                   <input type="radio" value="Male" [(ngModel)]="editData.gender">
                   Male
                 </label>
-
                 <label>
                   <input type="radio" value="Female" [(ngModel)]="editData.gender">
                   Female
                 </label>
-
               </div>
-
             </div>
           </div>
 
@@ -709,52 +542,36 @@
           </div>
           <div class="upload-container">
             <label class="file-placeholder">
-              <input type="file" (change)="onEditResumeSelect($event)">
+              <input type="file" (change)="onFileSelect($event,'resume')">
               {{ editResumeFile?.name || '📄 Upload Resume' }}
             </label>
 
             <label class="file-placeholder">
-              <input type="file" (change)="onEditMarksheetSelect($event)">
+              <input type="file" (change)="onFileSelect($event,'marksheet')">
               {{ editMarksheetFile?.name || '🎓 Upload Marksheet' }}
             </label>
           </div>
           <div class="action-cell">
-
-            <button (click)="saveEdit()" class="btn-save">
-              Save
-            </button>
-
+            <button (click)="saveEdit()" class="btn-save"> Save</button> 
             <button (click)="closeEditModal()" class="btn-cancel">
               Cancel
             </button>
-
           </div>
-
         </dialog>
         <div class="photo-overlay" *ngIf="showPhotoDialog">
-
           <div class="photo-dialog">
-
-            <button class="close-photo-btn" (click)="closePhotoDialog()">
-
+            <button class="close-photo-btn" (click)="togglePhotoDialog(false)">
               ✕
-
             </button>
-
             <h2>Select Profile Picture</h2>
-
             <div class="photo-grid">
-
               <img *ngFor="let photo of photoList" [src]="'http://localhost:8081/uploads/' + photo" class="dialog-photo"
                 (click)="setProfilePhoto(photo)">
-
             </div>
-
           </div>
         </div>
       </div>
     </div>
-
   </div>
   <app-admin-analytics *ngIf="showAnalytics" [applicants]="applicants"></app-admin-analytics>
 </div>

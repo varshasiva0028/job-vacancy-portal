@@ -25,41 +25,28 @@ import { Router } from '@angular/router';
   styleUrls: ['./user-dashboard.css']
 })
 export class UserDashboardComponent implements OnInit {
-
   applicant: any = {};
   editApplicant: any = {};
-
   editMode = false;
-
   companies: string[] = [];
-
   languages: any[] = [];
   editLanguages: any[] = [];
-
   selectedPhoto: File | null = null;
   showPhotoDialog = false;
   photoList: string[] = [];
   selectedProfilePhoto = '';
   selectedLanguageNames: string[] = [];
-
   showLanguages = false;
-
   selectedResume: File | null = null;
   selectedMarksheet: File | null = null;
-
   resumeFileName = '';
   marksheetFileName = '';
-
   safePreviewUrl!: SafeResourceUrl;
-
   previewTitle = '';
   previewUrl = '';
-
   isPdf = false;
-
   @ViewChild('previewDialog')
   previewDialog!: ElementRef<HTMLDialogElement>;
-
   languageGroups = [
     {
       label: 'Indian Languages',
@@ -103,190 +90,88 @@ export class UserDashboardComponent implements OnInit {
   ngOnInit(): void {
 
     const token = localStorage.getItem('token');
-
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
-
     this.http.get<any>(
       'http://localhost:8081/api/applicants/my',
       { headers }
     ).subscribe({
-
       next: (response) => {
-
         console.log(response);
-
         this.applicant = { ...response };
         this.editApplicant = { ...response };
-
         this.cdr.detectChanges();
-
         console.log('applicant =', this.applicant);
-
         this.languages = [];
-
         if (response.languages) {
-
           try {
-
-            this.languages = [...JSON.parse(response.languages)];
-
-          } catch {
-
-            this.languages = [];
-
-          }
-
-          this.cdr.detectChanges();
-        }
-
-        if (response.languages) {
-
-          try {
-
             this.languages = JSON.parse(response.languages);
-
           } catch {
-
             this.languages = [];
-
           }
-
         }
-
       },
-
       error: (err) => {
-
         console.error(err);
-
       }
-
     });
-
   }
-goBack(): void {
-
-  this.router.navigate(['/home']);
-
-}
+  goBack(): void {
+    this.router.navigate(['/home']);
+  }
 
   editProfile(): void {
-
     this.editApplicant = { ...this.applicant };
-
     this.editLanguages = JSON.parse(
       JSON.stringify(this.languages)
     );
-
     this.selectedLanguageNames = this.editLanguages.map(
       lang => lang.name
     );
-
     this.editMode = true;
-
   }
-
   cancelEdit(): void {
-
     this.editMode = false;
-
   }
-
   createLanguageSkill(name: string) {
-
     return {
-
       name,
-
       read: false,
-
       write: false,
-
       speak: false,
-
       all: false
-
     };
-
   }
 
   addLanguage(name: string): void {
-
     if (!this.editLanguages.some(
       lang => lang.name === name
     )) {
-
       this.editLanguages.push(
         this.createLanguageSkill(name)
       );
-
     }
-
     if (!this.selectedLanguageNames.includes(name)) {
-
       this.selectedLanguageNames.push(name);
-
     }
-
   }
 
   toggleLanguage(language: string, event: any): void {
-
-    if (event.target.checked) {
-
-      this.addLanguage(language);
-
-    } else {
-
-      this.removeLanguage(language);
-
-    }
-
+    event.target.checked ? this.addLanguage(language) : this.removeLanguage(language);
   }
-
   updateLanguageAllState(language: any): void {
-
     language.all =
       language.read &&
       language.write &&
       language.speak;
-
   }
-
   getProgress(language: any): number {
-
-    if (language.all) {
-
-      return 100;
-
-    }
-
-    let progress = 0;
-
-    if (language.read) {
-
-      progress += 30;
-
-    }
-
-    if (language.write) {
-
-      progress += 30;
-
-    }
-
-    if (language.speak) {
-
-      progress += 40;
-
-    }
-
-    return progress;
-
+    return language.all ? 100 :
+      (language.read ? 30 : 0) +
+      (language.write ? 30 : 0) +
+      (language.speak ? 40 : 0);
   }
-
   removeLanguage(name: string): void {
 
     this.editLanguages =
@@ -310,34 +195,17 @@ goBack(): void {
     }
 
   }
-
-  onResumeSelected(event: any): void {
-
-    if (event.target.files.length > 0) {
-
-      this.selectedResume = event.target.files[0];
-
-      this.resumeFileName =
-        this.selectedResume!.name;
-
+  onFileSelected(event: any, type: 'resume' | 'marksheet'): void {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (type === 'resume') {
+      this.selectedResume = file;
+      this.resumeFileName = file.name;
+    } else {
+      this.selectedMarksheet = file;
+      this.marksheetFileName = file.name;
     }
-
   }
-
-  onMarksheetSelected(event: any): void {
-
-    if (event.target.files.length > 0) {
-
-      this.selectedMarksheet =
-        event.target.files[0];
-
-      this.marksheetFileName =
-        this.selectedMarksheet!.name;
-
-    }
-
-  }
-
   saveChanges(): void {
 
     if (!this.editApplicant.name || !this.editApplicant.name.trim()) {
@@ -399,7 +267,6 @@ goBack(): void {
     const formData = new FormData();
 
     if (this.selectedPhoto) {
-
       formData.append(
         'photo',
         this.selectedPhoto
@@ -408,7 +275,6 @@ goBack(): void {
     }
 
     if (this.selectedResume) {
-
       formData.append(
         'resume',
         this.selectedResume
@@ -424,48 +290,38 @@ goBack(): void {
       );
 
     }
-
     formData.append(
       'name',
       this.editApplicant.name.trim()
     );
-
     formData.append(
       'email',
       this.editApplicant.email.trim()
     );
-
     formData.append(
       'phone',
       this.applicant.phone || ''
     );
-
     formData.append(
       'qualification',
       this.editApplicant.qualification.trim()
     );
-
     formData.append(
       'dob',
       this.editApplicant.dob
     );
-
     formData.append(
       'gender',
       this.editApplicant.gender
     );
-
     formData.append(
       'languages',
       JSON.stringify(this.editLanguages)
     );
-
     const token = localStorage.getItem('token');
-
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
-
     this.http.put(
       `http://localhost:8081/api/applicants/${this.applicant.id}`,
       formData,
@@ -474,116 +330,49 @@ goBack(): void {
         responseType: 'text'
       }
     ).subscribe({
-
       next: () => {
-
         alert('Applicant Updated Successfully');
-
         this.editMode = false;
-
         this.ngOnInit();
-
       },
-
       error: (err) => {
-
         console.error(err);
-
         alert(
           'Update Failed: ' +
           (err.error || err.message)
         );
-
       }
-
     });
-
   }
-
   toggleAll(language: any): void {
-
-    if (language.all) {
-
-      language.read = true;
-      language.write = true;
-      language.speak = true;
-
-    } else {
-
-      language.read = false;
-      language.write = false;
-      language.speak = false;
-
-    }
-
+    language.read = language.write = language.speak = language.all;
   }
-
   openPreview(filePath: string, title: string): void {
-
     this.previewTitle = title;
-
     const fileUrl =
       'http://localhost:8081/uploads/' + filePath;
-
     this.safePreviewUrl =
       this.sanitizer.bypassSecurityTrustResourceUrl(
         fileUrl
       );
-
     this.isPdf = true;
-
   }
-
   closePreview(): void {
-
     this.isPdf = false;
-
     this.previewDialog.nativeElement.close();
-
   }
-
-  parsePhotoPaths(photoPaths: string): string[] {
-
-    if (!photoPaths) {
-
-      return [];
-
-    }
-
-    return photoPaths
-      .split(',')
-      .map(path => path.trim())
-      .filter(path => path);
-
-  }
-
   openPhotoDialog(): void {
-
-    this.photoList =
-      this.applicant.photoPaths
-        .split(',')
-        .filter(
-          (photo: string) => photo.trim() !== ''
-        );
-
+    this.photoList = this.applicant.photoPaths.split(',').filter((p: string) => p.trim());
     this.showPhotoDialog = true;
-
   }
-
   closePhotoDialog(): void {
-
     this.showPhotoDialog = false;
-
   }
-
   saveProfilePhoto(): void {
-
     const token = localStorage.getItem('token');
-
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
-
     this.http.put(
       `http://localhost:8081/api/applicants/${this.applicant.id}/profile-photo`,
       {
@@ -594,37 +383,22 @@ goBack(): void {
         responseType: 'text'
       }
     ).subscribe({
-
       next: () => {
-
         this.applicant.profilePhoto =
           this.selectedProfilePhoto;
-
         this.closePhotoDialog();
-
         alert('Profile picture updated successfully');
-
       },
-
       error: err => {
-
         console.error(err);
-
         alert('Update failed');
-
       }
-
     });
-
   }
-
   logout(): void {
-
     localStorage.clear();
-
     this.router.navigateByUrl('/', {
       replaceUrl: true
     });
   }
-
 }

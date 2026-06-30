@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FilterPipe } from '../../pipe';
 import { ApplicantDetailsComponent } from '../../applicant-details/applicant-details';
 import { AdminAnalyticsComponent } from '../admin-analytics/admin-analytics';
-import { AdminSidebarComponent } from '../../admin-sidebar/admin-sidebar';  
+import { AdminSidebarComponent } from '../../admin-sidebar/admin-sidebar';
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -22,6 +22,15 @@ import { AdminSidebarComponent } from '../../admin-sidebar/admin-sidebar';
   templateUrl: './admin.html'
 })
 export class AdminComponent implements OnInit {
+  private readonly API_URL = 'http://localhost:8081/api/applicants';
+  private readonly EMAIL_PATTERN =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  private readonly PHONE_PATTERN =
+    /^[0-9]{10}$/;
+
+  private readonly QUALIFICATION_PATTERN =
+    /^[A-Za-z\s.]+$/;
   username = '';
   role = '';
   applicantvisible = false;
@@ -85,39 +94,6 @@ export class AdminComponent implements OnInit {
     speak: boolean;
     all: boolean;
   }> = [];
-  languagesList = [
-    {
-      label: 'Indian Languages',
-      options: [
-        'Tamil',
-        'Telugu',
-        'Hindi',
-        'Malayalam',
-        'Kannada',
-        'Bengali',
-        'Marathi',
-        'Gujarati',
-        'Punjabi',
-        'Odia'
-      ]
-    },
-    {
-      label: 'Foreign Languages',
-      options: [
-        'English',
-        'French',
-        'German',
-        'Spanish',
-        'Japanese',
-        'Chinese',
-        'Korean',
-        'Russian',
-        'Italian',
-        'Arabic'
-      ]
-    }
-  ];
-
   applicants: any[] = [];
   searchText: string = '';
   showSuggestions = true;
@@ -133,10 +109,7 @@ export class AdminComponent implements OnInit {
   showFilters = false;
 
   toggleView(): void {
-    this.viewMode =
-      this.viewMode === 'list'
-        ? 'grid'
-        : 'list';
+    this.viewMode = this.viewMode === 'list' ? 'grid' : 'list';
   }
   editingId: number | null = null;
   editData = {
@@ -167,24 +140,13 @@ export class AdminComponent implements OnInit {
     console.log(this.selectedApplicant);
   }
 
-  openAnalytics(): void {
-
-    this.showAnalytics = true;
-
-  }
-  closeAnalytics(): void {
-
-    this.showAnalytics = false;
-
+  toggleAnalytics(show: boolean): void {
+    this.showAnalytics = show;
   }
   openDashboardWithFilters(): void {
-
     this.showAnalytics = false;
-
     this.viewMode = 'grid';
-
     this.showFilters = true;
-
   }
   get searchSuggestions(): any[] {
 
@@ -200,27 +162,14 @@ export class AdminComponent implements OnInit {
       )
       .slice(0, 5);
   }
-  searchByName() {
-    this.searchKeyword = this.searchText;
-    this.searchMode = this.searchKeyword.trim().length > 0;
-    this.showSuggestions = false;
-  }
-  clearSearch() {
-    this.searchText = '';
-    this.searchKeyword = '';
-    this.searchMode = false;
-    this.showSuggestions = false;
-  }
+  setSearch(value = ''): void {
 
-  selectSuggestion(name: string) {
-
-    this.searchText = name;
-    this.searchKeyword = name;
-    this.searchMode = true;
+    this.searchText = value;
+    this.searchKeyword = value;
+    this.searchMode = !!value.trim();
     this.showSuggestions = false;
 
   }
-
 
   onSearchInput() {
     this.showSuggestions = true; // show again when typing
@@ -246,17 +195,20 @@ export class AdminComponent implements OnInit {
     });
 
   }
+  private getAuthHeaders(): HttpHeaders {
+
+    return new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+
+  }
 
   loadApplicants(): void {
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
+    const headers = this.getAuthHeaders();
 
     this.http.get<any[]>(
-      'http://localhost:8081/api/applicants',
+      this.API_URL,
       { headers }
     )
       .subscribe({
@@ -305,9 +257,7 @@ export class AdminComponent implements OnInit {
     this.selectedCompanies =
       this.parseStoredCompanies(applicant.companies);
   }
-  cancelEdit(): void {
-
-    this.editingId = null;
+  private resetEditForm(): void {
 
     this.editData = {
       name: '',
@@ -319,24 +269,32 @@ export class AdminComponent implements OnInit {
       languages: '',
       companies: ''
     };
+
     this.editResumeFile = null;
     this.editMarksheetFile = null;
-
     this.selectedLanguages = [];
     this.selectedLanguageNames = [];
-
     this.selectedCompanies = [];
+  }
+  cancelEdit(): void {
+
+    this.editingId = null;
+    this.resetEditForm();
 
   }
+  onFileSelect(
+    event: any,
+    type: 'resume' | 'marksheet'
+  ): void {
 
-  onEditResumeSelect(event: any): void {
-    if (event.target.files && event.target.files.length > 0) {
-      this.editResumeFile = event.target.files[0];
-    }
-  }
-  onEditMarksheetSelect(event: any): void {
-    if (event.target.files && event.target.files.length > 0) {
-      this.editMarksheetFile = event.target.files[0];
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (type === 'resume') {
+      this.editResumeFile = file;
+    } else {
+      this.editMarksheetFile = file;
     }
   }
   //Creating a Language
@@ -371,13 +329,9 @@ export class AdminComponent implements OnInit {
     );
   }
   toggleLanguage(language: string, event: any): void {
-
-    if (event.target.checked) {
-      this.addLanguage(language);
-    } else {
-      this.removeLanguage(language);
-    }
-
+    event.target.checked
+      ? this.addLanguage(language)
+      : this.removeLanguage(language);
   }
   //Synchronizing Dropdown
   syncSelectedLanguages(names: string[]): void {
@@ -395,15 +349,10 @@ export class AdminComponent implements OnInit {
   }
   //All Checkbox
   toggleAll(language: any): void {
-    if (language.all) {
-      language.read = true;
-      language.write = true;
-      language.speak = true;
-    } else {
-      language.read = false;
-      language.write = false;
-      language.speak = false;
-    }
+    language.read =
+      language.write =
+      language.speak =
+      language.all;
   }
   //Updating All Automatically
   updateLanguageAllState(language: any): void {
@@ -414,20 +363,9 @@ export class AdminComponent implements OnInit {
     if (language.all) {
       return 100;
     }
-
-    let progress = 0;
-
-    if (language.read) {
-      progress += 30;
-    }
-    if (language.write) {
-      progress += 30;
-    }
-    if (language.speak) {
-      progress += 40;
-    }
-
-    return progress;
+    return (language.read ? 30 : 0)
+      + (language.write ? 30 : 0)
+      + (language.speak ? 40 : 0);
   }
 
   private parseLanguageToken(token: string) {
@@ -508,91 +446,79 @@ export class AdminComponent implements OnInit {
     if (!value) {
       return [];
     }
-
     try {
       return JSON.parse(value);
+    } catch {
+      return value.split(',').map(x => x.trim()).filter(Boolean);
     }
-    catch {
-      return value
-        .split(',')
-        .map(x => x.trim())
-        .filter(x => x);
-    }
-
   }
   toggleCompany(company: string, event: any): void {
-
     if (event.target.checked) {
-
-      if (!this.selectedCompanies.includes(company)) {
+      if (!this.selectedCompanies.includes(company))
         this.selectedCompanies.push(company);
-      }
-
-    } else {
-
-      this.selectedCompanies =
-        this.selectedCompanies.filter(
-          x => x !== company
-        );
-
+      return;
     }
+    this.selectedCompanies =
+      this.selectedCompanies.filter(c => c !== company);
 
   }
 
   openEditModal(applicant: any): void {
-
     this.startEdit(applicant);
-
-    const dialog =
-      document.getElementById('editDialog') as HTMLDialogElement;
-
+    const dialog = document.getElementById('editDialog') as HTMLDialogElement;
     if (dialog) {
       dialog.showModal();
     }
   }
   closeEditModal(): void {
-
     const dialog =
       document.getElementById('editDialog') as HTMLDialogElement;
-
     if (dialog) {
       dialog.close();
     }
-
     this.cancelEdit();
   }
-  saveEdit(): void {
+  private validateEditForm(): boolean {
 
-    if (!this.editData.name || !this.editData.name.trim()) {
+    if (!this.editData.name.trim()) {
       alert('Please enter a name');
-      return;
+      return false;
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = this.EMAIL_PATTERN
     if (!emailPattern.test(this.editData.email)) {
       alert('Please enter a valid email address');
-      return;
+      return false;
     }
 
-    const phonePattern = /^[0-9]{10}$/;
+    const phonePattern = this.PHONE_PATTERN;
     if (!phonePattern.test(this.editData.phone)) {
       alert('Phone number must contain exactly 10 digits');
-      return;
+      return false;
     }
 
-    const qualificationPattern = /^[A-Za-z\s.]+$/;
+    const qualificationPattern = this.QUALIFICATION_PATTERN;
+
     if (!qualificationPattern.test(this.editData.qualification)) {
       alert('Qualification should contain only letters');
-      return;
+      return false;
     }
 
     if (!this.editData.gender) {
       alert('Please select Gender');
-      return;
+      return false;
     }
 
     if (this.selectedLanguages.length === 0) {
       alert('Please select at least one language');
+      return false;
+    }
+
+    return true;
+  }
+  saveEdit(): void {
+
+    if (!this.validateEditForm()) {
       return;
     }
 
@@ -620,14 +546,10 @@ export class AdminComponent implements OnInit {
       formData.append('marksheet', this.editMarksheetFile);
     }
 
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
+    const headers = this.getAuthHeaders();
 
     this.http.put(
-      `http://localhost:8081/api/applicants/${this.editingId}`,
+      `${this.API_URL}/${this.editingId}`,
       formData,
       {
         headers,
@@ -647,8 +569,6 @@ export class AdminComponent implements OnInit {
 
   }
   deleteApplicant(id: number): void {
-
-
     const confirmed = confirm(
       'Are you sure you want to delete this applicant?'
     );
@@ -656,16 +576,9 @@ export class AdminComponent implements OnInit {
     if (!confirmed) {
       return;
     }
-
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-
+    const headers = this.getAuthHeaders();
     this.http.delete(
-      `http://localhost:8081/api/applicants/${id}`,
+      `${this.API_URL}/${id}`,
       {
         headers,
         responseType: 'text'
@@ -675,51 +588,24 @@ export class AdminComponent implements OnInit {
       .subscribe({
 
         next: (response) => {
-
           alert(response);
-
           this.loadApplicants();
 
         },
 
         error: (error) => {
-
           console.error(error);
-
           alert(error.error);
-
         }
-
       });
-
   }
-  openPhotoDialog(applicant: any): void {
-
-    this.selectedApplicantId = applicant.id;
-
-    this.photoList =
-      applicant.photoPaths
-        .split(',')
-        .filter((photo: string) => photo.trim() !== '');
-
-    this.showPhotoDialog = true;
-
-  }
-  closePhotoDialog(): void {
-
-    this.showPhotoDialog = false;
-
+  togglePhotoDialog(show: boolean): void {
+    this.showPhotoDialog = show;
   }
   setProfilePhoto(photo: string): void {
-
-    const token = localStorage.getItem('token');
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
+    const headers = this.getAuthHeaders();
     this.http.put(
-      `http://localhost:8081/api/applicants/${this.selectedApplicantId}/profile-photo`,
+      `${this.API_URL}/${this.selectedApplicantId}/profile-photo`,
       {
         profilePhoto: photo
       },
@@ -728,56 +614,39 @@ export class AdminComponent implements OnInit {
         responseType: 'text'
       }
     ).subscribe({
-
       next: () => {
-
         const applicant = this.applicants.find(
           (a: any) => a.id === this.selectedApplicantId
         );
-
         if (applicant) {
           applicant.profilePhoto = photo;
         }
-
-        this.closePhotoDialog();
-
+        this.togglePhotoDialog(false);
         this.loadApplicants();
-
       },
-
       error: err => {
-
         console.error(err);
-
         alert('Failed to update profile photo');
-
       }
-
     });
-
   }
   getTimeAgo(date: string): string {
 
     const now = new Date().getTime();
     const updated = new Date(date).getTime();
-
     const seconds = Math.floor((now - updated) / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-
     if (seconds < 60) {
       return 'Just now';
     }
-
     if (minutes < 60) {
       return `${minutes} min ago`;
     }
-
     if (hours < 24) {
       return `${hours} hr ago`;
     }
-
     return `${days} day${days > 1 ? 's' : ''} ago`;
   }
   logout(): void {
@@ -792,43 +661,20 @@ export class AdminComponent implements OnInit {
     this.router.navigateByUrl('/', {
       replaceUrl: true
     });
-
   }
   get filteredApplicants() {
-
     return this.applicants.filter(a =>
-
-      (!this.selectedQualification ||
-        a.qualification === this.selectedQualification)
-
+      (!this.selectedQualification ||a.qualification === this.selectedQualification)
       &&
-
-      (!this.selectedGender ||
-        a.gender === this.selectedGender)
-
+      (!this.selectedGender ||a.gender === this.selectedGender)
       &&
-
-      (!this.selectedLanguage ||
-        this.getLanguageSummary(a.languages)?.includes(this.selectedLanguage))
-
+      (!this.selectedLanguage ||this.getLanguageSummary(a.languages)?.includes(this.selectedLanguage))
       &&
-
-      (!this.selectedCompany ||
-        a.companies?.includes(this.selectedCompany))
+      (!this.selectedCompany ||a.companies?.includes(this.selectedCompany))
       &&
-
-      (
-        !this.selectedFromDate ||
-        new Date(a.dob) >= new Date(this.selectedFromDate)
-      )
-
+      (!this.selectedFromDate ||new Date(a.dob) >= new Date(this.selectedFromDate))
       &&
-
-      (
-        !this.selectedToDate ||
-        new Date(a.dob) <= new Date(this.selectedToDate)
-      )
+      (!this.selectedToDate ||new Date(a.dob) <= new Date(this.selectedToDate))
     );
-
   }
 }
