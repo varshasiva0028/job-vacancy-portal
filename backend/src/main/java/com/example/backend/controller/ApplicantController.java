@@ -52,7 +52,7 @@ public class ApplicantController {
             @RequestParam("dob") LocalDate dob,
             @RequestParam("gender") String gender,
             @RequestParam("languages") String languages,
-            @RequestParam("companies") String companies,
+            @RequestParam(value = "companies", required = false) String companies,
             @RequestParam(value = "resume", required = false) MultipartFile resume,
             @RequestParam("photos") MultipartFile[] photos,
             @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
@@ -191,7 +191,7 @@ public class ApplicantController {
             applicant.setDob(dob);
             applicant.setGender(gender.trim());
             applicant.setLanguages(languages.trim());
-            applicant.setCompanies(companies.trim());
+            applicant.setCompanies(companies != null ? companies.trim() : applicant.getCompanies());
             applicant.setResumePath(resumeFileName);
 
             applicant.setPhotoPaths(photoNames.toString());
@@ -306,11 +306,12 @@ public class ApplicantController {
             @RequestParam("dob") LocalDate dob,
             @RequestParam("gender") String gender,
             @RequestParam("languages") String languages,
-            @RequestParam("companies") String companies,
+            @RequestParam(value = "companies", required = false) String companies,
             @RequestParam(value = "resume", required = false) MultipartFile resume,
             @RequestParam(value = "photos", required = false) MultipartFile[] photos,
             @RequestParam(value = "marksheet", required = false) MultipartFile marksheet) {
 
+        System.out.println("[DEBUG-Controller] reached updateApplicant for ID: " + id);
         try {
 
             Applicant applicant = service.getApplicantById(id);
@@ -362,8 +363,7 @@ public class ApplicantController {
             applicant.setDob(dob);
             applicant.setGender(gender.trim());
             applicant.setLanguages(languages.trim());
-            applicant.setCompanies(companies.trim());
-
+            applicant.setCompanies(companies != null ? companies.trim() : applicant.getCompanies());
 // Handle file uploads and updates
             String uploadDir = System.getProperty("user.dir") + File.separator + "uploads";
 

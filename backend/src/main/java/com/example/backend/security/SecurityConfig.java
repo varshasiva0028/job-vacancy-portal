@@ -47,6 +47,16 @@ public class SecurityConfig {
                 // Everything else requires login
                 .anyRequest().authenticated()
                 )
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            System.err.println("[DEBUG-SecurityConfig] AuthenticationEntryPoint triggered! Reason: " + authException.getMessage());
+                            response.sendError(403, "Forbidden: Unauthenticated");
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            System.err.println("[DEBUG-SecurityConfig] AccessDeniedHandler triggered! Reason: " + accessDeniedException.getMessage());
+                            response.sendError(403, "Forbidden: Unauthorized");
+                        })
+                )
                 // Execute JwtFilter before UsernamePasswordAuthenticationFilter
                 .addFilterBefore(
                         new JwtFilter(),
