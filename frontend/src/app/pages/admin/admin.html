@@ -350,14 +350,12 @@
       <div class="main-content">
         <div class="left-panel" *ngIf="viewMode === 'grid'">
 
-    <button
-        class="filter-btn"
-        (click)="showFilters = !showFilters">
+          <button class="filter-btn" (click)="showFilters = !showFilters">
 
-        <i class="fa-solid fa-filter"></i>
-        Filters
+            <i class="fa-solid fa-filter"></i>
+            Filters
 
-    </button>
+          </button>
           <!-- FILTERS (GRID VIEW ONLY) -->
           <div class="filter-container" *ngIf="viewMode === 'grid' && showFilters">
             <!-- Qualification -->
@@ -756,12 +754,9 @@
         </div>
       </div>
     </div>
-    <app-applicant-details *ngIf="applicantvisible" [applicant]="selectedApplicant" (back)="applicantvisible=false">
-    </app-applicant-details>
-    <!-- Analytics -->
-    <app-admin-analytics *ngIf="showAnalytics" [applicants]="applicants">
-    </app-admin-analytics>
 
   </div>
-
+  <app-admin-analytics *ngIf="showAnalytics" [applicants]="applicants"></app-admin-analytics>
 </div>
+<app-applicant-details *ngIf="applicantvisible" [applicant]="selectedApplicant"
+  (back)="applicantvisible=false"></app-applicant-details>
