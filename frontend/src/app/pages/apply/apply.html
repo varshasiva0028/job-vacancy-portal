@@ -1,272 +1,178 @@
 <div class="form-container">
-
   <h2>
     <i class="fas fa-briefcase"></i>
     Job Application Form
   </h2>
-
   <form #form="ngForm" (ngSubmit)="submitForm(form)" *ngIf="!submitted">
-
-
     <div class="name-row">
-
       <div class="input-group">
         <input type="text" placeholder=" " [(ngModel)]="applicant.firstName" name="firstName" required>
-
         <label>
           <i class="fas fa-user"></i>
           First Name
         </label>
       </div>
-
       <div class="input-group">
         <input type="text" placeholder=" " [(ngModel)]="applicant.lastName" name="lastName" required>
-
         <label>
           <i class="fas fa-user"></i>
           Last Name
         </label>
       </div>
-
     </div>
     <div class="row-group">
 
-      <!-- Email -->
+      <!------------------------Email------------------------>
+      
       <div class="input-group">
         <input type="email" placeholder=" " [(ngModel)]="applicant.email" name="email" required>
-
         <label>
           <i class="fas fa-envelope"></i>
           Email Address
         </label>
       </div>
 
-      <!-- Phone -->
+      <!-----------------------Phone------------------------>
+
       <div class="input-group">
         <input type="text" maxlength="10" placeholder=" " [(ngModel)]="applicant.phone" name="phone" required>
-
         <label>
           <i class="fas fa-phone"></i>
           Phone Number
         </label>
       </div>
-
     </div>
-
     <div class="row-group">
 
-      <!-- Qualification -->
+      <!------------------------Qualification------------------------>
+
       <div class="input-group">
         <input type="text" [(ngModel)]="applicant.qualification" name="qualification" required placeholder=" ">
-
         <label>
           <i class="fas fa-graduation-cap"></i>
           Qualification
         </label>
       </div>
+      
+      <!------------------------DOB------------------------>
 
-      <!-- DOB -->
       <div class="input-group">
-
         <input type="date" [(ngModel)]="applicant.dob" name="dob" required>
-
         <label>
           <i class="fas fa-calendar-days"></i>
           Date of Birth
         </label>
-
       </div>
-      <!-- Gender -->
+
+      <!------------------------Gender------------------------>
+
       <div class="gender-container">
-
         <div class="gender-card">
-
           <label class="gender-floating-label">
             <i class="fas fa-venus-mars"></i>
             Gender
           </label>
-
           <div class="gender-options">
-
             <label class="gender-option">
               <input type="radio" name="gender" value="Male" [(ngModel)]="applicant.gender">
-
-              <i class="fas fa-mars"></i>
-
-              Male
-            </label>
-
+              <i class="fas fa-mars"></i>Male </label>
             <label class="gender-option">
               <input type="radio" name="gender" value="Female" [(ngModel)]="applicant.gender">
-
-              <i class="fas fa-venus"></i>
-
-              Female
-            </label>
-
+              <i class="fas fa-venus"></i>Female</label>
           </div>
-
         </div>
-
       </div>
-
     </div>
-    <!-- Languages -->
+
+    <!------------------------Languages------------------------>
+
     <div class="form-group">
 
-      <!-- Label and Select in same row -->
+      <!------------------------Label and Select in same row------------------------>
+
       <div class="inline-group">
-
         <label class="inline-label">
-          <i class="fas fa-language"></i>
-          Languages Known
-        </label>
-
+          <i class="fas fa-language"></i>Languages Known</label>
         <div class="dropdown-header">
-
           <button type="button" class="dropdown-btn" (click)="showLanguages=!showLanguages">
-
             <i class="fas fa-globe"></i>
-
             {{
             selectedLanguageNames.length
             ? selectedLanguageNames.join(', ')
             : 'Select Languages'
             }}
-
             <i class="fas fa-chevron-down"></i>
-
           </button>
-
         </div>
-
       </div>
 
-      <!-- Dropdown opens below -->
+      <!------------------------Dropdown opens below------------------------>
+
       <div *ngIf="showLanguages" class="dropdown-content">
-
         <div *ngFor="let group of languageGroups">
-
-          <h4 class="language-group-title">
-            {{ group.label }}
-          </h4>
-
+          <h4 class="language-group-title">{{ group.label }} </h4>
           <div class="language-grid">
-
             <label class="language-option" *ngFor="let option of group.options">
-
               <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
                 (change)="toggleLanguage(option,$event)">
-
-              <span>{{ option }}</span>
-
-            </label>
-
+              <span>{{ option }}</span></label>
           </div>
-
           <hr>
-
         </div>
-
         <div *ngIf="showLanguages" class="dropdown-content">
-
           <div *ngFor="let group of languageGroups">
-
-            <h4 class="language-group-title">
-              {{ group.label }}
-            </h4>
-
+            <h4 class="language-group-title">{{ group.label }}</h4>
             <div class="language-grid">
-
               <label class="language-option" *ngFor="let option of group.options">
-
                 <input type="checkbox" [checked]="selectedLanguageNames.includes(option)"
                   (change)="toggleLanguage(option,$event)">
-
                 <span>{{ option }}</span>
-
               </label>
-
             </div>
-
             <hr>
-
           </div>
-
         </div>
-
-        <button *ngIf="showLanguages" type="button" class="done-btn" (click)="showLanguages = false">
-
-          <i class="fas fa-check"></i>
-          Done
-
-        </button>
+        <button *ngIf="showLanguages" type="button" class="done-btn" (click)="showLanguages = false"><i
+            class="fas fa-check"></i>Done</button>
       </div>
-
     </div>
-    <!-- Language Cards -->
+
+    <!------------------------Language Cards------------------------>
+
     <div class="language-card-list" *ngIf="selectedLanguages.length > 0">
-
       <div class="language-card" *ngFor="let language of selectedLanguages">
-
         <div class="language-card-header">
-
           <h4>{{language.name}}</h4>
-
           <button type="button" class="trash-btn" (click)="removeLanguage(language.name)">
-
             <i class="fas fa-trash"></i>
-
           </button>
-
         </div>
-
         <div class="skill-options">
-
           <label>
             <input type="checkbox" [(ngModel)]="language.read" [ngModelOptions]="{standalone:true}"
-              (change)="updateLanguageAllState(language)">
-            Read
-          </label>
+              (change)="updateLanguageAllState(language)">Read </label>
 
           <label>
             <input type="checkbox" [(ngModel)]="language.write" [ngModelOptions]="{standalone:true}"
-              (change)="updateLanguageAllState(language)">
-            Write
-          </label>
-
+              (change)="updateLanguageAllState(language)"> Write</label>
           <label>
             <input type="checkbox" [(ngModel)]="language.speak" [ngModelOptions]="{standalone:true}"
-              (change)="updateLanguageAllState(language)">
-            Speak
-          </label>
-
+              (change)="updateLanguageAllState(language)">Speak</label>
           <label>
             <input type="checkbox" [(ngModel)]="language.all" [ngModelOptions]="{standalone:true}"
-              (change)="toggleAll(language)">
-            All
-          </label>
-
+              (change)="toggleAll(language)">All</label>
         </div>
-
         <div class="progress-wrapper">
-
           <progress [value]="getProgress(language)" max="100">
           </progress>
-
           <span>
             {{getProgress(language)}}%
           </span>
-
         </div>
-
       </div>
-
     </div>
-
-    <!-- Companies -->
+    <!------------------------Companies------------------------>
     <div class="form-group">
-
       <div class="inline-group">
 
         <label class="inline-label">
@@ -325,7 +231,7 @@
 
       <div class="document-row">
 
-        <!-- Resume -->
+        <!------------------------Resume------------------------>
         <div class="document-card">
 
           <div class="upload-left">
@@ -353,7 +259,7 @@
         </div>
 
 
-        <!-- Marksheet -->
+        <!------------------------Marksheet------------------------>
         <div class="document-card">
 
           <div class="upload-left">
@@ -383,52 +289,39 @@
       </div>
 
 
-      <!-- Photos -->
+      <!------------------------Photo------------------------>
+
       <div class="photo-title">
         <i class="fas fa-image"></i>
         <span>Photos</span>
       </div>
-
       <div class="photo-row" (dragover)="onDragOver($event)" (drop)="onDrop($event)" (click)="photoInput.click()">
-
         <div class="photo-drop-area">
           <i class="fas fa-cloud-upload-alt upload-icon"></i>
-
           <p class="drag-text">
             Drag & Drop images here
           </p>
-
           <p class="browse-text">
             Click anywhere to browse images
           </p>
           <p class="photo-limit-text">
             Maximum 3 photos allowed
           </p>
-
           <input #photoInput hidden type="file" accept="image/*" (change)="onPhotoSelect($event)">
-
         </div>
-
-
         <div class="photo-gallery">
-
           <div class="photo-thumb" *ngFor="let preview of photoPreviews; let i=index">
-
             <img [src]="preview">
-
             <button class="remove-btn" type="button" (click)="removePhoto(i)">
-
               ×
-
             </button>
-
           </div>
-
         </div>
-
       </div>
     </div>
-    <!-- Submit -->
+
+    <!------------------------Submit------------------------>
+
     <button type="submit" class="btn-primary" [disabled]="loading">
 
       <i class="fas fa-paper-plane"></i>
@@ -443,23 +336,15 @@
     </div>
   </form>
 
-  <!-- Success -->
+  <!------------------------Success------------------------>
+  
   <div *ngIf="submitted" class="success-box">
-
     <h3>
-
       <i class="fas fa-circle-check"></i>
-
       Application Submitted Successfully!
-
     </h3>
-
     <button (click)="downloadForm()" class="btn-secondary">
-
       Download Details
-
     </button>
-
   </div>
-
 </div>

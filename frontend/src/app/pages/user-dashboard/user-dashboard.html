@@ -3,22 +3,30 @@
   <button (click)="logout()" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
 </div>
 <div class="dashboard-full-width">
-  <!-- Profile Photo at the Top -->
+
+  <!------------------Profile Photo at the Top ------------------------>
+
   <div class="profile-section">
     <img *ngIf="applicant.profilePhoto" [src]="'http://localhost:8081/uploads/' + applicant.profilePhoto"
       class="profile-photo" (click)="openPhotoDialog()">
     <div *ngIf="!applicant.profilePhoto" class="profile-avatar" (click)="openPhotoDialog()">{{
       applicant.name?.charAt(0)?.toUpperCase() }}</div>
   </div>
-  <!-- ID -->
+
+  <!--------------------------ID-------------------------->
+
   <div class="profile-id">
     <span class="profile-id-value">
       <i class="fa-solid fa-id-card"></i>ID : {{ applicant.id }} </span>
   </div>
-  <!-- Applicant Details in a Horizontal Layout -->
+
+  <!--------------------------Applicant Details in a Horizontal Layout-------------------------->
+
   <div class="details-grid">
     <button *ngIf="editMode" class="close-edit-btn" (click)="cancelEdit()"><i class="fa-solid fa-xmark"></i> </button>
-    <!-- Name -->
+
+    <!--------------------------Name-------------------------->
+
     <div class="detail-card">
       <span class="detail-label"><i class="fa-solid fa-user"></i> Name</span>
       <ng-container *ngIf="!editMode; else editName">
@@ -30,7 +38,9 @@
         <input type="text" [(ngModel)]="editApplicant.name" class="dashboard-input" />
       </ng-template>
     </div>
-    <!-- Email -->
+
+    <!--------------------------Email-------------------------->
+
     <div class="detail-card">
       <span class="detail-label"><i class="fa-solid fa-envelope"></i> Email</span>
       <ng-container *ngIf="!editMode; else editEmail">
@@ -41,7 +51,9 @@
       <ng-template #editEmail>
         <input type="email" [(ngModel)]="editApplicant.email" class="dashboard-input"></ng-template>
     </div>
-    <!-- Qualification -->
+
+    <!--------------------------Qualification-------------------------->
+
     <div class="detail-card">
       <span class="detail-label">
         <i class="fa-solid fa-graduation-cap"></i> Qualification
@@ -53,12 +65,16 @@
         <input type="text" [(ngModel)]="editApplicant.qualification" class="dashboard-input" />
       </ng-template>
     </div>
-    <!-- Date of Birth -->
+
+    <!--------------------------Date of Birth-------------------------->
+
     <div class="detail-card">
       <span class="detail-label"><i class="fa-solid fa-calendar-days"></i> Date of Birth</span>
       <span class="detail-value"> {{ applicant.dob | date:'dd-MM-yyyy' }}</span>
     </div>
-    <!-- Gender -->
+
+    <!--------------------------Gender-------------------------->
+
     <div class="detail-card">
       <span class="detail-label"><i class="fa-solid fa-venus-mars"></i> Gender</span>
       <ng-container *ngIf="!editMode; else editGender">
@@ -71,10 +87,14 @@
         </select>
       </ng-template>
     </div>
-    <!-- Languages Known -->
+
+    <!--------------------------Languages Known-------------------------->
+
     <div class="detail-card lang-card-full">
       <span class="detail-label"><i class="fa-solid fa-language"></i> Languages Known</span>
-      <!-- Read-only View -->
+
+      <!--------------------------Read-only View-------------------------->
+
       <div class="languages-view-container" *ngIf="!editMode">
         <div *ngFor="let lang of languages" class="lang-badge">
           <span class="lang-title">{{ lang.name }}</span>
@@ -90,7 +110,9 @@
           None
         </div>
       </div>
-      <!-- Edit Mode -->
+
+      <!------------------------------- Edit Mode ----------------------------->
+
       <div class="languages-edit-container" *ngIf="editMode">
         <div *ngFor="let lang of editLanguages" class="lang-edit-row">
           <span class="lang-name">{{ lang.name }}</span>
@@ -117,7 +139,9 @@
           </div>
           <button type="button" class="btn-remove-lang" (click)="removeLanguage(lang.name)">&times;</button>
         </div>
-        <!-- Add Language -->
+
+        <!--------------------------Add Language-------------------------->
+
         <div class="custom-dropdown">
           <button type="button" class="dropdown-btn" (click)="showLanguages=!showLanguages">
             {{
@@ -144,14 +168,18 @@
         </div>
       </div>
     </div>
-    <!---- DOCUMENTS -->
+
+    <!----------------------------DOCUMENTS-------------------------->
+
     <div class="detail-card documents-card">
       <span class="detail-label">
         <i class="fa-solid fa-file-lines"></i>
         Documents
       </span>
       <div class="documents-container">
-        <!-- Resume -->
+
+        <!--------------------------Resume-------------------------->
+
         <div class="document-item">
           <span class="detail-label">
             <i class="fa-solid fa-file-pdf"></i>
@@ -168,7 +196,9 @@
             </p>
           </div>
         </div>
-        <!-- Marksheet -->
+
+        <!--------------------------Marksheet------------------------->
+
         <div class="document-item">
           <span class="detail-label">
             <i class="fa-solid fa-file-lines"></i>
@@ -188,7 +218,9 @@
         </div>
       </div>
     </div>
-    <!-- Action Buttons -->
+
+    <!--------------------------Action Buttons-------------------------->
+
     <div class="actions-section">
       <ng-container *ngIf="!editMode">
         <button (click)="editProfile()" class="btn-edit-profile">
@@ -198,8 +230,7 @@
       </ng-container>
       <ng-container *ngIf="editMode">
         <button (click)="saveChanges()" class="btn-save-changes">
-          <i class="fa-solid fa-floppy-disk"></i>
-          Save Changes
+          <i class="fa-solid fa-floppy-disk"></i>Save Changes
         </button>
         <button (click)="cancelEdit()" class="btn-cancel">
           <i class="fa-solid fa-xmark"></i>
@@ -221,7 +252,9 @@
   <iframe [src]="safePreviewUrl" width="100%" height="500">
   </iframe>
 </div>
-<!-- Photo Selection Dialog -->
+
+<!--------------------------Photo Selection Dialog-------------------------->
+
 <div *ngIf="showPhotoDialog" class="photo-overlay">
   <div class="photo-dialog">
     <div class="dialog-header">

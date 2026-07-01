@@ -6,12 +6,15 @@
 
   <div class="admin-content">
 
-    <!-- Dashboard -->
+    <!----------------------- Dashboard----------------------->
+
     <div class="dashboard-container" *ngIf="!showAnalytics">
       <div style="text-align:right; margin-bottom:20px;">
         <div class="admin-header">
           <h2>Users Info</h2>
         </div>
+
+        <!------------------------Search ba------------------------>
 
       </div>
       <div class="search-container">
@@ -34,9 +37,6 @@
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-
-
-
         <div class="view-toggle-group">
           <button class="view-btn" [class.active]="viewMode === 'list'" (click)="viewMode='list'">
             <i class="fas fa-list"></i>
@@ -109,7 +109,8 @@
 
           </div>
 
-          <!-- Language Dropdown -->
+          <!------------------------ Language Dropdown------------------------>
+
           <div *ngIf="showLanguages" class="dropdown-content">
 
             <div *ngFor="let group of languageGroups">
@@ -133,7 +134,8 @@
 
           </div>
 
-          <!-- Language Cards -->
+          <!------------------------Language Cards------------------------>
+
           <div class="language-card-list" *ngIf="selectedLanguages.length > 0">
 
             <div class="language-card" *ngFor="let language of selectedLanguages">
@@ -209,7 +211,8 @@
         </div>
 
 
-        <!-- Company -->
+        <!------------------------Company ------------------------>
+
         <div class="edit-section">
 
           <div class="field-row">
@@ -233,7 +236,7 @@
               </div>
             </div>
           </div>
-          <!-- Company Grid -->
+          <!------------------------Company Grid------------------------>
           <div *ngIf="showCompanies" class="company-content">
             <div class="company-grid">
               <label class="company-option" *ngFor="let company of companyNames">
@@ -304,10 +307,13 @@
       </table>
       <div class="main-content">
         <div class="left-panel" *ngIf="viewMode === 'grid'">
-          <button class="filter-btn" (click)="showFilters = !showFilters"> <i class="fa-solid fa-filter"></i>Filters </button>
-          <!-- FILTERS (GRID VIEW ONLY) -->
+          <button class="filter-btn" (click)="showFilters = !showFilters"> <i class="fa-solid fa-filter"></i>Filters
+          </button>
+          <!------------------------FILTERS (GRID VIEW ONLY)------------------------>
+
           <div class="filter-container" *ngIf="viewMode === 'grid' && showFilters">
-            <!-- Qualification -->
+            <!------------------------Qualification------------------------>
+
             <select [(ngModel)]="selectedQualification">
               <option value="">
                 All Qualifications
@@ -347,13 +353,15 @@
                 </option>
               </optgroup>
             </select>
-            <!-- Gender -->
+            <!------------------------Gender------------------------>
+
             <select [(ngModel)]="selectedGender">
               <option value="">All Genders</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
-            <!-- Language -->
+            <!------------------------Language------------------------>
+
             <select [(ngModel)]="selectedLanguage">
               <option value="">
                 All Languages
@@ -383,14 +391,17 @@
                 <option value="Arabic">Arabic</option>
               </optgroup>
             </select>
-            <!-- Company -->
+
+            <!------------------------Company------------------------>
+
             <select [(ngModel)]="selectedCompany">
               <option value="">All Companies</option>
               <option *ngFor="let company of companyNames">
                 {{company}}
               </option>
             </select>
-            <!-- DOB -->
+            <!------------------------DOB------------------------>
+
             <div class="date-range-title">
               <i class="fa-solid fa-calendar-days"></i>
               Date Range
@@ -408,21 +419,25 @@
           <div class="applicant-card" [class.search-mode]="searchMode"
             [style.cursor]="searchMode ? 'pointer' : 'default'"
             *ngFor="let a of filteredApplicants | filter: searchKeyword" (click)="searchMode && selectApplicant(a)">
-            <!-- NORMAL CARD -->
+
+            <!------------------------NORMAL CARD------------------------>
+
             <div *ngIf="!searchKeyword">
               <div class="profile-section">
                 <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto"
-                  class="profile-photo" (click)="togglePhotoDialog(true); $event.stopPropagation()">
+                  class="profile-photo" (click)="openPhotoDialog(a); $event.stopPropagation()">
                 <div *ngIf="!a.profilePhoto" class="profile-avatar">
                   {{ a.name?.charAt(0)?.toUpperCase() }}
                 </div>
               </div>
 
-              <!-- EDIT -->
+              <!------------------------EDIT------------------------>
+
               <button (click)="openEditModal(a); $event.stopPropagation()" class="profile-edit-btn">
                 <i class="fas fa-pencil-alt"></i></button>
 
-              <!-- DELETE -->
+              <!------------------------DELETE------------------------>
+
               <button (click)="deleteApplicant(a.id); $event.stopPropagation()" class="profile-delete-btn">
                 <i class="fas fa-trash"></i></button>
 
@@ -484,14 +499,20 @@
                 {{ getTimeAgo(a.updatedAt) }}
               </p>
             </div>
-            <!-- SEARCH CARD -->
+
+            <!------------------------SEARCH CARD------------------------>
+
             <div *ngIf="searchKeyword" class="search-card">
-              <!-- Edit -->
+
+              <!------------------------Edit------------------------>
+
               <button class="profile-edit-btn" (click)="openEditModal(a); $event.stopPropagation()">
                 <i class="fas fa-pencil-alt"></i> </button>
-              <!-- Delete -->
+
+              <!------------------------ Delete------------------------>
+
               <button class="profile-delete-btn" (click)="deleteApplicant(a.id); $event.stopPropagation()">
-                <i class="fas fa-trash"></i>  </button>
+                <i class="fas fa-trash"></i> </button>
               <img *ngIf="a.profilePhoto" [src]="'http://localhost:8081/uploads/' + a.profilePhoto"
                 class="search-photo">
               <div *ngIf="!a.profilePhoto" class="search-avatar">
@@ -536,7 +557,6 @@
               </div>
             </div>
           </div>
-
           <div class="edit-section">
             <ng-container *ngTemplateOutlet="languageEditor"></ng-container>
           </div>
@@ -552,7 +572,7 @@
             </label>
           </div>
           <div class="action-cell">
-            <button (click)="saveEdit()" class="btn-save"> Save</button> 
+            <button (click)="saveEdit()" class="btn-save"> Save</button>
             <button (click)="closeEditModal()" class="btn-cancel">
               Cancel
             </button>
@@ -560,7 +580,7 @@
         </dialog>
         <div class="photo-overlay" *ngIf="showPhotoDialog">
           <div class="photo-dialog">
-            <button class="close-photo-btn" (click)="togglePhotoDialog(false)">
+            <button class="close-photo-btn" (click)="closePhotoDialog()">
               ✕
             </button>
             <h2>Select Profile Picture</h2>
@@ -573,7 +593,13 @@
       </div>
     </div>
   </div>
+
+  <!------------------------dashboard------------------------>
+
   <app-admin-analytics *ngIf="showAnalytics" [applicants]="applicants"></app-admin-analytics>
 </div>
+
+<!------------------------Applicant Details------------------------>
+
 <app-applicant-details *ngIf="applicantvisible" [applicant]="selectedApplicant"
   (back)="applicantvisible=false"></app-applicant-details>

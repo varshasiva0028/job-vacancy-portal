@@ -23,6 +23,7 @@ body {
 }
 
 /* ================= DASHBOARD ================= */
+
 .dashboard-full-width {
 
     width: 95%;
@@ -39,6 +40,7 @@ body {
 }
 
 /* ================= Dashboard header ================= */
+
 .dashboard-header {
     position: relative;
     display: flex;
@@ -49,25 +51,19 @@ body {
     border-bottom: none !important;
     box-shadow: none !important;
 }
-
-
-
 /* ================= LOGOUT BUTTON ================= */
 
 .btn-logout {
-
     position: absolute;
-
     right: 20px;
-
     top: 50%;
-
     transform: translateY(-50%);
 
 }
 
 
 /* ================= TITLE ================= */
+
 h2 {
     color: rgb(36, 33, 33);
     font-size: 40px;
@@ -111,7 +107,7 @@ h2 i {
 
 }
 
-/* Profile Image */
+/* ================Profile Image================ */
 
 .profile-photo {
 
@@ -142,7 +138,7 @@ h2 i {
 
 }
 
-/* Avatar */
+/* ================Avatar================ */
 
 .profile-avatar {
 
@@ -403,7 +399,7 @@ h2 i {
 
 }
 
-/* Language Card */
+/*================Language Card ================*/
 
 .lang-edit-row {
 
@@ -423,7 +419,7 @@ h2 i {
 
 }
 
-/* Language Name */
+/* ================Language Name ================*/
 
 .lang-name {
 
@@ -435,7 +431,7 @@ h2 i {
 
 }
 
-/* Checkboxes */
+/* ================Checkboxes ================*/
 
 .skill-options {
 
@@ -471,7 +467,7 @@ h2 i {
 
 }
 
-/* Progress */
+/* ================ Progress ================ */
 
 .progress-wrapper {
 
@@ -503,7 +499,7 @@ h2 i {
 
 }
 
-/* Delete Button */
+/* ================Delete Button================ */
 
 .btn-remove-lang {
 
@@ -527,7 +523,7 @@ h2 i {
 
 }
 
-/* Dropdown */
+/* ================Dropdown================ */
 
 .custom-dropdown {
 
@@ -595,7 +591,7 @@ h2 i {
 
 }
 
-/* Full Width Card */
+/* ================Full Width Card================ */
 
 .lang-card-full {
 
@@ -603,7 +599,7 @@ h2 i {
 
 }
 
-/* Mobile */
+/* ================Mobile================ */
 
 @media(max-width:768px) {
 
@@ -717,6 +713,7 @@ button:hover {
 }
 
 /* ================= DOCUMENTS ================= */
+
 .documents-card {
     grid-column: 1/-1;
     width: 100%;
@@ -802,6 +799,7 @@ iframe {
 }
 
 /* ================= MOBILE ================= */
+
 @media screen and (max-width: 768px) {
     .dashboard-header {
         display: flex;
@@ -820,7 +818,7 @@ iframe {
         width: 100%;
         max-width: 300px;
         position: static;
-        /* removes overlap */
+        /*================ removes overlap================ */
         margin-bottom: 10px;
     }
 

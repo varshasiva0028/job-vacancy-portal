@@ -23,6 +23,7 @@ import { AdminSidebarComponent } from '../../admin-sidebar/admin-sidebar';
 })
 export class AdminComponent implements OnInit {
   private readonly API_URL = 'http://localhost:8081/api/applicants';
+  //validations
   private readonly EMAIL_PATTERN =
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -68,6 +69,7 @@ export class AdminComponent implements OnInit {
       ]
     }
   ];
+  //company names
   companyNames = [
     'Google',
     'Microsoft',
@@ -111,6 +113,7 @@ export class AdminComponent implements OnInit {
   toggleView(): void {
     this.viewMode = this.viewMode === 'list' ? 'grid' : 'list';
   }
+  //edit
   editingId: number | null = null;
   editData = {
     name: '',
@@ -129,11 +132,8 @@ export class AdminComponent implements OnInit {
   selectedApplicantId = 0;
   selectedProfilePhoto = '';
   selectedApplicant: any;
-
-
   applicantId: number = 0;
   selectApplicant(applicant: any): void {
-
     console.log("Selected Applicant:", applicant);
     this.applicantvisible = true;
     this.selectedApplicant = applicant;
@@ -149,7 +149,6 @@ export class AdminComponent implements OnInit {
     this.showFilters = true;
   }
   get searchSuggestions(): any[] {
-
     if (!this.searchText.trim() || !this.showSuggestions) {
       return [];
     }
@@ -186,11 +185,8 @@ export class AdminComponent implements OnInit {
 
     this.username = localStorage.getItem('username') || '';
     this.role = localStorage.getItem('role') || '';
-
     this.route.paramMap.subscribe(params => {
-
       this.applicantId = Number(params.get('id'));
-
       this.loadApplicants();
     });
 
@@ -202,6 +198,7 @@ export class AdminComponent implements OnInit {
     });
 
   }
+  //loads the applicants
 
   loadApplicants(): void {
 
@@ -462,7 +459,7 @@ export class AdminComponent implements OnInit {
       this.selectedCompanies.filter(c => c !== company);
 
   }
-
+  //opens dialog
   openEditModal(applicant: any): void {
     this.startEdit(applicant);
     const dialog = document.getElementById('editDialog') as HTMLDialogElement;
@@ -470,6 +467,7 @@ export class AdminComponent implements OnInit {
       dialog.showModal();
     }
   }
+  //closes dialogue
   closeEditModal(): void {
     const dialog =
       document.getElementById('editDialog') as HTMLDialogElement;
@@ -478,6 +476,7 @@ export class AdminComponent implements OnInit {
     }
     this.cancelEdit();
   }
+  //validation
   private validateEditForm(): boolean {
 
     if (!this.editData.name.trim()) {
@@ -584,24 +583,33 @@ export class AdminComponent implements OnInit {
         responseType: 'text'
       }
     )
-
       .subscribe({
-
         next: (response) => {
           alert(response);
           this.loadApplicants();
 
         },
-
         error: (error) => {
           console.error(error);
           alert(error.error);
         }
       });
   }
-  togglePhotoDialog(show: boolean): void {
-    this.showPhotoDialog = show;
+  openPhotoDialog(applicant: any): void {
+
+    this.selectedApplicantId = applicant.id;
+
+    this.photoList = applicant.photoPaths
+      ? applicant.photoPaths.split(',').map((p: string) => p.trim()).filter(Boolean)
+      : [];
+
+    this.showPhotoDialog = true;
   }
+  closePhotoDialog(): void {
+    this.showPhotoDialog = false;
+    this.photoList = [];
+  }
+  //profile photo
   setProfilePhoto(photo: string): void {
     const headers = this.getAuthHeaders();
     this.http.put(
@@ -621,7 +629,7 @@ export class AdminComponent implements OnInit {
         if (applicant) {
           applicant.profilePhoto = photo;
         }
-        this.togglePhotoDialog(false);
+        this.closePhotoDialog();
         this.loadApplicants();
       },
       error: err => {
@@ -664,17 +672,17 @@ export class AdminComponent implements OnInit {
   }
   get filteredApplicants() {
     return this.applicants.filter(a =>
-      (!this.selectedQualification ||a.qualification === this.selectedQualification)
+      (!this.selectedQualification || a.qualification === this.selectedQualification)
       &&
-      (!this.selectedGender ||a.gender === this.selectedGender)
+      (!this.selectedGender || a.gender === this.selectedGender)
       &&
-      (!this.selectedLanguage ||this.getLanguageSummary(a.languages)?.includes(this.selectedLanguage))
+      (!this.selectedLanguage || this.getLanguageSummary(a.languages)?.includes(this.selectedLanguage))
       &&
-      (!this.selectedCompany ||a.companies?.includes(this.selectedCompany))
+      (!this.selectedCompany || a.companies?.includes(this.selectedCompany))
       &&
-      (!this.selectedFromDate ||new Date(a.dob) >= new Date(this.selectedFromDate))
+      (!this.selectedFromDate || new Date(a.dob) >= new Date(this.selectedFromDate))
       &&
-      (!this.selectedToDate ||new Date(a.dob) <= new Date(this.selectedToDate))
+      (!this.selectedToDate || new Date(a.dob) <= new Date(this.selectedToDate))
     );
   }
 }

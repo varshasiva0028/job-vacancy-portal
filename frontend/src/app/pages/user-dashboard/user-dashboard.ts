@@ -86,7 +86,7 @@ export class UserDashboardComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer
   ) { }
-
+// Load applicant details after login
   ngOnInit(): void {
 
     const token = localStorage.getItem('token');
@@ -120,7 +120,7 @@ export class UserDashboardComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/home']);
   }
-
+// Enable profile editing
   editProfile(): void {
     this.editApplicant = { ...this.applicant };
     this.editLanguages = JSON.parse(
@@ -185,7 +185,7 @@ export class UserDashboardComponent implements OnInit {
       );
 
   }
-
+// Select profile photo
   onPhotoSelected(event: any): void {
 
     if (event.target.files.length > 0) {
@@ -195,6 +195,7 @@ export class UserDashboardComponent implements OnInit {
     }
 
   }
+  // Select File
   onFileSelected(event: any, type: 'resume' | 'marksheet'): void {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -206,6 +207,7 @@ export class UserDashboardComponent implements OnInit {
       this.marksheetFileName = file.name;
     }
   }
+  
   saveChanges(): void {
 
     if (!this.editApplicant.name || !this.editApplicant.name.trim()) {
@@ -347,10 +349,10 @@ export class UserDashboardComponent implements OnInit {
   toggleAll(language: any): void {
     language.read = language.write = language.speak = language.all;
   }
+  //open the document
   openPreview(filePath: string, title: string): void {
     this.previewTitle = title;
-    const fileUrl =
-      'http://localhost:8081/uploads/' + filePath;
+    const fileUrl ='http://localhost:8081/uploads/' + filePath;
     this.safePreviewUrl =
       this.sanitizer.bypassSecurityTrustResourceUrl(
         fileUrl
@@ -361,6 +363,7 @@ export class UserDashboardComponent implements OnInit {
     this.isPdf = false;
     this.previewDialog.nativeElement.close();
   }
+  //open photo dialog
   openPhotoDialog(): void {
     this.photoList = this.applicant.photoPaths.split(',').filter((p: string) => p.trim());
     this.showPhotoDialog = true;
@@ -368,6 +371,7 @@ export class UserDashboardComponent implements OnInit {
   closePhotoDialog(): void {
     this.showPhotoDialog = false;
   }
+  // Update profile picture
   saveProfilePhoto(): void {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
@@ -395,6 +399,7 @@ export class UserDashboardComponent implements OnInit {
       }
     });
   }
+  //logout user
   logout(): void {
     localStorage.clear();
     this.router.navigateByUrl('/', {
